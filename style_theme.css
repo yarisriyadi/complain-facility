@@ -1,0 +1,63 @@
+/* style_theme.css */
+:root {
+    /* TEMA GELAP (DEFAULT) */
+    --bg-color: #0f111a;
+    --container-bg: #1a1d29;
+    --text-color: #ffffff;
+    --input-bg: #2d2d2d;      /* Background input abu gelap */
+    --input-text: #ffffff;    /* Teks input putih agar terbaca */
+    --border-color: rgba(255, 255, 255, 0.1);
+    --shadow: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] {
+    /* TEMA TERANG */
+    --bg-color: #f4f4f9;
+    --container-bg: #ffffff;
+    --text-color: #1a1a1a;
+    --input-bg: #ffffff;      /* Background input putih */
+    --input-text: #1a1a1a;    /* Teks input hitam agar terbaca */
+    --border-color: #dddddd;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+body { 
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Global Style untuk semua Input dan Textarea */
+input[type="text"], 
+input[type="email"], 
+input[type="password"], 
+textarea {
+    background-color: var(--input-bg) !important;
+    color: var(--input-text) !important;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+/* Mengatur warna placeholder agar tetap terlihat tipis */
+::placeholder {
+    color: var(--text-color);
+    opacity: 0.5;
+}
+
+/* Logika Ikon Theme Switcher */
+#theme-icon-sun, #theme-icon-moon { display: none; }
+[data-theme="dark"] #theme-icon-moon { display: block; }
+[data-theme="light"] #theme-icon-sun { display: block; }
+
+.theme-switcher { position: fixed; bottom: 20px; left: 20px; z-index: 1000; }
+.theme-btn {
+    width: 45px; height: 45px; 
+    background: var(--container-bg); 
+    border: 1px solid var(--border-color); 
+    border-radius: 12px; 
+    color: var(--text-color); 
+    cursor: pointer; 
+    display: flex; justify-content: center; align-items: center; 
+    font-size: 18px;
+    box-shadow: 0 4px 15px var(--shadow); 
+}
