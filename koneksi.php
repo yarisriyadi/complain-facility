@@ -14,7 +14,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$halaman_bebas = ['login.php', 'register.php', 'proses_register.php', 'proses_login.php'];
+$halaman_bebas = ['login.php', 'register.php', 'proses_register.php', 'proses_login.php', 'verifikasi.php', 'proses_kirim_otp.php',
+                'lupa_password.php', 'lupa_email.php'];
 $halaman_sekarang = basename($_SERVER['PHP_SELF']);
 
 if (!in_array($halaman_sekarang, $halaman_bebas)) {

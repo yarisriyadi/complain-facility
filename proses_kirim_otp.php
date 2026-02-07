@@ -66,41 +66,71 @@ if (isset($_POST['email'])) {
 
                 $mail->Body = "
                 <!DOCTYPE html>
-                <html>
-                <head>
-                    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                    <style>
-                        .apple-link-fix a { color: inherit !important; text-decoration: none !important; }
-                    </style>
-                </head>
-                <body style='margin: 0; padding: 0; background-color: #ffffff; font-family: sans-serif;'>
-                    <table width='100%' border='0' cellspacing='0' cellpadding='0'>
-                        <tr>
-                            <td align='center' style='padding: 20px 10px;'>
-                                <table width='350' border='0' cellspacing='0' cellpadding='0'>
-                                    <tr>
-                                        <td style='color: #333; font-size: 14px; line-height: 1.5;'>
-                                            
-                                            <p style='margin: 0 0 15px 0;'>Halo, <strong>" . htmlspecialchars($nama_lengkap) . "</strong></p>
-                                            <p style='margin: 0 0 20px 0;'>Berikut adalah kode verifikasi Anda:</p>
-                                            
-                                            <div style='text-align: center; margin: 25px 0;'>
-                                                <span style='font-size: 36px; font-weight: bold; letter-spacing: 8px; color: #007bff; display: block;'>$otp</span>
-                                            </div>
+<html>
+<head>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <style>
+        body, table, td { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important; }
+        .apple-link-fix a { color: inherit !important; text-decoration: none !important; }
+    </style>
+</head>
+<body style='margin: 0; padding: 0; background-color: #f4f7f9; -webkit-text-size-adjust: 100%;'>
+    <table width='100%' border='0' cellspacing='0' cellpadding='0' style='background-color: #f4f7f9;'>
+        <tr>
+            <td align='center' style='padding: 50px 10px;'>
+                <table width='100%' border='0' cellspacing='0' cellpadding='0' style='max-width: 480px; background-color: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05);'>
+                    
+                    <tr>
+                        <td style='background-color: #0056b3; height: 6px; border-radius: 8px 8px 0 0;'></td>
+                    </tr>
 
-                                            <div style='font-size: 12px; color: #777; margin-top: 25px; line-height: 1.6; border-top: 1px solid #f2f2f2; padding-top: 15px;'>
-                                                Kode ini hanya berlaku selama <strong>2 menit</strong>. Jika Anda tidak merasa meminta kode ini, mohon abaikan saja email ini. <strong>Mohon jaga kerahasiaan kode Anda.</strong>
-                                                <div style='display:none; font-size:1px; line-height:1px; max-height:0px; max-width:0px; opacity:0; overflow:hidden;'>Ref: $timestamp</div>
-                                            </div>
+                    <tr>
+                        <td style='padding: 40px;'>
 
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </body>
-                </html>";
+                            <p style='margin: 0 0 10px 0; font-size: 15px; color: #333;'>
+                                Halo <strong>" . htmlspecialchars($nama_lengkap) . "</strong>,
+                            </p>
+                            <p style='margin: 0 0 20px 0; font-size: 14px; color: #4a5568; line-height: 1.5;'>
+                                Berikut adalah kode OTP Anda untuk melanjutkan proses perubahan password di sistem :
+                            </p>
+                            
+                            <table width='100%' border='0' cellspacing='0' cellpadding='0' style='margin: 25px 0;'>
+                                <tr>
+                                    <td align='center' style='background-color: #ebf4ff; border: 1px solid #bee3f8; padding: 20px; border-radius: 6px;'>
+                                        <span style='font-size: 42px; font-weight: 700; letter-spacing: 10px; color: #000000; display: block;'>$otp</span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style='font-size: 13px; color: #718096; text-align: center; margin-bottom: 25px;'>
+                                Berlaku selama <span style='color: #000000; font-weight: 600;'>2 menit</span>.
+                            </p>
+
+                            <div style='background-color: #fff5f5;'>
+                                <p style='margin: 0; font-size: 12px; color: #c53030; line-height: 1.6;'>
+                                    <strong>PENTING:</strong> Jika Anda tidak merasa meminta perubahan password, abaikan email ini dan <strong>segera hubungi tim IT</strong>. Jangan berikan kode ini kepada siapapun.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style='padding: 0 40px 30px 40px;'>
+                            <table width='100%' border='0' cellspacing='0' cellpadding='0' style='border-top: 1px solid #edf2f7; padding-top: 20px;'>
+                                <tr>
+                                    <td style='font-size: 11px; color: #a0aec0; text-align: center; line-height: 1.5;'>
+                                        IT Department - PT. Shinsei Denshi Indonesia.<br>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>";
 
                 $mail->AltBody = "Halo, $nama_lengkap Kode OTP Anda adalah: $otp. Kode berlaku selama 2 menit.";
 
