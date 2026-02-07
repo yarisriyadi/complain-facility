@@ -53,91 +53,155 @@ if (isset($_POST['verifikasi'])) {
     <style>
         body { 
             font-family: 'Segoe UI', Arial, sans-serif; 
-            margin: 0; padding: 0; 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; overflow: hidden;
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            overflow: hidden;
             background-color: var(--bg-color);
         }
-
         .login-container { 
             background: var(--container-bg); 
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            padding: 35px; border-radius: 16px; 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            padding: 35px; 
+            border-radius: 16px; 
             border: 1px solid var(--border-color);
             box-shadow: 0 8px 32px var(--shadow); 
-            width: 90%; max-width: 420px; 
-            box-sizing: border-box; position: relative; z-index: 1;
+            width: 90%; 
+            max-width: 420px; 
+            box-sizing: border-box; 
+            position: relative; 
+            z-index: 1;
             transition: all 0.4s ease;
         }
-
         .login-container h2, .login-container p, .copyright, .timer-container {
             color: var(--text-color);
         }
-
         .login-container h2 { 
-            text-align: center; margin: 0 0 10px 0; font-size: 24px; 
-            font-weight: bold; text-transform: uppercase; letter-spacing: 2px;
+            text-align: center; 
+            margin: 0 0 10px 0; 
+            font-size: 24px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
         }
-
-        .login-container p { text-align: center; font-size: 14px; margin-bottom: 20px; line-height: 1.5; }
-
-        .email-display { color: #2ecc71; font-weight: 700; display: block; font-size: 15px; word-break: break-all; }
-
+        .login-container p { 
+            text-align: center; 
+            font-size: 14px; 
+            margin-bottom: 20px; 
+            line-height: 1.5; 
+        }
+        .email-display { 
+            color: #2ecc71; 
+            font-weight: 700; 
+            display: block; 
+            font-size: 15px; 
+            word-break: break-all; 
+        }
         .timer-container { 
-            text-align: center; margin-bottom: 20px; padding: 12px; 
+            text-align: center; 
+            margin-bottom: 20px; 
+            padding: 12px; 
             background: rgba(128, 128, 128, 0.1); 
             border: 1px solid var(--border-color); 
-            border-radius: 8px; font-size: 14px; font-weight: 600; 
+            border-radius: 8px; 
+            font-size: 14px; 
+            font-weight: 600; 
         }
-
-        #countdown { font-size: 18px; display: block; color: #2ecc71; }
-
+        #countdown { 
+            font-size: 18px; 
+            display: block; 
+            color: #2ecc71;    
+        }
         .otp-wrapper { 
-            display: flex; justify-content: space-between; 
-            gap: 8px; margin-bottom: 25px; direction: ltr;
+            display: flex; 
+            justify-content: space-between; 
+            gap: 8px; 
+            margin-bottom: 25px; 
+            direction: ltr;
         }
-
         .otp-box { 
-            width: 100%; height: 55px; text-align: center; 
-            font-size: 24px; font-weight: bold; 
+            width: 100%; 
+            height: 55px; 
+            text-align: center; 
+            font-size: 24px; 
+            font-weight: bold; 
             border: 1px solid var(--border-color); 
-            border-radius: 10px; background: var(--input-bg); 
-            color: #333; transition: all 0.2s ease; 
+            border-radius: 10px; 
+            background: var(--input-bg); 
+            color: #333; 
+            transition: all 0.2s ease; 
         }
-
         .otp-box:focus { 
             border-color: #28a745; 
             box-shadow: 0 0 10px rgba(40, 167, 69, 0.4); 
-            outline: none; transform: scale(1.05);
+            outline: none; 
+            transform: scale(1.05);
         }
-
         .btn-submit { 
-            width: 100%; padding: 14px; background-color: #28a745; border: none; 
-            color: white; border-radius: 8px; cursor: pointer; font-size: 16px; 
-            font-weight: bold; text-transform: uppercase; transition: 0.4s; 
+            width: 100%; 
+            padding: 14px; 
+            background-color: #28a745; 
+            border: none; 
+            color: white; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            transition: 0.4s; 
             box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
         }
-
-        .btn-submit:hover:not(:disabled) { background-color: #218838; transform: translateY(-2px); }
-        .btn-submit:disabled { background-color: #666; cursor: not-allowed; opacity: 0.6; }
-
-        .alert { 
-            background: rgba(255, 82, 82, 0.2); color: #ff4d4d; 
-            padding: 10px; border-radius: 6px; font-size: 12px; 
-            margin-bottom: 15px; border: 1px solid #ff4d4d; text-align: center; 
+        .btn-submit:hover:not(:disabled) { 
+            background-color: #218838; 
+            transform: translateY(-2px); 
         }
-
-        .footer-links { text-align: center; margin-top: 20px; font-size: 13px; color: var(--text-color); }
-        .footer-links a, .resend-btn { color: #2ecc71; text-decoration: none; font-weight: bold; background: none; border: none; cursor: pointer; font-size: 13px; }
-        .copyright { text-align: center; margin-top: 25px; font-size: 10px; border-top: 1px solid var(--border-color); padding-top: 15px; }
-
+        .btn-submit:disabled { 
+            background-color: #666; 
+            cursor: not-allowed; 
+            opacity: 0.6; 
+        }
+        .alert { 
+            background: rgba(255, 82, 82, 0.2); 
+            color: #ff4d4d; 
+            padding: 10px; 
+            border-radius: 6px; 
+            font-size: 12px; 
+            margin-bottom: 15px; 
+            border: 1px solid #ff4d4d; 
+            text-align: center; 
+        }
+        .footer-links { 
+            text-align: center; 
+            margin-top: 20px; 
+            font-size: 13px; 
+            color: var(--text-color); 
+        }
+        .footer-links a, .resend-btn { 
+            color: #2ecc71; 
+            text-decoration: none; 
+            font-weight: bold; 
+            background: none; 
+            border: none; 
+            cursor: pointer; 
+            font-size: 13px; 
+        }
+        .copyright { 
+            text-align: center; 
+            margin-top: 25px; 
+            font-size: 10px; 
+            border-top: 1px solid var(--border-color); 
+            padding-top: 15px; 
+        }
         @media screen and (max-width: 380px) { .otp-box { height: 45px; font-size: 20px; } }
     </style>
 </head>
 <body>
 
     <script>
-        // Sinkronisasi Tema Sebelum Render
         const savedTheme = localStorage.getItem('selected-theme') || 'dark';
         document.body.setAttribute('data-theme', savedTheme);
     </script>
@@ -201,19 +265,16 @@ if (isset($_POST['verifikasi'])) {
     const autofillInput = document.getElementById('otp_autofill');
     const otpForm = document.getElementById('otp-form');
 
-    // --- 1. FUNGSI GABUNG & AUTO SUBMIT ---
     function combineOTP() {
         let code = "";
         boxes.forEach(box => code += box.value);
         hiddenInput.value = code;
         
-        // Jika sudah 6 digit, otomatis submit
         if (code.length === 6) {
             otpForm.submit();
         }
     }
 
-    // --- 2. LOGIKA AUTO COPY-PASTE (UTAMA) ---
     boxes.forEach((box, index) => {
         box.addEventListener('paste', (e) => {
             e.preventDefault(); 

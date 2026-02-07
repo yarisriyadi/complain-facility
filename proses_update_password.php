@@ -2,7 +2,6 @@
 session_start();
 include 'koneksi.php';
 
-// Pastikan user sudah melewati tahap verifikasi OTP
 if (!isset($_SESSION['ijinkan_reset'])) {
     header("Location: lupa_password.php");
     exit;
@@ -18,10 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    // Enkripsi password baru
     $password_hashed = password_hash($pass_baru, PASSWORD_DEFAULT);
 
-    // Update password dan kosongkan kolom OTP
     $query = "UPDATE users SET 
               password = '$password_hashed', 
               otp_code = NULL, 
@@ -29,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               WHERE email = '$email'";
 
     if (mysqli_query($conn, $query)) {
-        session_destroy(); // Hapus semua session reset setelah sukses
+        session_destroy();
         echo "<script>alert('Berhasil! Password Anda telah diperbarui.'); window.location='login.php';</script>";
     } else {
         echo "Gagal memperbarui database: " . mysqli_error($conn);

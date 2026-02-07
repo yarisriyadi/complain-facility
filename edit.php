@@ -83,7 +83,6 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
         font-size: 13px; 
         text-transform: uppercase; 
     }
-    
     textarea, input[type="file"] { 
         width: 100%; 
         padding: 12px; 
@@ -96,14 +95,12 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
         font-size: 14px; 
         box-sizing: border-box; 
     }
-
     .readonly-field { 
         background: rgba(128, 128, 128, 0.1) !important; 
         opacity: 0.7; 
         color: var(--text-color) !important;
         cursor: not-allowed; 
     }
-
     .img-preview { 
         display: block; 
         margin: 10px 0; 
@@ -137,7 +134,6 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
         height: 100%; 
         cursor: crosshair; 
     }
-
     .btn-clear { 
         font-size: 11px; 
         padding: 8px; 
@@ -154,14 +150,12 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
     .btn-clear:hover { 
     background: #a71d2a; 
     }
-
     .action-group { 
         margin-top: 30px; 
         display: flex; 
         flex-direction: column; 
         gap: 15px; 
     }
-
     .btn-update, .btn-back { 
         padding: 15px; 
         border: none; 
@@ -175,12 +169,10 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
         display: inline-block;
         text-align: center;
     }
-
     .btn-update { 
         background: #28a745; 
         color: white; 
     }
-
     .btn-update:hover { 
         background: #218838; 
         transform: translateY(-3px); 
@@ -193,13 +185,11 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
     background: #5a6268; 
     transform: translateY(-3px); 
 }
-
     .disabled-pad { 
     background-color: #f0f0f0 !important; 
     cursor: not-allowed; 
     opacity: 0.5; 
 }
-
     @media (min-width: 768px) { 
         .signature-section { 
         grid-template-columns: 1fr 1fr; 
@@ -285,16 +275,15 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="theme_script.js"></script><script>
-    // 1. Inisialisasi Signature Pad
+    // ttd Pad
     const canvasUser = document.getElementById('pad-user');
     const canvasPga = document.getElementById('pad-pga');
     const pUser = new SignaturePad(canvasUser);
     const pPga = new SignaturePad(canvasPga);
 
-    // --- FITUR AUTO LOGOUT & KEEP ALIVE ---
-    const iTimeout = 60 * 1000; // 1 Menit
+    const iTimeout = 60 * 1000; //1 Menit
     let iTimer;
-    const keepAliveInterval = 30000; // Ping server setiap 30 detik
+    const keepAliveInterval = 30000;
     let lastKeepAlive = Date.now();
 
     function startTimer() {
@@ -318,9 +307,8 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
 
     function resetTimer() {
         startTimer();
-        sendKeepAlive(); // Beritahu server user masih aktif
+        sendKeepAlive(); 
     }
-    // ------------------------------------
 
     function resizeCanvas() {
         [canvasUser, canvasPga].forEach(canvas => {
@@ -336,7 +324,6 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
 
     window.addEventListener("resize", resizeCanvas);
     
-    // Matikan pad jika role tidak diizinkan
     <?php if(!$can_sign_user) echo "pUser.off();"; ?>
     <?php if(!$can_sign_pga) echo "pPga.off();"; ?>
 
@@ -350,7 +337,6 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
         if (dataPga && dataPga !== "") pPga.fromDataURL(dataPga);
     });
 
-    // Deteksi Aktivitas Umum
     window.onmousemove = resetTimer;
     window.onmousedown = resetTimer; 
     window.ontouchstart = resetTimer;
@@ -358,13 +344,11 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
     window.onkeydown = resetTimer;
     window.addEventListener('scroll', resetTimer, true);
     
-    // Reset timer & Keep Alive saat user tanda tangan (Sangat Penting!)
     canvasUser.addEventListener('mousedown', resetTimer);
     canvasPga.addEventListener('mousedown', resetTimer);
     canvasUser.addEventListener('touchstart', resetTimer);
     canvasPga.addEventListener('touchstart', resetTimer);
 
-    // Fungsi Clear TTD
     const setupClear = (btnId, pad, inputId) => {
         const btn = document.getElementById(btnId);
         if(btn) {
@@ -381,7 +365,6 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
     setupClear('clear-user', pUser, 'in-user');
     setupClear('clear-pga', pPga, 'in-pga');
 
-    // Validasi saat Submit
     document.getElementById('formUpdate').onsubmit = function(e) {
         const inputUser = document.getElementById('in-user');
         const inputPga = document.getElementById('in-pga');
@@ -392,15 +375,33 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
 
         if (role === 'user') {
             if (pUser.isEmpty() && inputUser.value === "") {
-                alert("Anda wajib membubuhkan tanda tangan USER sebagai konfirmasi!");
+                alert("Anda wajib tanda tangan USER sebagai konfirmasi!");
                 e.preventDefault(); return false;
             }
         }
 
         if (role === 'pga') {
             if (pPga.isEmpty() && inputPga.value === "") {
-                alert("Anda wajib membubuhkan tanda tangan PGA untuk verifikasi!");
+                alert("Anda wajib tanda tangan PGA untuk verifikasi!");
                 e.preventDefault(); return false;
+            }
+        }
+
+        if (role === 'admin' || role === 'superadmin') {
+            let errorMsg = [];
+
+            if (pUser.isEmpty() && inputUser.value === "") {
+                errorMsg.push("Tanda tangan USER tidak boleh kosong!");
+            }
+
+            if (pPga.isEmpty() && inputPga.value === "") {
+                errorMsg.push("Tanda tangan PGA tidak boleh kosong!");
+            }
+
+            if (errorMsg.length > 0) {
+                alert("Peringatan \n" + errorMsg.join("\n"));
+                e.preventDefault();
+                return false;
             }
         }
     };

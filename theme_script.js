@@ -1,4 +1,3 @@
-// theme_script.js
 function toggleTheme() {
     const body = document.body;
     const currentTheme = body.getAttribute('data-theme');

@@ -414,7 +414,6 @@ if (isset($_POST['ajax_search'])) {
             }
         }
 
-        // 3. Reset timer & panggil Keep Alive jika ada aktivitas
         $(this).on('mousemove keypress mousedown touchstart scroll', function () {
             idleTime = 0; 
             sendKeepAlive(); 
@@ -423,12 +422,11 @@ if (isset($_POST['ajax_search'])) {
 
     function timerIncrement() {
         idleTime++;
-        if (idleTime >= 60) { // Jika diam selama 1 menit
+        if (idleTime >= 60) { // 1 menit
             window.location.href = "logout.php?pesan=sesi_habis";
         }
     }
 
-    // --- FUNGSI LAINNYA ---
     function openZoom(src) { $('#imgZoomed').attr('src', src); $('#imageModal').addClass('show'); }
     function closeZoom() { $('#imageModal').removeClass('show'); }
 

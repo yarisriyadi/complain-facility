@@ -24,16 +24,10 @@ use PHPMailer\PHPMailer\Exception;
 
 if (isset($_POST['email'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    
-    // MENGAMBIL DATA USER BERDASARKAN EMAIL
     $cek_user = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email'");
 
     if (mysqli_num_rows($cek_user) > 0) {
         $data_user = mysqli_fetch_assoc($cek_user);
-        
-        /* PERUBAHAN DI SINI:
-           Ganti 'nama_lengkap' sesuai dengan nama kolom nama lengkap di tabel database Anda 
-        */
         $nama_lengkap = !empty($data_user['nama_lengkap']) ? $data_user['nama_lengkap'] : 'User'; 
 
         $otp = rand(100000, 999999);

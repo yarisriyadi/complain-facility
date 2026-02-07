@@ -25,37 +25,52 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
     <style>
         body { 
             font-family: 'Segoe UI', Arial, sans-serif; 
-            margin: 0; padding: 0; 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; overflow: hidden;
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            overflow: hidden;
         }
-
-        /* Container menggunakan variabel dari style_theme.css */
         .login-container { 
             background: var(--container-bg); 
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); 
-            padding: 35px; border-radius: 16px; 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px); 
+            padding: 35px; 
+            border-radius: 16px; 
             border: 1px solid var(--border-color);
             box-shadow: 0 8px 32px var(--shadow); 
-            width: 90%; max-width: 380px; 
-            box-sizing: border-box; position: relative; z-index: 1;
+            width: 90%; 
+            max-width: 380px; 
+            box-sizing: border-box; 
+            position: relative; 
+            z-index: 1;
             transition: all 0.4s ease;
         }
-
         .login-container h2, .login-container p, .login-container label, .copyright {
             color: var(--text-color);
             transition: color 0.4s ease;
         }
-
         .login-container h2 { 
-            text-align: center; margin: 0 0 10px 0; font-size: 24px; 
-            font-weight: bold; text-transform: uppercase; letter-spacing: 2px;
+            text-align: center; 
+            margin: 0 0 10px 0; 
+            font-size: 24px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
         }
-
-        .login-container p { text-align: center; font-size: 14px; margin-bottom: 5px; line-height: 1.5; opacity: 0.9; }
-
-        .lupa-email-wrapper { text-align: center; margin-bottom: 20px; }
-        
+        .login-container p { 
+            text-align: center; 
+            font-size: 14px; 
+            margin-bottom: 5px; 
+            line-height: 1.5; 
+            opacity: 0.9; 
+        }
+        .lupa-email-wrapper { 
+            text-align: center; 
+            margin-bottom: 20px; 
+        }
         .lupa-email-link { 
             font-size: 12px; 
             color: #28a745; 
@@ -63,17 +78,31 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
             font-weight: bold; 
             transition: 0.3s; 
         }
-        .lupa-email-link:hover { text-decoration: underline; color: #218838; }
-
-        .form-group { margin-bottom: 20px; position: relative; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: bold; }
-
-        .form-group input { 
-            width: 100%; padding: 12px; border: 1px solid var(--border-color); 
-            border-radius: 8px; box-sizing: border-box; font-size: 15px; 
-            background: var(--input-bg); color: #333; transition: 0.3s;
+        .lupa-email-link:hover { 
+            text-decoration: underline; 
+            color: #218838; 
         }
-
+        .form-group { 
+            margin-bottom: 20px; 
+            position: relative; 
+        }
+        .form-group label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-size: 14px; 
+            font-weight: bold; 
+        }
+        .form-group input { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 15px; 
+            background: var(--input-bg); 
+            color: #333; 
+            transition: 0.3s;
+        }
         .email-warning {
             color: #ff4d4d;
             font-size: 11px;
@@ -82,48 +111,65 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
             font-weight: bold;
             line-height: 1.4;
         }
-
         .btn-submit { 
-            width: 100%; padding: 14px; background-color: #28a745; border: none; 
-            color: white; border-radius: 8px; cursor: pointer; font-size: 16px; 
-            font-weight: bold; margin-bottom: 12px; text-transform: uppercase;
-            transition: all 0.4s ease; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            width: 100%; 
+            padding: 14px; 
+            background-color: #28a745; 
+            border: none; 
+            color: white; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: bold; 
+            margin-bottom: 12px; 
+            text-transform: uppercase;
+            transition: all 0.4s ease; 
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
         }
-
-        .btn-submit:hover:not(:disabled) { background-color: #218838; transform: translateY(-2px); }
-        
+        .btn-submit:hover:not(:disabled) { 
+            background-color: #218838; 
+            transform: translateY(-2px); 
+        }
         .btn-submit:disabled {
             background-color: #6c757d;
             cursor: not-allowed;
             opacity: 0.7;
         }
-
         .btn-back {
-    width: 100%; 
-    padding: 12px; 
-    background-color: transparent;
-    border: 1px solid var(--border-color); 
-    color: var(--text-color); 
-    border-radius: 8px; 
-    text-decoration: none; 
-    display: inline-block;
-    text-align: center; 
-    box-sizing: border-box; 
-    transition: 0.3s;
-    font-weight: bold; 
-    font-size: 14px;
-}
-
-.btn-back:hover { 
-    background-color: var(--container-bg);
-    border-color: var(--text-color); 
-}
-
-        .copyright { text-align: center; margin-top: 30px; font-size: 10px; border-top: 1px solid var(--border-color); padding-top: 15px; }
-        
+            width: 100%; 
+            padding: 12px; 
+            background-color: transparent;
+            border: 1px solid var(--border-color); 
+            color: var(--text-color); 
+            border-radius: 8px; 
+            text-decoration: none; 
+            display: inline-block;
+            text-align: center; 
+            box-sizing: border-box; 
+            transition: 0.3s;
+            font-weight: bold; 
+            font-size: 14px;
+        }
+        .btn-back:hover { 
+            background-color: var(--container-bg);
+            border-color: var(--text-color); 
+        }
+        .copyright { 
+            text-align: center; 
+            margin-top: 30px; 
+            font-size: 10px; 
+            border-top: 1px solid var(--border-color); 
+            padding-top: 15px; 
+        }
         .alert-maintenance {
-            background: #fff3cd; color: #856404; padding: 10px; border-radius: 8px;
-            margin-bottom: 15px; text-align: center; font-size: 13px; border: 1px solid #ffeeba;
+            background: #fff3cd; 
+            color: #856404; 
+            padding: 10px; 
+            border-radius: 8px;
+            margin-bottom: 15px; 
+            text-align: center; 
+            font-size: 13px; 
+            border: 1px solid #ffeeba;
         }
     </style>
 </head>

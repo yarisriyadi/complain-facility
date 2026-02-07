@@ -10,7 +10,6 @@ $nama_login = $_SESSION['nama'];
 
 if (isset($_POST['ajax_search'])) {
     $search = mysqli_real_escape_string($conn, $_POST['keyword']);
-    // Menambahkan r.repair_action ke dalam SELECT query
     $sql = "SELECT c.*, r.foto_after, r.ttd_user, r.ttd_pga, r.repair_action FROM complaints c
             INNER JOIN repair_actions r ON c.complain_id = r.complaint_id
             WHERE r.ttd_user != '' AND r.ttd_pga != ''";
@@ -398,12 +397,10 @@ if (isset($_POST['ajax_search'])) {
     function closeZoom() { $('#imageModal').removeClass('show'); }
     
     $(document).ready(function(){
-        // --- FITUR AUTO LOGOUT & KEEP ALIVE ---
         let idleTime = 0;
-        const keepAliveInterval = 30000; // Kirim ping setiap 30 detik jika aktif
+        const keepAliveInterval = 30000; 
         let lastKeepAlive = Date.now();
 
-        // Jalankan timer logout setiap 1 detik
         setInterval(function() {
             idleTime++;
             if (idleTime >= 60) {
@@ -411,7 +408,6 @@ if (isset($_POST['ajax_search'])) {
             }
         }, 1000);
 
-        // Fungsi untuk memperbarui sesi di server (PHP)
         function sendKeepAlive() {
             let now = Date.now();
             if (now - lastKeepAlive > keepAliveInterval) {
@@ -424,12 +420,10 @@ if (isset($_POST['ajax_search'])) {
             }
         }
 
-        // Reset timer & kirim keep-alive jika ada aktivitas
         $(this).on('mousemove keypress mousedown touchstart scroll', function() { 
             idleTime = 0; 
             sendKeepAlive();
         });
-        // ---------------------------------------
 
         $(document).on('click', '.zoom-img', function(){ openZoom($(this).attr('src')); });
         

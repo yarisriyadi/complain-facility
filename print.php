@@ -46,12 +46,11 @@ $base_url = "http://" . $_SERVER['HTTP_HOST'] . "/complain_facility/uploads/";
         max-width: 250px; 
         border: 1px solid #ccc; 
         margin-top: 10px; 
-    }
-        
+    } 
         @media print {
             .no-print { display: none; }
             body { padding: 0; }
-        }
+    }
     </style>
 </head>
 <body>

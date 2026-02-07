@@ -335,15 +335,11 @@ if (isset($_POST['ajax_search'])) {
 <script src="theme_script.js"></script>
 <script>
     $(document).ready(function(){
-        // --- LOGIKA AUTO LOGOUT & KEEP ALIVE ---
         let idleTime = 0;
-        const keepAliveInterval = 30000; // Kirim sinyal setiap 30 detik jika ada aktivitas
+        const keepAliveInterval = 30000; 
         let lastKeepAlive = Date.now();
-
-        // Jalankan timer logout setiap 1 detik
         let idleInterval = setInterval(timerIncrement, 1000); 
 
-        // Fungsi untuk sinkronisasi sesi ke server (PHP)
         function sendKeepAlive() {
             let now = Date.now();
             if (now - lastKeepAlive > keepAliveInterval) {
@@ -356,7 +352,6 @@ if (isset($_POST['ajax_search'])) {
             }
         }
 
-        // Reset timer & kirim keep-alive jika ada aktivitas (mouse, keyboard, scroll, touch)
         $(this).on('mousemove keypress mousedown touchstart scroll', function () { 
             idleTime = 0; 
             sendKeepAlive();
@@ -372,7 +367,7 @@ if (isset($_POST['ajax_search'])) {
 
         $('#keyword').on('keyup', function(){
             idleTime = 0; 
-            sendKeepAlive(); // Pastikan sesi diperbarui saat mengetik pencarian
+            sendKeepAlive();
             $.ajax({
                 url: 'admin_manage_users.php',
                 type: 'POST',
@@ -385,8 +380,6 @@ if (isset($_POST['ajax_search'])) {
     });
 
     function resetPassword(id, username) {
-        // Prompt akan menghentikan eksekusi JS sementara, namun setelah selesai, 
-        // timer akan kembali berjalan.
         let newPass = prompt("MASUKKAN PASSWORD BARU UNTUK " + username.toUpperCase() + ":", "Admin123");
         if (newPass !== null && newPass.trim() !== "") {
             if (confirm("RUBAH PASSWORD " + username.toUpperCase() + " MENJADI: " + newPass + "?")) {

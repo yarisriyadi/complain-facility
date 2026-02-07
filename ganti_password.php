@@ -59,7 +59,6 @@ if (isset($_POST['update_password'])) {
             background-color: var(--bg-color);
             transition: background-color 0.4s ease;
         }
-
         .login-container { 
             background: var(--container-bg); 
             backdrop-filter: blur(10px); 
@@ -72,11 +71,9 @@ if (isset($_POST['update_password'])) {
             box-sizing: border-box;
             transition: all 0.4s ease;
         }
-
         .login-container h2, .login-container p, .login-container label, .copyright {
             color: var(--text-color);
         }
-
         .login-container h2 { 
             text-align: center; 
             margin: 0 0 10px 0; 
@@ -85,7 +82,6 @@ if (isset($_POST['update_password'])) {
             text-transform: uppercase; 
             letter-spacing: 2px;
         }
-
         .login-container p { 
         text-align: center; 
         font-size: 13px; 
@@ -93,7 +89,6 @@ if (isset($_POST['update_password'])) {
         opacity: 0.8; 
         line-height: 1.5; 
     }
-
         .form-group { 
         margin-bottom: 20px; 
     }
@@ -107,7 +102,6 @@ if (isset($_POST['update_password'])) {
         position: relative; 
         width: 100%; 
     }
-
         .form-group input { 
             width: 100%; 
             padding: 12px; 
@@ -119,7 +113,6 @@ if (isset($_POST['update_password'])) {
             color: var(--text-color); 
             transition: all 0.3s ease; 
         }
-
         [data-theme="light"] .form-group input { 
         color: #333; 
     }
@@ -127,13 +120,11 @@ if (isset($_POST['update_password'])) {
         color: #fff; 
         background: rgba(255,255,255,0.05); 
     }
-
         .form-group input:focus { 
         border-color: #28a745; 
         outline: none; 
         box-shadow: 0 0 10px rgba(40, 167, 69, 0.3); 
         }
-
         .toggle-password { 
             position: absolute; 
             right: 15px; 
@@ -145,7 +136,6 @@ if (isset($_POST['update_password'])) {
             font-size: 16px; 
             z-index: 10; 
         }
-
         .msg-error { 
         font-size: 11px; 
         margin-top: 5px; 
@@ -158,7 +148,6 @@ if (isset($_POST['update_password'])) {
         font-weight: bold; 
         color: #2ecc71; 
     }
-
         .btn-submit { 
             width: 100%; 
             padding: 14px; 
@@ -174,7 +163,6 @@ if (isset($_POST['update_password'])) {
             transition: 0.4s; 
             box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
         }
-
         .btn-submit:hover:not(:disabled) { 
         background-color: #218838; 
         transform: translateY(-2px); 
@@ -183,7 +171,6 @@ if (isset($_POST['update_password'])) {
         opacity: 0.5; cursor: not-allowed; 
         filter: grayscale(1); 
     }
-
         .alert { 
             padding: 12px; 
             border-radius: 8px; 
@@ -194,7 +181,6 @@ if (isset($_POST['update_password'])) {
             color: #ff4d4d; 
             border: 1px solid #ff4d4d; 
         }
-
         .copyright { 
             text-align: center; 
             margin-top: 30px; 

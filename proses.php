@@ -2,25 +2,19 @@
 session_start();
 include 'config_maintenance.php';
 
-// --- LOGIKA AUTO LOGOUT (IDLE TIMEOUT) ---
-// Tentukan batas waktu (contoh: 900 detik = 15 menit)
 $timeout_limit = 60; 
 
 if (isset($_SESSION['last_activity'])) {
-    // Hitung durasi diam (waktu sekarang - waktu aktivitas terakhir)
     $duration = time() - $_SESSION['last_activity'];
     
     if ($duration > $timeout_limit) {
-        // Jika melebihi batas, hapus session dan tendang ke login
         session_unset();
         session_destroy();
         header("Location: login.php?pesan=sesi_habis");
         exit;
     }
 }
-// Update waktu aktivitas terakhir setiap kali file ini diakses
 $_SESSION['last_activity'] = time();
-// ------------------------------------------
 
 cek_akses_maintenance($maintenance_mode);
 include 'koneksi.php';
@@ -208,7 +202,7 @@ if (isset($_GET['hapus'])) {
     mysqli_query($conn, "DELETE FROM repair_actions WHERE complaint_id='$id'");
     mysqli_query($conn, "DELETE FROM complaints WHERE complain_id='$id'");
 
-    header("Location: admin_dashboard_proses.php?pesan=hapus_berhasil");
+    header("Location: admin_dashboard_selesai.php?pesan=hapus_berhasil");
     exit;
 }
 ?>

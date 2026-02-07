@@ -112,7 +112,6 @@ if (isset($_POST['ajax_search'])) {
             box-shadow: 0 4px 15px var(--shadow); 
             min-height: 600px; 
         }
-        
         .header-section { 
             display: flex; 
             flex-direction: column; 
@@ -390,7 +389,7 @@ if (isset($_POST['ajax_search'])) {
 
     <?php if ($maintenance_mode && $role_login != 'admin'): ?>
         <div class="maintenance-warning">
-            ⚠️ PERHATIAN: SISTEM SEDANG MAINTENANCE. PENGAJUAN KELUHAN DIHENTIKAN SEMENTARA.
+            PERHATIAN: SISTEM SEDANG MAINTENANCE. PENGAJUAN KELUHAN DIHENTIKAN SEMENTARA.
         </div>
     <?php endif; ?>
 
@@ -506,15 +505,11 @@ if (isset($_POST['ajax_search'])) {
     function closeZoom() { $('#imageModal').removeClass('show'); }
 
     $(document).ready(function(){
-        // --- LOGIKA IDLE LOGOUT & KEEP ALIVE ---
         let idleTime = 0;
-        const keepAliveInterval = 30000; // Kirim sinyal ke server setiap 30 detik jika aktif
+        const keepAliveInterval = 30000; 
         let lastKeepAlive = Date.now();
-
-        // Jalankan timer logout setiap 1 detik
         let idleInterval = setInterval(timerIncrement, 1000); 
 
-        // Fungsi untuk memperbarui sesi di server (PHP)
         function sendKeepAlive() {
             let now = Date.now();
             if (now - lastKeepAlive > keepAliveInterval) {
@@ -527,7 +522,6 @@ if (isset($_POST['ajax_search'])) {
             }
         }
 
-        // Reset timer & kirim keep-alive jika ada aktivitas
         $(this).on('mousemove keypress mousedown touchstart scroll', function () { 
             idleTime = 0; 
             sendKeepAlive();
@@ -535,17 +529,16 @@ if (isset($_POST['ajax_search'])) {
 
         function timerIncrement() {
             idleTime++;
-            if (idleTime >= 60) { // Logout setelah 60 detik tidak aktif
+            if (idleTime >= 60) { //60detik
                 window.location.href = "logout.php?pesan=sesi_habis";
             }
         }
-        // ---------------------------------------------------------
 
         $(document).on('click', '.zoom-img', function(){ openZoom($(this).attr('src')); });
 
         $('#keyword').on('keyup', function(){
-            idleTime = 0; // Reset timer saat user sedang mencari data
-            sendKeepAlive(); // Pastikan sesi diperbarui saat mengetik pencarian
+            idleTime = 0; 
+            sendKeepAlive();
             $.ajax({
                 url: 'index.php',
                 type: 'POST',

@@ -11,72 +11,130 @@
     <style>
         body { 
             font-family: 'Segoe UI', Arial, sans-serif; 
-            margin: 0; padding: 0; 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; overflow-x: hidden;
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            overflow-x: hidden;
         }
-
         .reg-container { 
             background: var(--container-bg); 
             backdrop-filter: blur(10px); 
             -webkit-backdrop-filter: blur(10px); 
-            padding: 35px; border-radius: 16px; 
+            padding: 35px; 
+            border-radius: 16px; 
             border: 1px solid var(--border-color);
             box-shadow: 0 8px 32px var(--shadow); 
-            width: 90%; max-width: 380px; 
-            box-sizing: border-box; position: relative; z-index: 1; margin: 20px 0;
+            width: 90%; 
+            max-width: 380px; 
+            box-sizing: border-box; 
+            position: relative; 
+            z-index: 1; 
+            margin: 20px 0;
             transition: all 0.4s ease;
         }
-
         .reg-container h2, .reg-container label, .login-link, .copyright {
             color: var(--text-color);
             transition: color 0.4s ease;
         }
-
         .reg-container h2 { 
-            text-align: center; margin: 0 0 25px 0; font-size: 26px; 
-            font-weight: bold; letter-spacing: 2px; text-transform: uppercase;
+            text-align: center; 
+            margin: 0 0 25px 0; 
+            font-size: 26px; 
+            font-weight: bold; 
+            letter-spacing: 2px; 
+            text-transform: uppercase;
         }
-
-        .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: bold; }
-
+        .form-group {
+         margin-bottom: 18px; 
+        }
+        .form-group label { 
+        display: block; 
+        margin-bottom: 8px; 
+        font-size: 14px; 
+        font-weight: bold; 
+        }
         .form-group input { 
-            width: 100%; padding: 12px; border: 1px solid var(--border-color); 
-            border-radius: 8px; box-sizing: border-box; font-size: 15px; 
-            background: var(--input-bg); color: #333; transition: 0.3s;
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 15px; 
+            background: var(--input-bg); 
+            color: #333; 
+            transition: 0.3s;
         }
-
         .btn-reg { 
-            width: 100%; padding: 14px; background-color: #28a745; border: none; 
-            color: white; border-radius: 8px; cursor: pointer; font-size: 16px; 
-            font-weight: bold; margin-top: 10px; transition: all 0.4s ease; 
-            text-transform: uppercase; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            width: 100%; 
+            padding: 14px; 
+            background-color: #28a745; 
+            border: none; 
+            color: white; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: bold; 
+            margin-top: 10px; 
+            transition: all 0.4s ease; 
+            text-transform: uppercase; 
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
         }
-
         .btn-reg:hover { 
-            background-color: #218838; transform: translateY(-2px);
+            background-color: #218838; 
+            transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
         }
-
-        .login-link { text-align: center; margin-top: 25px; font-size: 14px; }
-        /* WARNA LINK LOGIN DIUBAH JADI BIRU DI SINI */
-        .login-link a { color: #007bff !important; text-decoration: none; font-weight: bold; transition: 0.3s; }
-        .login-link a:hover { text-decoration: underline; color: #0056b3 !important; }
-
+        .login-link { 
+            text-align: center; 
+            margin-top: 25px; 
+            font-size: 14px; 
+        }
+        .login-link a { 
+            color: #007bff !important; 
+            text-decoration: none; 
+            font-weight: bold; 
+            transition: 0.3s; 
+        }
+        .login-link a:hover { 
+        text-decoration: underline; 
+        color: #0056b3 !important; 
+        }
         .copyright { 
-            text-align: center; margin-top: 30px; font-size: 10px; 
-            border-top: 1px solid var(--border-color); padding-top: 15px; 
+            text-align: center; 
+            margin-top: 30px; 
+            font-size: 10px; 
+            border-top: 1px solid var(--border-color); 
+            padding-top: 15px; 
         }
-
-        .password-container { position: relative; width: 100%; }
+        .password-container { 
+            position: relative; 
+            width: 100%; 
+        }
         .toggle-password { 
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%); 
-            cursor: pointer; color: #666; font-size: 18px; z-index: 10; 
+            position: absolute; 
+            right: 15px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            cursor: pointer; 
+            color: #666; 
+            font-size: 18px; 
+            z-index: 10; 
         }
-
-        .msg-error { font-size: 11px; margin-top: 5px; font-weight: bold; color: #ff4d4d; }
-        .msg-success { font-size: 11px; margin-top: 5px; font-weight: bold; color: #2ecc71; }
+        .msg-error { 
+            font-size: 11px; 
+            margin-top: 5px; 
+            font-weight: bold; 
+            color: #ff4d4d; 
+        }
+        .msg-success { 
+            font-size: 11px; 
+            margin-top: 5px; 
+            font-weight: bold; 
+            color: #2ecc71; 
+        }
     </style>
 </head>
 <body>
@@ -145,8 +203,8 @@
 
     <script src="https://openfpcdn.io/fingerprintjs/v4/i.js"></script>
     <script src="theme_script.js"></script>
+
     <script>
-    // ... FingerprintJS tetap sama ...
     const fpPromise = import('https://openfpcdn.io/fingerprintjs/v4').then(FingerprintJS => FingerprintJS.load())
     fpPromise.then(fp => fp.get()).then(result => {
         document.getElementById('device_id').value = result.visitorId;
@@ -170,12 +228,9 @@
         const user = usernameInput.value;
         const name = nameInput.value;
         
-        // --- NORMALISASI EMAIL OTOMATIS ---
-        // Mengubah input email menjadi huruf kecil secara otomatis saat mengetik
         emailInput.value = emailInput.value.toLowerCase(); 
         const email = emailInput.value;
 
-        // Validasi Username
         if (user === "") { userMsg.innerHTML = ""; isUserValid = false; }
         else if (!/^[A-Z]/.test(user)) {
             userMsg.className = "msg-error";
@@ -191,7 +246,6 @@
             isUserValid = true;
         }
 
-        // Validasi Nama
         if (name === "") { nameMsg.innerHTML = ""; isNameValid = false; }
         else if (!/^[A-Z]/.test(name)) {
             nameMsg.className = "msg-error";
@@ -203,7 +257,6 @@
             isNameValid = true;
         }
 
-        // Validasi Email
         if (email === "") { emailMsg.innerHTML = ""; isEmailValid = false; }
         else if (!email.endsWith("@gmail.com")) {
             emailMsg.className = "msg-error";
@@ -215,7 +268,6 @@
             isEmailValid = true;
         }
 
-        // Validasi Password
         const hasSymbol = /[!@#$%^&*(),.?":{}|<>_]/.test(passwordInput.value);
         const hasNumber = /[0-9]/.test(passwordInput.value);
         const pass = passwordInput.value;
@@ -239,7 +291,6 @@
             isPassValid = true;
         }
 
-        // Validasi Konfirmasi Password
         const confirm = confirmInput.value;
         if (confirm === "") { confirmMsg.innerHTML = ""; isConfirmValid = false; }
         else if (confirm !== pass) {
