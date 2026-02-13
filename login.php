@@ -2,7 +2,6 @@
 session_start(); 
 include 'config_maintenance.php'; 
 
-//arahkan ke dashboard masing masing
 if (isset($_SESSION['status']) && $_SESSION['status'] == "login") {
     if ($_SESSION['role'] == 'admin') {
         header("location:admin_dashboard_proses.php");

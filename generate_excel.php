@@ -93,7 +93,7 @@ while ($row = mysqli_fetch_assoc($query)) {
     }
 
     //PROSES LINK PDF
-    $pdfUrl = "http://192.168.1.3/complain-facility/cetak.php?id=" . $row['complain_id'];
+    $pdfUrl = "http://192.168.0.139/complain-facility/cetak.php?id=" . $row['complain_id'];
     
     $sheet->setCellValue('L' . $rowNum, "LIHAT PDF");
     $sheet->getCell('L' . $rowNum)->getHyperlink()->setUrl($pdfUrl);
@@ -122,15 +122,14 @@ while ($row = mysqli_fetch_assoc($query)) {
 foreach (range('A','E') as $col) {
     $sheet->getColumnDimension($col)->setAutoSize(true);
 }
-$sheet->getColumnDimension('F')->setWidth(30); // Kondisi Current
-$sheet->getColumnDimension('G')->setWidth(30); // Repair Action
+$sheet->getColumnDimension('F')->setWidth(30); // Kondisi
+$sheet->getColumnDimension('G')->setWidth(30); // Repair
 $sheet->getColumnDimension('H')->setWidth(25); // Foto Before
 $sheet->getColumnDimension('I')->setWidth(25); // Foto After
 $sheet->getColumnDimension('J')->setWidth(20); // TTD User
 $sheet->getColumnDimension('K')->setWidth(20); // TTD PGA
 $sheet->getColumnDimension('L')->setWidth(15); // Link PDF
 
-//Output Download dan Name File
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment;filename="Laporan_Selesai_Facility_'.date('d-m-Y').'.xlsx"');
 header('Cache-Control: max-age=0');

@@ -25,9 +25,7 @@ if(!isset($_SESSION['status']) || $_SESSION['status'] != "login"){
 }
 
 $role_login = $_SESSION['role'];
-
-$nomor_teknisi = "6289519863345"; 
-$nomor_admin   = "6289519863345"; 
+$nomor_admin   = "6282299058274"; // Nomor Admin default
 
 function checkFolder($path) {
     if (!file_exists($path)) {
@@ -54,7 +52,6 @@ if (isset($_POST['simpan'])) {
             exit;
         }
         
-        //before
         $target_dir = 'uploads/before/';
         checkFolder($target_dir);
         $foto_baru  = $user_id . "_" . date('dmY') . "_BEF" . substr(uniqid(),-3) . "." . $ekstensi;
@@ -72,11 +69,13 @@ if (isset($_POST['simpan'])) {
     exit;
 }
 
-if(isset($_POST['update'])){
+if(isset($_POST['update']) || isset($_POST['wa_teknisi'])){
     $id_complaint  = mysqli_real_escape_string($conn, $_POST['id']);
     $user_id       = $_SESSION['id_user'];
     
-    $cek_db = mysqli_query($conn, "SELECT id_repair, foto_after, repair_action, ttd_user FROM repair_actions WHERE complaint_id='$id_complaint'");
+    $nomor_teknisi_pilihan = isset($_POST['wa_teknisi']) ? mysqli_real_escape_string($conn, $_POST['wa_teknisi']) : "";
+
+    $cek_db = mysqli_query($conn, "SELECT id_repair, foto_after, repair_action, ttd_user, ttd_pga FROM repair_actions WHERE complaint_id='$id_complaint'");
     $data_repair = mysqli_fetch_array($cek_db);
 
     $repair_action_input = mysqli_real_escape_string($conn, $_POST['repair_action']);
@@ -132,7 +131,8 @@ if(isset($_POST['update'])){
 
         $wa_link = null;
 
-        if (!empty($ttd_user_input) && empty($data_repair['ttd_user']) && $role_login == 'user') {
+        $is_new_user_signature = (empty($data_repair['ttd_user']) && !empty($ttd_user_input));
+        if ($role_login == 'user' && $is_new_user_signature && !empty($nomor_teknisi_pilihan)) {
             $pesan_wa = "*COMPLAIN FACILITY*\n\n";
             $pesan_wa .= "Halo Teknisi, User telah mengisi laporan perbaikan:\n";
             $pesan_wa .= "===============================================\n";
@@ -143,13 +143,11 @@ if(isset($_POST['update'])){
             $pesan_wa .= "===============================================\n";
             $pesan_wa .= "Mohon segera diproses perbaikannya. Terima kasih.";
             
-            $wa_link = "https://api.whatsapp.com/send?phone=$nomor_teknisi&text=" . urlencode($pesan_wa);
+            $wa_link = "https://api.whatsapp.com/send?phone=$nomor_teknisi_pilihan&text=" . urlencode($pesan_wa);
         }
 
-        $is_new_repair = (empty($data_repair['repair_action']) && !empty($repair_action_final));
-        $is_new_photo  = (empty($data_repair['foto_after']) && !empty($foto_name_final));
-
-        if($is_teknisi_role && ($is_new_repair || $is_new_photo) && empty($ttd_pga_input) && empty($wa_link)){
+        $is_new_repair_action = (empty($data_repair['repair_action']) && !empty($repair_action_final));
+        if($is_teknisi_role && $is_new_repair_action && empty($ttd_pga_input) && empty($wa_link)){
             $pesan_wa = "*COMPLAIN FACILITY*\n\n";
             $pesan_wa .= "Halo Admin/PGA, perbaikan telah selesai dikerjakan:\n";
             $pesan_wa .= "===============================================\n";

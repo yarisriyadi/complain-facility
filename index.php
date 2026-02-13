@@ -396,22 +396,30 @@ if (isset($_POST['ajax_search'])) {
     <form action="proses.php" method="POST" enctype="multipart/form-data">
         <label>SECTION / DEPT :</label>
         <input type="text" name="section_dept" required placeholder="PGA"
-               <?php echo ($maintenance_mode && $role_login != 'admin') ? 'disabled' : ''; ?>>
+            oninvalid="this.setCustomValidity('Tidak boleh kosong!')"
+            oninput="this.setCustomValidity('')"
+            <?php echo ($maintenance_mode && $role_login != 'admin') ? 'disabled' : ''; ?>>
 
         <label>LOKASI KERUSAKAN :</label>
         <input type="text" name="lokasi_kerusakan" required placeholder="Lantai 1"
-               <?php echo ($maintenance_mode && $role_login != 'admin') ? 'disabled' : ''; ?>>
+            oninvalid="this.setCustomValidity('Tidak boleh kosong!')"
+            oninput="this.setCustomValidity('')"
+            <?php echo ($maintenance_mode && $role_login != 'admin') ? 'disabled' : ''; ?>>
 
         <label>USER (PELAPOR) :</label>
         <input type="text" name="nama_user" value="<?php echo strtoupper(htmlspecialchars($nama_login)); ?>" readonly class="readonly-input">
 
         <label>CONDITION (DETAIL KERUSAKAN) :</label>
         <textarea name="kondisi_current" required placeholder="Tuliskan detail kerusakan di sini..."
-                  <?php echo ($maintenance_mode && $role_login != 'admin') ? 'disabled' : ''; ?>></textarea>
+            oninvalid="this.setCustomValidity('Tidak boleh kosong!')"
+            oninput="this.setCustomValidity('')"
+            <?php echo ($maintenance_mode && $role_login != 'admin') ? 'disabled' : ''; ?>></textarea>
 
         <label>FOTO BEFORE (KONDISI) :</label>
         <input type="file" name="foto_before" accept="image/*" capture="environment" required
-               <?php echo ($maintenance_mode && $role_login != 'admin') ? 'disabled' : ''; ?>>
+            oninvalid="this.setCustomValidity('Tidak boleh kosong!')"
+            oninput="this.setCustomValidity('')"
+            <?php echo ($maintenance_mode && $role_login != 'admin') ? 'disabled' : ''; ?>>
         
         <input type="hidden" name="tanggal" value="<?php echo date('Y-m-d'); ?>">
         
