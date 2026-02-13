@@ -93,7 +93,7 @@ while ($row = mysqli_fetch_assoc($query)) {
     }
 
     //PROSES LINK PDF
-    $pdfUrl = "http://192.168.0.139/complain-facility/cetak.php?id=" . $row['complain_id'];
+    $pdfUrl = "http://192.168.10.90/complain-facility/cetak.php?id=" . $row['complain_id'];
     
     $sheet->setCellValue('L' . $rowNum, "LIHAT PDF");
     $sheet->getCell('L' . $rowNum)->getHyperlink()->setUrl($pdfUrl);
