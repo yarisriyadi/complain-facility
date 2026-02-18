@@ -55,7 +55,8 @@ if (isset($_POST['ajax_search'])) {
                     <td>
                         <div><a href='edit.php?id=".$row['complain_id']."' class='btn-link'>LIHAT</a></div>";
             if($role_login === 'admin'){
-                echo "<div style='margin-top: 8px;'><a href='proses.php?hapus=".$row['complain_id']."' class='btn-link btn-delete' onclick='return confirm(\"HAPUS DATA INI?\")'>HAPUS</a></div>";
+                // PERBAIKAN: Tambahkan parameter asal=proses di link hapus AJAX
+                echo "<div style='margin-top: 8px;'><a href='proses.php?hapus=".$row['complain_id']."&asal=proses' class='btn-link btn-delete' onclick='return confirm(\"HAPUS DATA INI?\")'>HAPUS</a></div>";
             }
             echo "</td></tr>";
         }
@@ -74,230 +75,228 @@ if (isset($_POST['ajax_search'])) {
     
     <style>
         body { 
-        font-family: Arial, sans-serif; 
-        margin: 20px; 
-        background: var(--bg-color); 
-        color: var(--text-color); 
-        transition: 0.3s; 
-    }
+        font-family: Arial, sans-serif; margin: 20px; 
+            background: var(--bg-color); 
+            color: var(--text-color); 
+            transition: 0.3s; 
+        }
         .container { 
-        background: var(--container-bg); 
-        padding: 30px; 
-        max-width: 1100px; 
-        margin: auto; 
-        border-radius: 8px; 
-        box-shadow: 0 4px 15px var(--shadow); 
-    }
+            background: var(--container-bg); 
+            padding: 30px; 
+            max-width: 1100px; 
+            margin: auto; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px var(--shadow); 
+        }
         .header-section { 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        text-align: center; 
-        margin-bottom: 20px; 
-        padding-bottom: 15px; 
-        border-bottom: none; 
-        gap: 10px; 
-        text-transform: uppercase; 
-    }
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-align: center; 
+            margin-bottom: 20px; 
+            padding-bottom: 15px; 
+            border-bottom: none; 
+            gap: 10px; 
+            text-transform: uppercase; 
+        }
         .logo-img { 
-        height:50px; 
-        width: auto; 
-    }
+            height:50px; width: auto; 
+        }
         .header-section h2 { 
-        margin: 0; 
-        font-size: 1.5rem; 
-        color: var(--text-color); 
-        font-weight: bold; 
-    }
+            margin: 0; 
+            font-size: 1.5rem; 
+            color: var(--text-color); 
+            font-weight: bold; 
+        }
         .user-info { 
-        font-size: 12px; 
-        color: var(--text-color); 
-        opacity: 0.8; 
-    }    
+            font-size: 12px; 
+            color: var(--text-color); 
+            opacity: 0.8; 
+        }    
         .btn-logout { 
-        display: inline-block; 
-        margin-top: 5px; 
-        color: #dc3545; 
-        text-decoration: none; 
-        font-weight: bold; 
-        border: 1px solid #dc3545; 
-        padding: 4px 10px; 
-        border-radius: 4px; 
-        font-size: 11px; 
-        transition: all 0.3s ease; 
-    }
+            display: inline-block; 
+            margin-top: 5px; 
+            color: #dc3545; 
+            text-decoration: none; 
+            font-weight: bold; 
+            border: 1px solid #dc3545; 
+            padding: 4px 10px; 
+            border-radius: 4px; 
+            font-size: 11px; 
+            transition: all 0.3s ease; 
+        }
         .btn-logout:hover { 
-        background: #dc3545; 
-        color: #fff; 
-        transform: translateY(-2px); 
-        box-shadow: 0 3px 8px rgba(220,53,69,0.3); 
-    }   
+            background: #dc3545; 
+            color: #fff; 
+            transform: translateY(-2px); 
+            box-shadow: 0 3px 8px rgba(220,53,69,0.3); 
+        }   
         .nav-tabs { 
-        display: flex; 
-        margin-bottom: 15px; 
-        border-bottom: 1px solid var(--border-color); 
-        text-transform: uppercase; 
-    }
+            display: flex; 
+            margin-bottom: 15px; 
+            border-bottom: 1px solid var(--border-color); 
+            text-transform: uppercase; 
+        }
         .nav-link { 
-        flex: 1; 
-        text-align: center; 
-        padding: 10px 5px; 
-        text-decoration: none; 
-        background: rgba(128,128,128,0.1); 
-        color: var(--text-color); 
-        font-size: 12px; 
-        font-weight: bold; 
-        border-radius: 5px 5px 0 0; 
-        border: 1px solid transparent; 
-        transition: all 0.3s ease; 
-    }
+            flex: 1; 
+            text-align: center; 
+            padding: 10px 5px; 
+            text-decoration: none; 
+            background: rgba(128,128,128,0.1); 
+            color: var(--text-color); 
+            font-size: 12px; 
+            font-weight: bold; 
+            border-radius: 5px 5px 0 0; 
+            border: 1px solid transparent; 
+            transition: all 0.3s ease; 
+        }
         .nav-link.active { 
-        background: #ffc107; 
-        color: #fff; 
-        border-color: var(--border-color) var(--border-color) transparent; 
-    }
+            background: #ffc107; 
+            color: #fff; 
+            border-color: var(--border-color) var(--border-color) transparent; 
+        }
         .nav-link:hover:not(.active) { 
-        background: rgba(128,128,128,0.2); 
-        transform: translateY(-1px); 
-    }    
+            background: rgba(128,128,128,0.2); 
+            transform: translateY(-1px); 
+        }    
         .search-wrapper { 
-        display: flex; 
-        flex-direction: column; 
-        gap: 10px; 
-        margin-bottom: 15px; 
-    }
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; margin-bottom: 15px; 
+        }
         .input-search { 
-        padding: 12px; 
-        border: 1px solid var(--border-color); 
-        border-radius: 4px; 
-        width: 100%; 
-        box-sizing: border-box; 
-        outline: none; 
-        font-size: 14px; 
-        background: var(--input-bg); 
-        color: var(--input-text); 
-        transition: border 0.3s; 
-    }
+            padding: 12px; 
+            border: 1px 
+            solid var(--border-color); 
+            border-radius: 4px; 
+            width: 100%; 
+            box-sizing: border-box; 
+            outline: none; 
+            font-size: 14px; 
+            background: var(--input-bg); 
+            color: var(--input-text); 
+            transition: border 0.3s; 
+        }
         .input-search:focus { 
-        border: 1px solid #ffc107; 
-        box-shadow: 0 0 5px rgba(255,193,7,0.2); 
-    }
+            border: 1px solid #ffc107; 
+            box-shadow: 0 0 5px rgba(255,193,7,0.2); 
+        }
         .table-responsive { 
-        width: 100%; 
-        overflow-x: auto; 
-    }
+            width: 100%; 
+            overflow-x: auto; 
+        }
         table { 
-        width: 100%; 
-        border-collapse: collapse; 
-        min-width: 850px; 
-        background: transparent; 
-    }
+            width: 100%; 
+            border-collapse: collapse; 
+            min-width: 850px; 
+            background: transparent; 
+        }
         th, td { 
-        border: 1px solid var(--border-color); 
-        padding: 12px 8px; 
-        font-size: 12px; 
-        text-align: center; 
-        color: var(--text-color); 
-    }
+            border: 1px solid var(--border-color); 
+            padding: 12px 8px; 
+            font-size: 12px; 
+            text-align: center; color: var(--text-color); 
+        }
         th { 
-        background: rgba(128,128,128,0.1); 
-        color: var(--text-color); 
-        text-transform: uppercase; 
-        font-weight: bold; 
-    }
-        .caps { text-transform: uppercase; 
-    }    
+            background: rgba(128,128,128,0.1); 
+            color: var(--text-color); 
+            text-transform: uppercase; 
+            font-weight: bold; 
+        }
+        .caps { 
+            text-transform: uppercase; 
+        }    
         .badge { 
-        padding: 5px 10px; 
-        border-radius: 12px; 
-        font-size: 10px; 
-        font-weight: bold; 
-        text-transform: uppercase; 
-    }
+            padding: 5px 10px; 
+            border-radius: 12px; 
+            font-size: 10px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+        }
         .bg-proses { 
-        background: #fff3cd; 
-        color: #856404; 
-        border: 1px solid #ffeeba; 
-    }
+            background: #fff3cd; 
+            color: #856404;
+            border: 1px solid #ffeeba; 
+        }
         .check-list { 
-        font-size: 10px; 
-        color: #bbb; 
-        margin-top: 8px; 
-        display: flex; 
-        justify-content: center; 
-        gap: 5px; 
-    }
+            font-size: 10px; 
+            color: #bbb; 
+            margin-top: 8px; 
+            display: flex; 
+            justify-content: center; 
+            gap: 5px; 
+        }
         .active { 
-        color: #28a745; 
-        font-weight: bold; 
-    }
+            color: #28a745; 
+            font-weight: bold; 
+        }
         .btn-link { 
-        text-decoration: none; 
-        color: #007bff; 
-        font-weight: bold; 
-        font-size: 11px; 
-        text-transform: uppercase; 
-        display: inline-block; 
-        transition: all 0.2s ease; 
-    }
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            display: inline-block; 
+            transition: all 0.2s ease; 
+        }
         .btn-link:hover { 
-        color: #0056b3; 
-        transform: scale(1.08); 
-    }
+            color: #0056b3; 
+            transform: scale(1.08); 
+        }
         .btn-delete { 
-        color: #dc3545; 
-    }
+            color: #dc3545; 
+        }
         .btn-delete:hover { 
-        color: #a71d2a !important; 
-    }    
-        .modal-overlay {
-        display: none; 
-        position: fixed; 
-        z-index: 9999; 
-        top: 0; 
-        left: 0; 
-        width: 100%; 
-        height: 100%;
-        background-color: rgba(0,0,0,0.85); 
-        justify-content: center; 
-        align-items: center; 
-        cursor: zoom-out;
-    }
-        .modal-overlay img { 
-        max-width: 90%; 
-        max-height: 90%; 
-        transform: scale(0.8); 
-        transition: transform 0.3s ease; 
-    }
+            color: #a71d2a !important; 
+        }    
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            z-index: 9999; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.85); 
+            justify-content: center; 
+            align-items: center; 
+            cursor: zoom-out; 
+        }
+        .modal-overlay img { max-width: 90%; 
+            max-height: 90%; 
+            transform: scale(0.8); 
+            transition: transform 0.3s ease; 
+        }
         .modal-overlay.show { 
-        display: flex; 
-    }
+            display: flex; 
+        }
         .modal-overlay.show img { 
-        transform: scale(1); 
-    }
+            transform: scale(1); 
+        }
         @media (min-width: 768px) {
-        .header-section { 
-        flex-direction: row; 
-        justify-content: space-between; 
-        text-align: left; 
-    }
-        .search-wrapper { 
-        flex-direction: row; 
-        justify-content: space-between; 
-        align-items: center; 
-    }
-        .input-search { 
-        width: 350px; 
-    }
-        .nav-link { 
-        flex: none; 
-        padding: 10px 25px; 
-        font-size: 13px; 
-    }
-}
+            .header-section { 
+                flex-direction: row; 
+                justify-content: space-between; 
+                text-align: left; 
+            }
+            .search-wrapper { 
+                flex-direction: row; 
+                justify-content: space-between; 
+                align-items: center; 
+            }
+            .input-search { 
+                width: 350px; 
+        }
+            .nav-link { 
+                flex: none; 
+                padding: 10px 25px; 
+                font-size: 13px; 
+            }
+        }
     </style>
 </head>
-<body data-theme="dark"> <div class="theme-switcher">
+<body data-theme="dark">
+<div class="theme-switcher">
     <button class="theme-btn" onclick="toggleTheme()" title="Ganti Tema">
         <i id="theme-icon-sun" class="fa-solid fa-sun" style="color: #f1c40f;"></i>
         <i id="theme-icon-moon" class="fa-solid fa-moon" style="color: #f1c40f;"></i>
@@ -329,7 +328,9 @@ if (isset($_POST['ajax_search'])) {
     </div>
 
     <div class="search-wrapper">
-        <p style="font-size: 12px; margin: 0; font-weight: bold; text-transform: uppercase; color: var(--text-color);">STATUS: <strong style="color:#ffc107;">MASIH PROSES</strong></p>
+        <p style="font-size: 12px; 
+        margin: 0; font-weight: bold; text-transform: uppercase; 
+        color: var(--text-color);">STATUS: <strong style="color:#ffc107;">MASIH PROSES</strong></p>
         <input type="text" id="keyword" class="input-search" placeholder="Cari data proses..." autocomplete="off">
     </div>
 
@@ -382,7 +383,7 @@ if (isset($_POST['ajax_search'])) {
                     <td>
                         <div><a href="edit.php?id=<?php echo $row['complain_id']; ?>" class="btn-link">LIHAT</a></div>
                         <?php if($role_login === 'admin'): ?>
-                        <div style="margin-top: 8px;"><a href="proses.php?hapus=<?php echo $row['complain_id']; ?>" class="btn-link btn-delete" onclick="return confirm('HAPUS DATA INI?')">HAPUS</a></div>
+                        <div style="margin-top: 8px;"><a href="proses.php?hapus=<?php echo $row['complain_id']; ?>&asal=proses" class="btn-link btn-delete" onclick="return confirm('HAPUS DATA INI?')">HAPUS</a></div>
                         <?php endif; ?>
                     </td>
                 </tr>
@@ -422,7 +423,7 @@ if (isset($_POST['ajax_search'])) {
 
     function timerIncrement() {
         idleTime++;
-        if (idleTime >= 60) { // 1 menit
+        if (idleTime >= 60) { 
             window.location.href = "logout.php?pesan=sesi_habis";
         }
     }

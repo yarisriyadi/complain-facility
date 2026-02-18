@@ -25,7 +25,7 @@ if(!isset($_SESSION['status']) || $_SESSION['status'] != "login"){
 }
 
 $role_login = $_SESSION['role'];
-$nomor_admin   = "6282299058274"; // Nomor Admin default
+$nomor_admin   = "6282299058274"; // Nomor Admin
 
 function checkFolder($path) {
     if (!file_exists($path)) {
@@ -182,12 +182,17 @@ if(isset($_POST['update']) || isset($_POST['wa_teknisi'])){
     }
 }
 
+// BAGIAN HAPUS (Sudah Disinkronkan dengan Dashboard Proses)
 if (isset($_GET['hapus'])) {
     if($role_login != 'admin' && $role_login != 'pga'){
         header("Location: admin_dashboard_proses.php?pesan=akses_ditolak");
         exit;
     }
+
     $id = mysqli_real_escape_string($conn, $_GET['hapus']);
+    
+    // CEK PARAMETER ASAL (Jika 'proses' maka redirect ke dashboard proses)
+    $asal = isset($_GET['asal']) ? $_GET['asal'] : 'selesai';
     
     $cek_foto = mysqli_query($conn, "SELECT c.foto_before, r.foto_after FROM complaints c LEFT JOIN repair_actions r ON c.complain_id=r.complaint_id WHERE c.complain_id='$id'");
     $f = mysqli_fetch_array($cek_foto);
@@ -200,7 +205,12 @@ if (isset($_GET['hapus'])) {
     mysqli_query($conn, "DELETE FROM repair_actions WHERE complaint_id='$id'");
     mysqli_query($conn, "DELETE FROM complaints WHERE complain_id='$id'");
 
-    header("Location: admin_dashboard_selesai.php?pesan=hapus_berhasil");
+    // REDIRECT DINAMIS BERDASARKAN HALAMAN ASAL
+    if ($asal == 'proses') {
+        header("Location: admin_dashboard_proses.php?pesan=hapus_berhasil");
+    } else {
+        header("Location: admin_dashboard_selesai.php?pesan=hapus_berhasil");
+    }
     exit;
 }
 ?>

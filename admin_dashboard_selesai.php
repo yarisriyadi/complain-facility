@@ -1,5 +1,7 @@
 <?php
 session_start();
+include 'config_maintenance.php';
+cek_akses_maintenance($maintenance_mode);
 include 'koneksi.php';
 
 if(!isset($_SESSION['status']) || $_SESSION['role'] != "admin"){
@@ -32,8 +34,8 @@ if (isset($_POST['ajax_search'])) {
                     <td style='text-align: left;' class='caps'><strong>".nl2br(htmlspecialchars($row['kondisi_current']))."</strong></td>
                     <td style='text-align: left;' class='caps'>".nl2br(htmlspecialchars($row['repair_action']))."</td>
                     <td><div class='img-container'>";
-            if(!empty($row['foto_before'])) echo "<img src='uploads/before/".$row['foto_before']."' width='35' height='35' class='zoom-img' style='border-radius:3px; margin: 2px;'>";
-            if(!empty($row['foto_after'])) echo "<img src='uploads/after/".$row['foto_after']."' width='35' height='35' class='zoom-img' style='border-radius:3px; margin: 2px;'>";
+            if(!empty($row['foto_before'])) echo "<img src='uploads/before/".$row['foto_before']."' width='35' height='35' class='zoom-img' style='border-radius:3px; margin: 2px;' title='BEFORE'>";
+            if(!empty($row['foto_after'])) echo "<img src='uploads/after/".$row['foto_after']."' width='35' height='35' class='zoom-img' style='border-radius:3px; margin: 2px;' title='AFTER'>";
             echo "</div></td>
                     <td>
                         <span class='badge bg-selesai'>SELESAI</span>
@@ -45,7 +47,7 @@ if (isset($_POST['ajax_search'])) {
                     <td>
                         <div><a href='edit.php?id=".$row['complain_id']."' class='btn-link'>LIHAT</a></div>
                         <div style='margin-top: 8px;'><a href='cetak.php?id=".$row['complain_id']."' target='_blank' class='btn-pdf-enabled'>PDF</a></div>
-                        <div style='margin-top: 8px;'><a href='proses.php?hapus=".$row['complain_id']."' class='btn-link btn-delete' onclick='return confirm(\"HAPUS DATA INI?\")'>HAPUS</a></div>
+                        <div style='margin-top: 8px;'><a href='proses.php?hapus=".$row['complain_id']."&asal=selesai' class='btn-link btn-delete' onclick='return confirm(\"HAPUS DATA INI?\")'>HAPUS</a></div>
                     </td></tr>";
         }
     } else { echo "<tr><td colspan='10' class='caps'>DATA TIDAK DITEMUKAN.</td></tr>"; }
@@ -62,230 +64,271 @@ if (isset($_POST['ajax_search'])) {
     <link rel="stylesheet" href="style_theme.css">
     <style>
         body { 
-        font-family: Arial, sans-serif; 
-        margin: 20px; 
-        background: var(--bg-color); 
-        color: var(--text-color); 
-        transition: 0.3s; 
-    }
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background: var(--bg-color); 
+            color: var(--text-color); 
+            transition: 0.3s; 
+        }
         .container { 
-        background: var(--container-bg); 
-        padding: 30px; 
-        max-width: 1100px; 
-        margin: auto; 
-        border-radius: 8px; 
-        box-shadow: 0 4px 15px var(--shadow); 
-    }
+            background: var(--container-bg); 
+            padding: 30px; 
+            max-width: 1100px; 
+            margin: auto; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px var(--shadow); 
+        }
         .header-section { 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        text-align: center; 
-        margin-bottom: 20px; 
-        padding-bottom: 15px; 
-        border-bottom: none; 
-        gap: 10px; 
-        text-transform: uppercase; 
-    }    
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-align: center; 
+            margin-bottom: 20px; 
+            padding-bottom: 15px; 
+            border-bottom: none; 
+            gap: 10px; 
+            text-transform: uppercase; 
+        }    
         .logo-img { 
-        height: 50px; 
-        width: auto; 
-    }
+            height: 50px; 
+            width: auto; 
+        }
         .header-section h2 { 
-        margin: 0; 
-        font-size: 1.5rem; 
-        color: var(--text-color); 
-        font-weight: bold; 
-    }
+            margin: 0; 
+            font-size: 1.5rem; 
+            color: var(--text-color); 
+            font-weight: bold; 
+        }
         .user-info { 
-        font-size: 12px; 
-        color: var(--text-color); 
-        opacity: 0.8; 
-    }
+            font-size: 12px; 
+            color: var(--text-color); 
+            opacity: 0.8; 
+        }
         .btn-logout { 
-        display: inline-block; 
-        margin-top: 5px; 
-        color: #dc3545; 
-        text-decoration: none; 
-        font-weight: bold; 
-        border: 1px solid #dc3545; 
-        padding: 4px 10px; 
-        border-radius: 4px; 
-        font-size: 11px; 
-        transition: all 0.3s ease; 
-    }
+            display: inline-block; 
+            margin-top: 5px; 
+            color: #dc3545; 
+            text-decoration: none; 
+            font-weight: bold; 
+            border: 1px solid #dc3545; 
+            padding: 4px 10px; 
+            border-radius: 4px; 
+            font-size: 11px; 
+            transition: all 0.3s ease; 
+        }
         .btn-logout:hover { 
-        background: #dc3545; 
-        color: #fff; 
-        transform: translateY(-2px); 
-        box-shadow: 0 3px 8px rgba(220,53,69,0.3); 
-    }  
+            background: #dc3545; 
+            color: #fff; 
+            transform: 
+            translateY(-2px); 
+            box-shadow: 0 3px 8px rgba(220,53,69,0.3); 
+        }  
         .nav-tabs { 
-        display: flex; 
-        margin-bottom: 15px; 
-        border-bottom: 1px solid var(--border-color); 
-        text-transform: uppercase; 
-    }
+            display: flex; 
+            margin-bottom: 15px; 
+            border-bottom: 1px solid var(--border-color); 
+            text-transform: uppercase; 
+        }
         .nav-link { 
-        flex: 1; 
-        text-align: center; 
-        padding: 10px 5px; 
-        text-decoration: none; 
-        background: rgba(128,128,128,0.1); 
-        color: var(--text-color); 
-        font-size: 12px; 
-        font-weight: bold; 
-        border-radius: 5px 5px 0 0; 
-        border: 1px solid transparent; 
-        transition: all 0.3s ease; 
-    }
+            flex: 1; 
+            text-align: center; 
+            padding: 10px 5px; 
+            text-decoration: none; 
+            background: rgba(128,128,128,0.1); 
+            color: var(--text-color); 
+            font-size: 12px; font-weight: bold; border-radius: 5px 5px 0 0; border: 1px solid transparent; transition: all 0.3s ease; }
         .nav-link.active { 
-        background: #28a745; 
-        color: #fff; 
-        border-color: var(--border-color) var(--border-color) transparent; 
-    }
+            background: #28a745; 
+            color: #fff; 
+            border-color: var(--border-color) var(--border-color) transparent; 
+        }
         .nav-link:hover:not(.active) { 
-        background: rgba(128,128,128,0.2); 
-        transform: translateY(-1px); 
-    }    
+            background: rgba(128,128,128,0.2); 
+            transform: translateY(-1px); 
+        }    
         .search-wrapper { 
-        display: flex; 
-        flex-direction: column; 
-        gap: 10px; 
-        margin-bottom: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            margin-bottom: 15px; 
+        }
+        .status-label-container p { 
+            font-size: 12px; 
+            margin: 0; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            color: var(--text-color); 
+        }
+        .status-label-container strong { 
+            color: #28a745; 
     }
+        .search-controls { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 10px; 
+            align-items: center; 
+            width: 100%; 
+        }
+        .search-input-container { 
+            flex-grow: 1; 
+        }
         .input-search { 
-        padding: 12px; 
-        border: 1px solid var(--border-color); 
-        border-radius: 4px; 
-        width: 100%; 
-        box-sizing: border-box; 
-        outline: none; 
-        font-size: 14px; 
-        background: var(--input-bg); 
-        color: var(--input-text); 
-        transition: all 0.3s; 
-    }
+            padding: 12px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 4px; 
+            width: 100%; 
+            box-sizing: border-box; 
+            outline: none; 
+            font-size: 14px; 
+            background: var(--input-bg); 
+            color: var(--input-text); 
+            transition: all 0.3s; 
+        }
         .input-search:focus { 
-        border: 1px solid #28a745; 
-        box-shadow: 0 0 5px rgba(40,167,69,0.2); 
+            border: 1px solid #28a745; 
+            box-shadow: 0 0 5px rgba(40,167,69,0.2); 
     }    
+        .btn-excel { 
+            background-color: #28a745; 
+            color: white; 
+            padding: 10px 18px; 
+            border-radius: 4px; 
+            text-decoration: none; 
+            font-size: 13px; 
+            font-weight: bold; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            white-space: nowrap; 
+            transition: 0.3s; 
+            border: none; 
+            cursor: pointer; 
+        }
+        .btn-excel:hover { 
+            background-color: #145532 !important; 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+        }
         .table-responsive { 
-        width: 100%; 
-        overflow-x: auto; 
-    }
+            width: 100%; 
+            overflow-x: auto; 
+        }
         table { 
-        width: 100%; 
-        border-collapse: collapse; 
-        min-width: 850px; 
-        background: transparent; 
-    }
+            width: 100%; 
+            border-collapse: collapse; 
+            min-width: 850px; 
+            background: transparent; 
+        }
         th, td { 
-        border: 1px solid var(--border-color); 
-        padding: 12px 8px; 
-        font-size: 12px; 
-        text-align: center; 
-        color: var(--text-color); 
-    }
+            border: 1px solid var(--border-color); 
+            padding: 12px 8px; 
+            font-size: 12px; 
+            text-align: center; 
+            color: var(--text-color); 
+        }
         th { 
-        background: rgba(128,128,128,0.1); 
-        color: var(--text-color); 
-        text-transform: uppercase; 
-        font-weight: bold; 
-    }    
+            background: rgba(128,128,128,0.1); 
+            color: var(--text-color); 
+            text-transform: uppercase; 
+            font-weight: bold; 
+        }    
         .caps { 
-        text-transform: uppercase; 
-    }
+            text-transform: uppercase; 
+        }
         .badge { 
-        padding: 5px 10px; 
-        border-radius: 12px; 
-        font-size: 10px; 
-        font-weight: bold; 
-        text-transform: uppercase; 
-    }
+            padding: 5px 10px; 
+            border-radius: 12px; 
+            font-size: 10px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+        }
         .bg-selesai { 
-        background: #d4edda; 
-        color: #155724; 
-        border: 1px solid #c3e6cb; 
-    }
+            background: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+        }
         .check-list { 
-        font-size: 10px; 
-        color: #bbb; 
-        margin-top: 8px; 
-        display: flex; 
-        justify-content: center; 
-        gap: 5px; 
-    }
+            font-size: 10px; 
+            color: #bbb; 
+            margin-top: 8px; 
+            display: flex; 
+            justify-content: center; 
+            gap: 5px; 
+        }
         .active { 
-        color: #28a745; 
-        font-weight: bold; 
-    }    
+            color: #28a745; 
+            font-weight: bold; 
+        }    
         .btn-link, .btn-pdf-enabled { 
-        text-decoration: none; 
-        color: #007bff; 
-        font-weight: bold; 
-        font-size: 11px; 
-        text-transform: uppercase; 
-        display: inline-block; 
-        transition: all 0.2s ease; 
-    }
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            display: inline-block; 
+            transition: all 0.2s ease; 
+        }
         .btn-pdf-enabled { 
-        color: #28a745 !important; 
-    }
-        .btn-link:hover, .btn-pdf-enabled:hover { 
-        transform: scale(1.1); 
-    }
+            color: #28a745 !important; 
+        }
+        .btn-link:hover, .btn-pdf-enabled:hover {
+            transform: scale(1.1); 
+        }
         .btn-delete { 
-        color: #dc3545; 
-    }
+            color: #dc3545; 
+        }
         .btn-delete:hover { 
-        color: #a71d2a !important; 
-    }
-        .modal-overlay {
+            color: #a71d2a !important; 
+        }
+        .modal-overlay { 
             display: none; 
             position: fixed; 
             z-index: 9999; 
             top: 0; 
             left: 0; 
             width: 100%; 
-            height: 100%;
+            height: 100%; 
             background-color: rgba(0,0,0,0.85); 
             justify-content: center; 
             align-items: center; 
-            cursor: zoom-out;
+            cursor: zoom-out; 
         }
         .modal-overlay img { 
-        max-width: 90%; 
-        max-height: 90%; 
-        transform: scale(0.8); 
-        transition: transform 0.3s ease; 
-    }
+            max-width: 90%; 
+            max-height: 90%; 
+            transform: scale(0.8); 
+            transition: transform 0.3s ease; 
+        }
         .modal-overlay.show { 
-        display: flex; 
-    }
+            display: flex; 
+        }
         .modal-overlay.show img { 
-        transform: scale(1); 
-    }
+            transform: scale(1); 
+        }
         @media (min-width: 768px) {
-        .header-section { 
-        flex-direction: row; 
-        justify-content: space-between;
-        text-align: left; 
-    }
-        .search-wrapper { 
-        flex-direction: row; 
-        justify-content: space-between; 
-        align-items: center; 
-    }
-        .input-search { 
-        width: 350px; 
-    }
-        .nav-link { 
-        flex: none; 
-        padding: 10px 25px; 
-        font-size: 13px; 
-    }
-}
+            .header-section { 
+                flex-direction: row; 
+                justify-content: space-between; 
+                text-align: left; 
+            }
+            .search-wrapper { 
+                flex-direction: row; 
+                justify-content: space-between; 
+                align-items: center; 
+            }
+            .search-controls { 
+                width: auto; 
+                flex-wrap: nowrap; 
+            }
+            .search-input-container { 
+                width: 350px; 
+            }
+            .nav-link { 
+                flex: none; 
+                padding: 10px 25px; 
+                font-size: 13px; 
+            }
+        }
     </style>
 </head>
 <body data-theme="dark">
@@ -319,21 +362,19 @@ if (isset($_POST['ajax_search'])) {
         <a href="admin_manage_users.php" class="nav-link" style="background: rgba(128,128,128,0.2);">KELOLA USER</a>
     </div>
 
-    <div class="search-wrapper" style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-    <a href="generate_excel.php" class="btn-excel" style="background-color: #1D6F42; color: white; padding: 10px 18px; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: bold; display: flex; align-items: center; gap: 8px; white-space: nowrap; transition: 0.3s;">
-        <i class="fa-solid fa-file-excel"></i> DOWNLOAD EXCEL
-    </a>
-
-    <input type="text" id="keyword" class="input-search" placeholder="Cari data selesai..." autocomplete="off" style="flex-grow: 1; margin: 0;">
-</div>
-
-<style>
-    .btn-excel:hover {
-        background-color: #145532 !important;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-</style>
+    <div class="search-wrapper">
+        <div class="status-label-container">
+            <p>STATUS: <strong>SUDAH SELESAI</strong></p>
+        </div>
+        <div class="search-controls">
+            <a href="generate_excel.php" class="btn-excel">
+                <i class="fa-solid fa-file-excel"></i> DOWNLOAD EXCEL
+            </a>
+            <div class="search-input-container">
+                <input type="text" id="keyword" class="input-search" placeholder="Cari data selesai..." autocomplete="off">
+            </div>
+        </div>
+    </div>
 
     <div class="table-responsive">
         <table>
@@ -354,7 +395,6 @@ if (isset($_POST['ajax_search'])) {
             <tbody id="tabel-data">
                 <?php
                 $no = 1;
-                // Menambahkan r.repair_action ke dalam SELECT query utama
                 $q = mysqli_query($conn, "SELECT c.*, r.foto_after, r.ttd_user, r.ttd_pga, r.repair_action FROM complaints c INNER JOIN repair_actions r ON c.complain_id = r.complaint_id WHERE r.ttd_user != '' AND r.ttd_pga != '' ORDER BY c.complain_id DESC");
                 while($row = mysqli_fetch_array($q)){
                     $has_user = !empty($row['ttd_user']); $has_pga = !empty($row['ttd_pga']);
@@ -366,9 +406,10 @@ if (isset($_POST['ajax_search'])) {
                     <td class="caps"><?php echo htmlspecialchars($row['nama_user']); ?></td>
                     <td><?php echo date('d/m/Y', strtotime($row['tanggal'])); ?></td>
                     <td style="text-align: left;" class="caps"><strong><?php echo nl2br(htmlspecialchars($row['kondisi_current'])); ?></strong></td>
-                    <td style="text-align: left;" class="caps"><?php echo nl2br(htmlspecialchars($row['repair_action'])); ?></td> <td><div class="img-container">
-                        <?php if(!empty($row['foto_before'])) echo "<img src='uploads/before/".$row['foto_before']."' width='35' height='35' class='zoom-img' style='border-radius:3px; margin: 2px;'>"; ?>
-                        <?php if(!empty($row['foto_after'])) echo "<img src='uploads/after/".$row['foto_after']."' width='35' height='35' class='zoom-img' style='border-radius:3px; margin: 2px;'>"; ?>
+                    <td style="text-align: left;" class="caps"><?php echo nl2br(htmlspecialchars($row['repair_action'])); ?></td> 
+                    <td><div class="img-container">
+                        <?php if(!empty($row['foto_before'])) echo "<img src='uploads/before/".$row['foto_before']."' width='35' height='35' class='zoom-img' style='border-radius:3px; margin: 2px;' title='BEFORE'>"; ?>
+                        <?php if(!empty($row['foto_after'])) echo "<img src='uploads/after/".$row['foto_after']."' width='35' height='35' class='zoom-img' style='border-radius:3px; margin: 2px;' title='AFTER'>"; ?>
                     </div></td>
                     <td>
                         <span class="badge bg-selesai">SELESAI</span>
@@ -380,7 +421,7 @@ if (isset($_POST['ajax_search'])) {
                     <td>
                         <div><a href="edit.php?id=<?php echo $row['complain_id']; ?>" class="btn-link">LIHAT</a></div>
                         <div style="margin-top: 8px;"><a href="cetak.php?id=<?php echo $row['complain_id']; ?>" target="_blank" class="btn-pdf-enabled">PDF</a></div>
-                        <div style="margin-top: 8px;"><a href="proses.php?hapus=<?php echo $row['complain_id']; ?>" class="btn-link btn-delete" onclick="return confirm('HAPUS DATA INI?')">HAPUS</a></div>
+                        <div style="margin-top: 8px;"><a href="proses.php?hapus=<?php echo $row['complain_id']; ?>&asal=selesai" class="btn-link btn-delete" onclick="return confirm('HAPUS DATA INI?')">HAPUS</a></div>
                     </td>
                 </tr>
                 <?php } ?>
