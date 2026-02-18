@@ -124,55 +124,55 @@ if (isset($_POST['ajax_search'])) {
             text-transform: uppercase; 
         }
         .logo-img { 
-        height: 50px; 
-        width: auto; 
-    }
+            height: 50px; 
+            width: auto; 
+        }
         .header-section h2 { 
-        margin: 0; 
-        font-size: 1.5rem; 
-        color: var(--text-color); 
-        font-weight: bold; 
-    }
+            margin: 0; 
+            font-size: 1.5rem; 
+            color: var(--text-color); 
+            font-weight: bold; 
+        }
         .user-info { 
-        font-size: 12px; 
-        color: var(--text-color); 
-        opacity: 0.8; 
-    }    
+            font-size: 12px; 
+            color: var(--text-color); 
+            opacity: 0.8; 
+        }    
         .btn-logout { 
-        display: inline-block; 
-        margin-top: 5px; 
-        color: #dc3545; 
-        text-decoration: none !important; 
-        font-weight: bold; 
-        border: 1px solid #dc3545; 
-        padding: 4px 10px; 
-        border-radius: 4px; 
-        font-size: 11px; 
-        transition: all 0.3s ease; 
-    }
+            display: inline-block; 
+            margin-top: 5px; 
+            color: #dc3545; 
+            text-decoration: none !important; 
+            font-weight: bold; 
+            border: 1px solid #dc3545; 
+            padding: 4px 10px; 
+            border-radius: 4px; 
+            font-size: 11px; 
+            transition: all 0.3s ease; 
+        }
         .btn-logout:hover { 
-        background: #dc3545; 
-        color: #fff; 
-        transform: translateY(-2px); 
-        box-shadow: 0 3px 8px rgba(220,53,69,0.3); 
-    }
+            background: #dc3545; 
+            color: #fff; 
+            transform: translateY(-2px); 
+            box-shadow: 0 3px 8px rgba(220,53,69,0.3); 
+        }
         form { 
-        background: rgba(128, 128, 128, 0.05); 
-        padding: 20px; 
-        border: 1px solid var(--border-color); 
-        border-radius: 6px; 
-        margin-bottom: 25px; 
-        position: relative; 
-    }
+            background: rgba(128, 128, 128, 0.05); 
+            padding: 20px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 6px; 
+            margin-bottom: 25px; 
+            position: relative; 
+        }
         label {
-        display: block; 
-        margin-top: 15px; 
-        margin-bottom: 5px; 
-        font-weight: bold; 
-        font-size: 14px; 
-        color: var(--text-color); 
-        text-transform: uppercase; 
-    }    
+            display: block; 
+            margin-top: 15px; 
+            margin-bottom: 5px; 
+            font-weight: bold; 
+            font-size: 14px; 
+            color: var(--text-color); 
+            text-transform: uppercase; 
+        }    
         input[type="text"], input[type="file"], textarea { 
             width: 100%; 
             padding: 10px; 
@@ -186,184 +186,270 @@ if (isset($_POST['ajax_search'])) {
             color: var(--text-color);
         }
         textarea { 
-        height: 80px; 
-        resize: vertical; 
-    }
+            height: 80px; 
+            resize: vertical; 
+        }
         .readonly-input { 
-        background: rgba(0,0,0,0.05) !important; 
-        opacity: 0.6; 
-        cursor: not-allowed; 
-        text-transform: uppercase; 
-    }    
+            background: rgba(0,0,0,0.05) !important; 
+            opacity: 0.6; 
+            cursor: not-allowed; 
+            text-transform: uppercase; 
+        }    
         button[name="simpan"] { 
-        width: 100%; 
-        padding: 12px; 
-        background: #007bff; 
-        color: white; 
-        border: none; 
-        cursor: pointer; 
-        border-radius: 4px; 
-        margin-top: 15px; 
-        font-weight: bold; 
-        font-size: 16px; 
-        text-transform: uppercase; 
-        transition: all 0.3s ease; 
-    }
+            width: 100%; 
+            padding: 12px; 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 4px; 
+            margin-top: 15px; 
+            font-weight: bold; 
+            font-size: 16px; 
+            text-transform: uppercase; 
+            transition: all 0.3s ease; 
+        }
         button[name="simpan"]:hover:not(:disabled) { 
-        background: #0056b3; 
-        transform: translateY(-2px); 
-        box-shadow: 0 4px 10px rgba(0,123,255,0.3); 
-    }
+            background: #0056b3; 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 10px rgba(0,123,255,0.3); 
+        }
         button[name="simpan"]:disabled { 
-        background: #999; 
-        cursor: not-allowed; 
-    }
+            background: #999; 
+            cursor: not-allowed; 
+        }
         .maintenance-warning { 
-        background: #fff3cd; 
-        color: #856404; 
-        padding: 15px; 
-        border: 1px solid #ffeeba; 
-        border-radius: 4px; 
-        margin-bottom: 15px; 
-        text-align: center; 
-        font-weight: bold; 
-    }
+            background: #fff3cd; 
+            color: #856404; 
+            padding: 15px; 
+            border: 1px solid #ffeeba; 
+            border-radius: 4px; 
+            margin-bottom: 15px; 
+            text-align: center; 
+            font-weight: bold; 
+        }
         .search-wrapper { 
-        display: flex; 
-        justify-content: flex-end; 
-        margin-bottom: 15px; 
-        width: 100%; 
-    }        
+            display: flex; 
+            justify-content: flex-end; 
+            margin-bottom: 15px; 
+            width: 100%; 
+        }        
         .input-search { 
-        padding: 8px 12px; 
-        border: 1px solid var(--border-color); 
-        border-radius: 4px; width: 100%; 
-        max-width: 200px; background: var(--input-bg); 
-        color: var(--text-color); 
-        outline: none; 
-        font-size: 13px; 
-        transition: all 0.3s; 
-    }
+            padding: 8px 12px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 4px; width: 100%; 
+            max-width: 200px; background: var(--input-bg); 
+            color: var(--text-color); 
+            outline: none; 
+            font-size: 13px; 
+            transition: all 0.3s; 
+        }
         .input-search:focus { 
-        border: 1px solid #007bff; 
-        max-width: 250px; 
-    }
+            border: 1px solid #007bff; 
+            max-width: 250px; 
+        }
         .table-responsive { 
-        width: 100%; 
-        overflow-x: auto; 
-    }
+            width: 100%; 
+            overflow-x: auto; 
+        }
         table { 
-        width: 100%; 
-        border-collapse: collapse; 
-        min-width: 900px; 
-        background: var(--container-bg); 
-    }
+            width: 100%; 
+            border-collapse: collapse; 
+            min-width: 900px; 
+            background: var(--container-bg); 
+        }
         th, td { 
-        border: 1px solid var(--border-color); 
-        padding: 12px 8px; 
-        font-size: 12px; 
-        text-align: center; 
-        color: var(--text-color); 
-    }
+            border: 1px solid var(--border-color); 
+            padding: 12px 8px; 
+            font-size: 12px; 
+            text-align: center; 
+            color: var(--text-color); 
+        }
         th { 
-        background: rgba(128,128,128,0.1); 
-        color: var(--text-color); 
-        text-transform: uppercase; 
-        font-weight: bold; 
-    }
+            background: rgba(128,128,128,0.1); 
+            color: var(--text-color); 
+            text-transform: uppercase; 
+            font-weight: bold; 
+        }
         .caps { 
-        text-transform: uppercase; 
-    }   
+            text-transform: uppercase; 
+        }   
         .zoom-img { 
-        cursor: pointer; 
-        transition: 0.3s; 
-    }
+            cursor: pointer; 
+            transition: 0.3s; 
+        }
         .modal-overlay { 
-        display: none; 
-        position: fixed; 
-        z-index: 9999; 
-        top: 0; 
-        left: 0; 
-        width: 100%; 
-        height: 100%; 
-        background-color: rgba(0,0,0,0.85); 
-        justify-content: center; 
-        align-items: center; 
-        cursor: zoom-out; 
-    }
+            display: none; 
+            position: fixed; 
+            z-index: 9999; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.85); 
+            justify-content: center; 
+            align-items: center; 
+            cursor: zoom-out; 
+        }
         .modal-overlay img { 
-        max-width: 90%; 
-        max-height: 90%; 
-        transform: scale(0.8); 
-        transition: transform 0.3s ease; 
-    }
+            max-width: 90%; 
+            max-height: 90%; 
+            transform: scale(0.8); 
+            transition: transform 0.3s ease; 
+        }
         .modal-overlay.show { 
-        display: flex; 
-    }
+            display: flex; 
+        }
         .modal-overlay.show img { 
-        transform: scale(1); 
-    }
+            transform: scale(1); 
+        }
         .badge { 
-        padding: 5px 10px; 
-        border-radius: 12px; 
-        font-size: 10px; 
-        font-weight: bold; 
-    }
+            padding: 5px 10px; 
+            border-radius: 12px; 
+            font-size: 10px; 
+            font-weight: bold; 
+        }
         .bg-selesai { 
-        background: #d4edda; 
-        color: #155724; 
-        border: 1px solid #c3e6cb; 
-    }
+            background: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+        }
         .bg-proses { 
-        background: #fff3cd; 
-        color: #856404; 
-        border: 1px solid #ffeeba; 
-    }
+            background: #fff3cd; 
+            color: #856404; 
+            border: 1px solid #ffeeba; 
+        }
         .check-list { 
-        font-size: 10px; 
-        color: #bbb; 
-        margin-top: 8px; 
-        display: flex; 
-        justify-content: center; 
-        gap: 5px; 
-    }
+            font-size: 10px; 
+            color: #bbb; 
+            margin-top: 8px; 
+            display: flex; 
+            justify-content: center; 
+            gap: 5px; 
+        }
         .active { 
-        color: #28a745; 
-        font-weight: bold; 
-    }
+            color: #28a745; 
+            font-weight: bold; 
+        }
         .btn-link, .btn-pdf-enabled { 
-        text-decoration: none !important; 
-        color: #007bff; 
-        font-weight: bold; 
-        font-size: 11px; 
-        text-transform: uppercase; 
-        display: inline-block; 
-        transition: all 0.2s ease; 
-    }
+            text-decoration: none !important; 
+            color: #007bff; 
+            font-weight: bold; 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            display: inline-block; 
+            transition: all 0.2s ease; 
+        }
         .btn-pdf-enabled { 
-        color: #28a745 !important; 
-    }
+            color: #28a745 !important; 
+        }
         .btn-link:hover, .btn-pdf-enabled:hover { 
-        transform: scale(1.08); 
-    }
+            transform: scale(1.08); 
+        }
         .btn-pdf-disabled { 
-        font-size: 11px; 
-        color: #ccc; 
-        font-weight: bold; 
-        text-transform: uppercase; 
-        cursor: not-allowed; 
-        text-decoration: none !important; 
-    }
+            font-size: 11px; 
+            color: #ccc; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            cursor: not-allowed; 
+            text-decoration: none !important; 
+        }
+        .welcome-modal {
+            display: flex; 
+            position: fixed; 
+            z-index: 999999; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); 
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .welcome-content {
+            background: var(--container-bg);
+            color: var(--text-color);
+            padding: 20px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            animation: bounceIn 0.5s ease;
+        }
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        .welcome-content h3 {
+            margin-top: 0;
+            color: #007bff;
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .rules-list {
+            text-align: left;
+            font-size: 13px;
+            padding-left: 20px;
+            line-height: 1.5;
+        }
+        .btn-close-welcome {
+            width: 100%;
+            padding: 12px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
         @media (min-width: 768px) { 
-        .header-section { 
-        flex-direction: row; 
-        justify-content: space-between; 
-        text-align: left; 
-    } 
-}
+            .header-section { 
+                flex-direction: row; 
+                justify-content: space-between; 
+                text-align: left; 
+            } 
+        }
     </style>
 </head>
 <body data-theme="dark"> 
+
+<?php if (!isset($_SESSION['welcome_shown'])): ?>
+<div id="welcomeModal" class="welcome-modal">
+    <div class="welcome-content">
+        <h3><i class="fa-solid fa-circle-check"></i> SELAMAT DATANG!</h3>
+        <p>Halo <strong><?php echo strtoupper(htmlspecialchars($nama_login)); ?></strong>, Anda berhasil login ke sistem Complain Facility.</p>
+        
+        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 15px 0;">
+        
+        <strong><i class="fa-solid fa-circle-info"></i> CARA PEMAKAIAN:</strong>
+        <ul class="rules-list">
+            <li>Isi form <strong>Section</strong>, <strong>Lokasi</strong>, dan <strong>Detail Kerusakan</strong> 
+            dengan jelas.</li>
+            <li>Wajib melampirkan <strong>Foto Before</strong> (Kondisi saat ini).</li>
+            <li>Klik tombol <strong>Kirim</strong> untuk melaporkan keluhan.</li>
+            <li>Pastikan Anda <strong>Menandatangani (TTD)</strong> laporan pada menu <strong>LIHAT</strong> 
+            agar keluhan segera ditangani oleh Teknisi.</li>
+            <li>Anda dapat memantau status pengerjaan (PROSES/SELESAI) pada tabel di bawah.</li>
+            <li>Tombol <strong>PDF</strong> akan aktif jika laporan sudah diverifikasi oleh PGA.</li>
+        </ul>
+
+        <button class="btn-close-welcome" onclick="closeWelcome()">SAYA MENGERTI</button>
+    </div>
+</div>
+<?php $_SESSION['welcome_shown'] = true; endif; ?>
+
 <div class="theme-switcher">
     <button class="theme-btn" onclick="toggleTheme()" title="Ganti Tema">
         <i id="theme-icon-sun" class="fa-solid fa-sun" style="color: #f1c40f;"></i>
@@ -509,6 +595,15 @@ if (isset($_POST['ajax_search'])) {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="theme_script.js"></script>
 <script>
+    function closeWelcome() {
+        const modal = document.getElementById('welcomeModal');
+        modal.style.opacity = '0';
+        modal.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    }
+
     function openZoom(src) { $('#imgZoomed').attr('src', src); $('#imageModal').addClass('show'); }
     function closeZoom() { $('#imageModal').removeClass('show'); }
 
@@ -537,7 +632,7 @@ if (isset($_POST['ajax_search'])) {
 
         function timerIncrement() {
             idleTime++;
-            if (idleTime >= 60) { //60detik
+            if (idleTime >= 60) { 
                 window.location.href = "logout.php?pesan=sesi_habis";
             }
         }

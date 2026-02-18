@@ -158,26 +158,35 @@
             
             <div class="form-group">
                 <label>Username</label>
-                <input type="text" name="username" id="username" required autocomplete="off" placeholder="Username">
+                <input type="text" name="username" id="username" required autocomplete="off" placeholder="Username"
+                oninvalid="this.setCustomValidity('Tidak boleh kosong!')"
+                oninput="this.setCustomValidity('')">
                 <div id="user-message"></div>
+                
             </div>
             
             <div class="form-group">
                 <label>Nama Lengkap</label>
-                <input type="text" name="nama_lengkap" id="nama_lengkap" required placeholder="Nama Sesuai ID Card">
+                <input type="text" name="nama_lengkap" id="nama_lengkap" required placeholder="Nama Sesuai ID Card"
+                oninvalid="this.setCustomValidity('Tidak boleh kosong!')"
+                oninput="this.setCustomValidity('')">
                 <div id="name-message"></div>
             </div>
 
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email" id="email" required placeholder="Masukan Email Aktif" autocomplete="off">
+                <input type="email" name="email" id="email" required placeholder="Masukan Email Aktif" autocomplete="off"
+                oninvalid="this.setCustomValidity('Tidak boleh kosong!')"
+                oninput="this.setCustomValidity('')">
                 <div id="email-message"></div> 
             </div>
             
             <div class="form-group">
                 <label>Password</label>
                 <div class="password-container">
-                    <input type="password" name="password" id="password" required placeholder="Masukan Password">
+                    <input type="password" name="password" id="password" required placeholder="Masukan Password"
+                    oninvalid="this.setCustomValidity('Tidak boleh kosong!')"
+                    oninput="this.setCustomValidity('')">
                     <i class="fa-solid fa-eye-slash toggle-password"></i>
                 </div>
                 <div id="pass-message"></div>
@@ -186,7 +195,9 @@
             <div class="form-group">
                 <label>Konfirmasi Password</label>
                 <div class="password-container">
-                    <input type="password" name="confirm_password" id="confirm_password" required placeholder="Ulangi password">
+                    <input type="password" name="confirm_password" id="confirm_password" required placeholder="Ulangi password"
+                    oninvalid="this.setCustomValidity('Tidak boleh kosong!')"
+                    oninput="this.setCustomValidity('')">
                     <i class="fa-solid fa-eye-slash toggle-password"></i>
                 </div>
                 <div id="confirm-message"></div>

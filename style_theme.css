@@ -63,3 +63,22 @@
         font-size: 18px;
         box-shadow: 0 4px 15px var(--shadow); 
 }
+@keyframes rgbGlow {
+    0%   { color: #ff0000; filter: drop-shadow(0 0 5px #ff0000); } /* Merah */
+    17%  { color: #ffff00; filter: drop-shadow(0 0 5px #ffff00); } /* KUNING */
+    33%  { color: #00ff00; filter: drop-shadow(0 0 5px #00ff00); } /* Hijau */
+    50%  { color: #00ffff; filter: drop-shadow(0 0 5px #00ffff); } /* Cyan */
+    66%  { color: #0000ff; filter: drop-shadow(0 0 5px #0000ff); } /* Biru */
+    83%  { color: #ff00ff; filter: drop-shadow(0 0 5px #ff00ff); } /* Ungu/Magenta */
+    100% { color: #ff0000; filter: drop-shadow(0 0 5px #ff0000); } /* Kembali ke Merah */
+}
+
+#theme-icon-sun, #theme-icon-moon {
+    animation: rgbGlow 6s linear infinite; /* 6 detik agar transisi antar warna lebih smooth */
+    transition: all 0.3s ease;
+}
+.theme-btn:hover #theme-icon-sun, 
+.theme-btn:hover #theme-icon-moon {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 10px currentColor);
+}
