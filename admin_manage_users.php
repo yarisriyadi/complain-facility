@@ -12,13 +12,14 @@ $nama_login = $_SESSION['nama'];
 
 if (isset($_POST['ajax_search'])) {
     $search = mysqli_real_escape_string($conn, $_POST['keyword']);
+    $limit = isset($_POST['limit']) ? (int)$_POST['limit'] : 5;
     $sql = "SELECT * FROM users";
     
     if ($search != "") {
         $sql .= " WHERE nama_lengkap LIKE '%$search%' OR username LIKE '%$search%' OR email LIKE '%$search%'";
     }
     
-    $q = mysqli_query($conn, $sql . " ORDER BY role DESC, nama_lengkap ASC");
+    $q = mysqli_query($conn, $sql . " ORDER BY role DESC, nama_lengkap ASC LIMIT $limit");
     
     if (mysqli_num_rows($q) > 0) {
         $no = 1;
@@ -47,6 +48,10 @@ if (isset($_POST['ajax_search'])) {
                     </td>
                   </tr>";
         }
+        // Kirim penanda jika data mencapai limit untuk kontrol tombol di JS
+        if (mysqli_num_rows($q) >= $limit) {
+            echo "";
+        }
     } else {
         echo "<tr><td colspan='7' class='caps'>DATA TIDAK DITEMUKAN.</td></tr>";
     }
@@ -63,192 +68,220 @@ if (isset($_POST['ajax_search'])) {
     <link rel="stylesheet" href="style_theme.css">
     <style>
         body { 
-        font-family: Arial, sans-serif; 
-        margin: 20px; 
-        background: var(--bg-color); 
-        color: var(--text-color); 
-        transition: 0.3s; 
-    }
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background: var(--bg-color); 
+            color: var(--text-color); 
+            transition: 0.3s; 
+        }
         .container { 
-        background: var(--container-bg); 
-        padding: 30px; 
-        max-width: 1100px; 
-        margin: auto; 
-        border-radius: 8px; 
-        box-shadow: 0 4px 15px var(--shadow); 
-    }  
+            background: var(--container-bg); 
+            padding: 30px; 
+            max-width: 1100px; 
+            margin: auto; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px var(--shadow); 
+        }  
         .header-section { 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        text-align: center; 
-        margin-bottom: 20px; 
-        padding-bottom: 15px; 
-        border-bottom: none; 
-        gap: 10px; 
-        text-transform: uppercase; 
-    }   
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-align: center; 
+            margin-bottom: 20px; 
+            padding-bottom: 15px; 
+            border-bottom: none; 
+            gap: 10px; 
+            text-transform: uppercase; 
+        }   
         .logo-img { 
-        height: 50px; 
-        width: auto; 
-    }
+            height: 50px; 
+            width: auto; 
+        }
         .header-section h2 { 
-        margin: 0; 
-        font-size: 1.5rem; 
-        color: var(--text-color); 
-        font-weight: bold; 
-    }
+            margin: 0; 
+            font-size: 1.5rem; 
+            color: var(--text-color); 
+            font-weight: bold; 
+        }
         .user-info { 
-        font-size: 12px; 
-        color: var(--text-color); 
-        opacity: 0.8; 
-    }
+            font-size: 12px; 
+            color: var(--text-color); 
+            opacity: 0.8; 
+        }
         .btn-logout { 
-        display: inline-block; 
-        margin-top: 5px; 
-        color: #dc3545; 
-        text-decoration: none; 
-        font-weight: bold; 
-        border: 1px solid #dc3545; 
-        padding: 4px 10px; 
-        border-radius: 4px; 
-        font-size: 11px; 
-        transition: all 0.3s ease; 
-    }
+            display: inline-block; 
+            margin-top: 5px; 
+            color: #dc3545; 
+            text-decoration: none; 
+            font-weight: bold; 
+            border: 1px solid #dc3545; 
+            padding: 4px 10px; 
+            border-radius: 4px; 
+            font-size: 11px; 
+            transition: all 0.3s ease; 
+        }
         .btn-logout:hover { 
-        background: #dc3545; 
-        color: #fff; 
-        transform: translateY(-2px); 
-        box-shadow: 0 3px 8px rgba(220,53,69,0.3); 
-    }
+            background: #dc3545; 
+            color: #fff; 
+            transform: translateY(-2px); 
+            box-shadow: 0 3px 8px rgba(220,53,69,0.3); 
+        }
         .nav-tabs { 
-        display: flex; 
-        margin-bottom: 15px; 
-        border-bottom: 1px solid var(--border-color); 
-        text-transform: uppercase; 
-    }
+            display: flex; 
+            margin-bottom: 15px; 
+            border-bottom: 1px solid var(--border-color); 
+            text-transform: uppercase; 
+        }
         .nav-link { 
-        flex: 1; 
-        text-align: center; 
-        padding: 10px 5px; 
-        text-decoration: none; 
-        background: rgba(128,128,128,0.1); 
-        color: var(--text-color); 
-        font-size: 12px; 
-        font-weight: bold; 
-        border-radius: 5px 5px 0 0; 
-        border: 1px solid transparent; 
-        transition: all 0.3s ease; 
-    }
+            flex: 1; 
+            text-align: center; 
+            padding: 10px 5px; 
+            text-decoration: none; 
+            background: rgba(128,128,128,0.1); 
+            color: var(--text-color); 
+            font-size: 12px; 
+            font-weight: bold; 
+            border-radius: 5px 5px 0 0; 
+            border: 1px solid transparent; 
+            transition: all 0.3s ease; 
+        }
         .nav-link.active-user { 
-        background: #6c757d; 
-        color: #fff; 
-        border-color: var(--border-color) var(--border-color) transparent; 
-    }
+            background: #6c757d; 
+            color: #fff; 
+            border-color: var(--border-color) var(--border-color) transparent; 
+        }
         .nav-link:hover:not(.active-user) { 
-        background: rgba(128,128,128,0.2); 
-        transform: translateY(-1px); 
-    }
+            background: rgba(128,128,128,0.2); 
+            transform: translateY(-1px); 
+        }
         .search-wrapper { 
-        display: flex; 
-        flex-direction: column; 
-        gap: 10px; 
-        margin-bottom: 15px; 
-    }
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            margin-bottom: 15px; 
+        }
         .input-search { 
-        padding: 12px; 
-        border: 1px solid var(--border-color); 
-        border-radius: 4px; 
-        width: 100%; 
-        box-sizing: border-box; 
-        outline: none; 
-        font-size: 14px; 
-        background: var(--input-bg); 
-        color: var(--input-text); 
-        transition: all 0.3s; 
-    }
+            padding: 12px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 4px; 
+            width: 100%; 
+            box-sizing: border-box; 
+            outline: none; 
+            font-size: 14px; 
+            background: var(--input-bg); 
+            color: var(--input-text); 
+            transition: all 0.3s; 
+        }
         .input-search:focus { 
-        border: 1px solid #6c757d;
-        box-shadow: 0 0 5px rgba(108,117,125,0.2); 
-    }
+            border: 1px solid #6c757d;
+            box-shadow: 0 0 5px rgba(108,117,125,0.2); 
+        }
         .table-responsive { 
-        width: 100%; 
-        overflow-x: auto; 
-    }
+            width: 100%; 
+            overflow-x: auto; 
+        }
         table { 
-        width: 100%; 
-        border-collapse: collapse; 
-        min-width: 850px; 
-        background: transparent; 
-    }
+            width: 100%; 
+            border-collapse: collapse; 
+            min-width: 850px; 
+            background: transparent; 
+        }
         th, td { 
-        border: 1px solid var(--border-color); 
-        padding: 12px 8px; 
-        font-size: 12px; 
-        text-align: center; 
-        color: var(--text-color); 
-    }
+            border: 1px solid var(--border-color); 
+            padding: 12px 8px; 
+            font-size: 12px; 
+            text-align: center; 
+            color: var(--text-color); 
+        }
         th { 
-        background: rgba(128,128,128,0.1); 
-        color: var(--text-color); 
-        text-transform: uppercase; 
-        font-weight: bold; 
-    }    
+            background: rgba(128,128,128,0.1); 
+            color: var(--text-color); 
+            text-transform: uppercase; 
+            font-weight: bold; 
+        }     
         .caps { 
-        text-transform: uppercase; 
-    }
+            text-transform: uppercase; 
+        }
         .username-bold { 
-        font-weight: bold; 
-        color: var(--text-color); 
-    }
+            font-weight: bold; 
+            color: var(--text-color); 
+        }
         .badge-role { 
-        background: rgba(128,128,128,0.1); 
-        color: var(--text-color); 
-        padding: 4px 8px; 
-        border-radius: 4px; 
-        font-size: 10px; 
-        font-weight: bold; 
-        border: 1px solid var(--border-color); 
-    }    
+            background: rgba(128,128,128,0.1); 
+            color: var(--text-color); 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-size: 10px; 
+            font-weight: bold; 
+            border: 1px solid var(--border-color); 
+        }     
         .btn-link { 
-        text-decoration: none; 
-        color: #007bff; 
-        font-weight: bold; 
-        font-size: 11px; 
-        text-transform: uppercase; 
-        display: inline-block; 
-        transition: all 0.2s ease; 
-    }
+            text-decoration: none; 
+            color: #007bff; 
+            font-weight: bold; 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            display: inline-block; 
+            transition: all 0.2s ease; 
+        }
         .btn-link:hover { 
-        transform: scale(1.1); 
-        color: #0056b3; 
-    }
+            transform: scale(1.1); 
+            color: #0056b3; 
+        }
         .btn-delete { 
-        color: #dc3545; 
-    }
+            color: #dc3545; 
+        }
         .btn-delete:hover { 
-        color: #a71d2a !important; 
-    }
+            color: #a71d2a !important; 
+        }
+
+        /* STYLE TAMPILKAN LEBIH BANYAK */
+        .show-more-wrapper {
+            text-align: center;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            margin-top: 15px;
+        }
+        .btn-show-more {
+            background: #444;
+            border: 1px solid #666;
+            color: #ccc;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: normal;
+            font-size: 11px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            display: none; /* Sembunyi secara default */
+        }
+        .btn-show-more:hover {
+            background: #555;
+            color: #fff;
+            border-color: #888;
+        }
+
         @media (min-width: 768px) {
-        .header-section { 
-        flex-direction: row; 
-        justify-content: space-between; 
-        text-align: left; 
-    }
-        .search-wrapper { 
-        flex-direction: row; 
-        justify-content: space-between; 
-        align-items: center; 
-    }
-        .input-search { 
-        width: 350px; 
-    }
-        .nav-link { 
-        flex: none; 
-        padding: 10px 25px; 
-        font-size: 13px; 
-    }
-}
+            .header-section { 
+                flex-direction: row; 
+                justify-content: space-between; 
+                text-align: left; 
+            }
+            .search-wrapper { 
+                flex-direction: row; 
+                justify-content: space-between; 
+                align-items: center; 
+            }
+            .input-search { 
+                width: 350px; 
+            }
+            .nav-link { 
+                flex: none; 
+                padding: 10px 25px; 
+                font-size: 13px; 
+            }
+        }
     </style>
 </head>
 <body data-theme="dark">
@@ -299,7 +332,8 @@ if (isset($_POST['ajax_search'])) {
             <tbody id="tabel-user">
                 <?php
                 $no = 1;
-                $query = mysqli_query($conn, "SELECT * FROM users ORDER BY role DESC, nama_lengkap ASC");
+                $query = mysqli_query($conn, "SELECT * FROM users ORDER BY role DESC, nama_lengkap ASC LIMIT 5");
+                $count_row = mysqli_num_rows($query);
                 while($row = mysqli_fetch_array($query)){
                     $isAdmin = ($row['role'] == 'admin');
                 ?>
@@ -329,12 +363,20 @@ if (isset($_POST['ajax_search'])) {
             </tbody>
         </table>
     </div>
+
+    <div class="show-more-wrapper">
+        <button type="button" id="btn-show-more" class="btn-show-more" 
+        style="display: <?php echo ($count_row >= 5) ? 'inline-block' : 'none'; ?>;">
+            TAMPILKAN LEBIH BANYAK
+        </button>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="theme_script.js"></script>
 <script>
     $(document).ready(function(){
+        let currentLimit = 5;
         let idleTime = 0;
         const keepAliveInterval = 30000; 
         let lastKeepAlive = Date.now();
@@ -359,23 +401,43 @@ if (isset($_POST['ajax_search'])) {
 
         function timerIncrement() {
             idleTime++;
-            if (idleTime >= 60) { // 60 detik
+            if (idleTime >= 60) {
                 window.location.href = "logout.php?pesan=sesi_habis";
             }
         }
-        // ---------------------------------
 
-        $('#keyword').on('keyup', function(){
-            idleTime = 0; 
-            sendKeepAlive();
+        function loadData(limit) {
+            let keyword = $('#keyword').val();
             $.ajax({
                 url: 'admin_manage_users.php',
                 type: 'POST',
-                data: { ajax_search: true, keyword: $(this).val() },
+                data: { 
+                    ajax_search: true, 
+                    keyword: keyword,
+                    limit: limit 
+                },
                 success: function(response){
                     $('#tabel-user').html(response);
+                    // Cek penanda dari PHP
+                    if (response.indexOf("") !== -1) {
+                        $('#btn-show-more').show();
+                    } else {
+                        $('#btn-show-more').hide();
+                    }
                 }
             });
+        }
+
+        $('#keyword').on('keyup', function(){
+            currentLimit = 5;
+            idleTime = 0; 
+            sendKeepAlive();
+            loadData(currentLimit);
+        });
+
+        $('#btn-show-more').on('click', function(){
+            currentLimit += 5;
+            loadData(currentLimit);
         });
     });
 

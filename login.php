@@ -29,7 +29,7 @@ if (isset($_SESSION['status']) && $_SESSION['status'] == "login") {
         body { 
             font-family: 'Segoe UI', Arial, sans-serif; 
             margin: 0;
-             padding: 0; 
+            padding: 0; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
@@ -61,13 +61,13 @@ if (isset($_SESSION['status']) && $_SESSION['status'] == "login") {
         }
         .form-group { 
             margin-bottom: 20px; 
-    }
+        }
         .form-group label { 
             display: block; 
             margin-bottom: 8px; 
             font-size: 14px; 
             font-weight: bold; 
-    }
+        }
         .form-group input { 
             width: 100%; 
             padding: 12px; 
@@ -82,6 +82,7 @@ if (isset($_SESSION['status']) && $_SESSION['status'] == "login") {
         .btn-login { 
             width: 100%; 
             padding: 14px; 
+            background-image: linear-gradient(90deg, #007bff, #007bff);
             background-color: #007bff; 
             border: none; 
             color: white; 
@@ -91,16 +92,30 @@ if (isset($_SESSION['status']) && $_SESSION['status'] == "login") {
             font-weight: bold; 
             margin-top: 10px; 
             text-transform: uppercase; 
-            transition: all 0.4s ease; 
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
             box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            background-size: 100% 100%;
         }
         .btn-login:hover:not(:disabled) { 
-            background-color: #0056b3; 
-            transform: translateY(-2px); 
+            transform: translateY(-3px);
+            background-image: linear-gradient(90deg, #007bff, #00d4ff, #0056b3, #007bff);
+            background-size: 200% 100%;
+            animation: auroraMove 2s linear infinite;
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5), 0 0 40px rgba(0, 123, 255, 0.3);
+        }
+        @keyframes auroraMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
         }
         .btn-login:disabled {
             background-color: #555555 !important; 
+            background-image: none !important;
             color: #cccccc; cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
         }
         .alert { 
             padding: 12px; 
@@ -109,17 +124,17 @@ if (isset($_SESSION['status']) && $_SESSION['status'] == "login") {
             text-align: center; 
             margin-bottom: 20px; 
             line-height: 1.5; 
-    }
+        }
         .error { 
             background-color: #fce4e4; 
             color: #963b3b; 
             border: 1px solid #f9cccc; 
-    }
+        }
         .success { 
             background-color: #d4edda; 
             color: #155724;
             border: 1px solid #c3e6cb; 
-    }
+        }
         .warning-session { 
             background-color: #fff3cd; 
             color: #856404; 
@@ -128,42 +143,42 @@ if (isset($_SESSION['status']) && $_SESSION['status'] == "login") {
             align-items: center; 
             justify-content: center; 
             gap: 8px; 
-    }    
+        }    
         .footer-links { 
             text-align: center; 
             margin-top: 25px; 
             font-size: 14px; 
-    }
+        }
         .reg-link { 
             color: #2ecc71 !important; 
             text-decoration: none; 
             font-weight: bold; 
             transition: 0.3s; 
-    }
+        }
         .reg-link:hover { 
             text-decoration: underline; 
-    }
+        }
         .copyright { 
             text-align: center; 
             margin-top: 30px; 
             font-size: 10px; 
             border-top: 1px solid var(--border-color); 
             padding-top: 15px; 
-    }
+        }
         .password-container { 
-        position: relative; 
-        width: 100%; 
-    }
+            position: relative; 
+            width: 100%; 
+        }
         .toggle-password { 
-        position: absolute; 
-        right: 15px; 
-        top: 50%; 
-        transform: translateY(-50%); 
-        cursor: pointer; 
-        color: #666; 
-        font-size: 18px; 
-        z-index: 10;
-    }
+            position: absolute; 
+            right: 15px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            cursor: pointer; 
+            color: #666; 
+            font-size: 18px; 
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -221,7 +236,8 @@ if (isset($_SESSION['status']) && $_SESSION['status'] == "login") {
         <form action="proses_login.php" method="POST">
             <div class="form-group">
                 <label>Username / Email</label> 
-                <input type="text" name="username" required placeholder="Username atau Email" autocomplete="off" <?php echo $is_locked ? 'disabled' : ''; ?>>
+                <input type="text" name="username" required placeholder="Username atau Email" 
+                autocomplete="off" <?php echo $is_locked ? 'disabled' : ''; ?>>
             </div>
             <div class="form-group">
                 <label>Password</label>
@@ -261,6 +277,6 @@ if (isset($_SESSION['status']) && $_SESSION['status'] == "login") {
             window.history.replaceState({}, document.title, url.pathname);
         }
     }
-</script>
+    </script>
 </body>
 </html>

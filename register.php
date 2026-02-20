@@ -64,12 +64,13 @@
             box-sizing: border-box; 
             font-size: 15px; 
             background: var(--input-bg); 
-            color: #333; 
+            color: var(--text-color); 
             transition: 0.3s;
         }
         .btn-reg { 
             width: 100%; 
             padding: 14px; 
+            background-image: linear-gradient(90deg, #28a745, #28a745);
             background-color: #28a745; 
             border: none; 
             color: white; 
@@ -78,14 +79,26 @@
             font-size: 16px; 
             font-weight: bold; 
             margin-top: 10px; 
-            transition: all 0.4s ease; 
             text-transform: uppercase; 
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
             box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            background-size: 100% 100%;
         }
         .btn-reg:hover { 
-            background-color: #218838; 
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
+            transform: translateY(-3px);
+            /* Efek Aurora Hijau-Biru */
+            background-image: linear-gradient(90deg, #28a745, #00ff88, #2ecc71, #28a745);
+            background-size: 200% 100%;
+            animation: auroraMove 2s linear infinite;
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5), 0 0 40px rgba(40, 167, 69, 0.3);
+        }
+
+        @keyframes auroraMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
         }
         .login-link { 
             text-align: center; 
@@ -99,8 +112,8 @@
             transition: 0.3s; 
         }
         .login-link a:hover { 
-        text-decoration: underline; 
-        color: #0056b3 !important; 
+            text-decoration: underline; 
+            color: #0056b3 !important; 
         }
         .copyright { 
             text-align: center; 

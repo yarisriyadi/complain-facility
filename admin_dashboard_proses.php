@@ -11,8 +11,12 @@ $role_login = $_SESSION['role'];
 $nama_login = $_SESSION['nama'];
 $dashboard_title = ($role_login === 'admin') ? "ADMIN MONITORING" : "TEKNISI MONITORING";
 
+// LOGIKA AJAX SEARCH & LOAD MORE
 if (isset($_POST['ajax_search'])) {
     $search = mysqli_real_escape_string($conn, $_POST['keyword']);
+    $offset = isset($_POST['offset']) ? (int)$_POST['offset'] : 0;
+    $limit = 5;
+
     $sql = "SELECT c.*, r.foto_after, r.ttd_user, r.ttd_pga FROM complaints c
             LEFT JOIN repair_actions r ON c.complain_id = r.complaint_id
             WHERE (r.ttd_user IS NULL OR r.ttd_user = '' OR r.ttd_pga IS NULL OR r.ttd_pga = '')";
@@ -21,9 +25,11 @@ if (isset($_POST['ajax_search'])) {
         $sql .= " AND (c.section_dept LIKE '%$search%' OR c.nama_user LIKE '%$search%' OR c.lokasi_kerusakan LIKE '%$search%')";
     }
     
-    $q = mysqli_query($conn, $sql . " ORDER BY c.complain_id DESC");
+    $sql .= " ORDER BY c.complain_id DESC LIMIT $offset, $limit";
+    $q = mysqli_query($conn, $sql);
+
     if (mysqli_num_rows($q) > 0) {
-        $no = 1;
+        $no = $offset + 1;
         while ($row = mysqli_fetch_array($q)) {
             $has_user = !empty($row['ttd_user']);
             $has_pga  = !empty($row['ttd_pga']);
@@ -55,12 +61,17 @@ if (isset($_POST['ajax_search'])) {
                     <td>
                         <div><a href='edit.php?id=".$row['complain_id']."' class='btn-link'>LIHAT</a></div>";
             if($role_login === 'admin'){
-                // PERBAIKAN: Tambahkan parameter asal=proses di link hapus AJAX
                 echo "<div style='margin-top: 8px;'><a href='proses.php?hapus=".$row['complain_id']."&asal=proses' class='btn-link btn-delete' onclick='return confirm(\"HAPUS DATA INI?\")'>HAPUS</a></div>";
             }
             echo "</td></tr>";
         }
-    } else { echo "<tr><td colspan='9' class='caps'>DATA TIDAK DITEMUKAN.</td></tr>"; }
+    } else { 
+        if($offset == 0) {
+            echo "<tr><td colspan='9' class='caps'>DATA TIDAK DITEMUKAN.</td></tr>"; 
+        } else {
+            echo "END";
+        }
+    }
     exit;
 }
 ?>
@@ -75,7 +86,7 @@ if (isset($_POST['ajax_search'])) {
     
     <style>
         body { 
-        font-family: Arial, sans-serif; margin: 20px; 
+            font-family: Arial, sans-serif; margin: 20px; 
             background: var(--bg-color); 
             color: var(--text-color); 
             transition: 0.3s; 
@@ -249,6 +260,33 @@ if (isset($_POST['ajax_search'])) {
         .btn-delete:hover { 
             color: #a71d2a !important; 
         }    
+
+        /* CSS LOAD MORE SEPERTI INDEX */
+        .show-more-wrapper {
+            text-align: center;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            margin-top: 15px;
+        }
+        .btn-show-more {
+            background: #444;
+            border: 1px solid #666;
+            color: #ccc;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: normal;
+            font-size: 11px;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        .btn-show-more:hover {
+            background: #555;
+            color: #fff;
+            border-color: #888;
+        }
+
         .modal-overlay { 
             display: none; 
             position: fixed; 
@@ -292,6 +330,25 @@ if (isset($_POST['ajax_search'])) {
                 padding: 10px 25px; 
                 font-size: 13px; 
             }
+            /* Perbaikan CSS untuk Foto agar berjajar ke samping */
+        .img-container {
+            display: flex;          /* Membuat isi di dalamnya berjajar horizontal */
+            justify-content: center; /* Mengetengahkan foto di dalam kolom */
+            align-items: center;     /* Menyejajarkan foto secara vertikal */
+            gap: 5px;               /* Memberikan jarak antar foto */
+            flex-wrap: nowrap;      /* Memaksa foto tetap satu baris (tidak turun) */
+        }
+
+        .zoom-img {
+            cursor: zoom-in;
+            transition: transform 0.2s;
+            display: block;         /* Menghilangkan whitespace di bawah image */
+            object-fit: cover;      /* Memastikan foto tetap rapi dalam kotak 35x35 */
+        }
+
+        .zoom-img:hover {
+            transform: scale(1.1);
+        }
         }
     </style>
 </head>
@@ -352,7 +409,8 @@ if (isset($_POST['ajax_search'])) {
             <tbody id="tabel-data">
                 <?php
                 $no = 1;
-                $q = mysqli_query($conn, "SELECT c.*, r.foto_after, r.ttd_user, r.ttd_pga FROM complaints c LEFT JOIN repair_actions r ON c.complain_id = r.complaint_id WHERE (r.ttd_user IS NULL OR r.ttd_user = '' OR r.ttd_pga IS NULL OR r.ttd_pga = '') ORDER BY c.complain_id DESC");
+                // Query Awal dibatasi 5 data sesuai index.php
+                $q = mysqli_query($conn, "SELECT c.*, r.foto_after, r.ttd_user, r.ttd_pga FROM complaints c LEFT JOIN repair_actions r ON c.complain_id = r.complaint_id WHERE (r.ttd_user IS NULL OR r.ttd_user = '' OR r.ttd_pga IS NULL OR r.ttd_pga = '') ORDER BY c.complain_id DESC LIMIT 5");
                 while($row = mysqli_fetch_array($q)){
                     $has_user = !empty($row['ttd_user']); $has_pga = !empty($row['ttd_pga']);
                 ?>
@@ -391,6 +449,10 @@ if (isset($_POST['ajax_search'])) {
             </tbody>
         </table>
     </div>
+
+    <div class="show-more-wrapper">
+        <button type="button" id="btn-load-more" class="btn-show-more">TAMPILKAN LEBIH BANYAK</button>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -399,6 +461,8 @@ if (isset($_POST['ajax_search'])) {
     let idleTime = 0;
     const keepAliveInterval = 30000; 
     let lastKeepAlive = Date.now();
+    const limit = 5;
+    let offset = 5;
 
     $(document).ready(function () {
         let idleInterval = setInterval(timerIncrement, 1000); 
@@ -419,6 +483,53 @@ if (isset($_POST['ajax_search'])) {
             idleTime = 0; 
             sendKeepAlive(); 
         });
+
+        // LOGIKA LOAD MORE
+        $('#btn-load-more').on('click', function(){
+            const keyword = $('#keyword').val();
+            const btn = $(this);
+            btn.text('MEMUAT...');
+
+            $.ajax({
+                url: 'admin_dashboard_proses.php',
+                type: 'POST',
+                data: { 
+                    ajax_search: true, 
+                    keyword: keyword,
+                    offset: offset 
+                },
+                success: function(response){
+                    if(response.trim() === "END") {
+                        btn.fadeOut();
+                    } else {
+                        $('#tabel-data').append(response);
+                        offset += limit;
+                        btn.text('TAMPILKAN LEBIH BANYAK');
+                    }
+                }
+            });
+        });
+
+        // LOGIKA SEARCH (RESET OFFSET)
+        $('#keyword').on('keyup', function(){
+            const keyword = $(this).val();
+            offset = 0;
+
+            $.ajax({
+                url: 'admin_dashboard_proses.php', 
+                type: 'POST',
+                data: { 
+                    ajax_search: true, 
+                    keyword: keyword,
+                    offset: 0 
+                },
+                success: function(res){ 
+                    $('#tabel-data').html(res); 
+                    offset = limit;
+                    $('#btn-load-more').fadeIn().text('TAMPILKAN LEBIH BANYAK');
+                }
+            });
+        });
     });
 
     function timerIncrement() {
@@ -431,18 +542,7 @@ if (isset($_POST['ajax_search'])) {
     function openZoom(src) { $('#imgZoomed').attr('src', src); $('#imageModal').addClass('show'); }
     function closeZoom() { $('#imageModal').removeClass('show'); }
 
-    $(document).ready(function(){
-        $(document).on('click', '.zoom-img', function(){ openZoom($(this).attr('src')); });
-        
-        $('#keyword').on('keyup', function(){
-            $.ajax({
-                url: 'admin_dashboard_proses.php', 
-                type: 'POST',
-                data: { ajax_search: true, keyword: $(this).val() },
-                success: function(res){ $('#tabel-data').html(res); }
-            });
-        });
-    });
+    $(document).on('click', '.zoom-img', function(){ openZoom($(this).attr('src')); });
 </script>
 </body>
 </html>

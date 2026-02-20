@@ -19,6 +19,7 @@ if ($role_login == 'admin' || $role_login == 'teknisi') {
     exit;
 }
 
+// LOGIKA AJAX SEARCH & LOAD MORE
 if (isset($_POST['ajax_search'])) {
     if ($maintenance_mode && $role_login != 'admin') {
         echo "<tr><td colspan='9' style='color:red; font-weight:bold;'>SISTEM SEDANG MAINTENANCE.</td></tr>";
@@ -26,22 +27,25 @@ if (isset($_POST['ajax_search'])) {
     }
 
     $search = mysqli_real_escape_string($conn, $_POST['keyword']);
+    $offset = isset($_POST['offset']) ? (int)$_POST['offset'] : 0;
+    $limit = 5;
+
     $sql = "SELECT c.*, r.foto_after, r.ttd_user, r.ttd_pga
             FROM complaints c
             LEFT JOIN repair_actions r ON c.complain_id = r.complaint_id "; 
 
     if ($search != "") {
-        $sql .= " WHERE c.section_dept LIKE '%$search%'
+        $sql .= " WHERE (c.section_dept LIKE '%$search%'
                   OR c.lokasi_kerusakan LIKE '%$search%'
                   OR c.nama_user LIKE '%$search%'
-                  OR c.kondisi_current LIKE '%$search%' ";
+                  OR c.kondisi_current LIKE '%$search%') ";
     }
 
-    $sql .= " ORDER BY c.complain_id DESC"; 
+    $sql .= " ORDER BY c.complain_id DESC LIMIT $offset, $limit"; 
     $q = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($q) > 0) {
-        $no = 1;
+        $no = $offset + 1;
         while ($row = mysqli_fetch_array($q)) {
             $has_user = !empty($row['ttd_user']);
             $has_pga  = !empty($row['ttd_pga']);
@@ -79,7 +83,11 @@ if (isset($_POST['ajax_search'])) {
                     </tr>";
         }
     } else {
-        echo "<tr><td colspan='9' class='caps'>DATA TIDAK DITEMUKAN.</td></tr>";
+        if($offset == 0) {
+            echo "<tr><td colspan='9' class='caps'>DATA TIDAK DITEMUKAN.</td></tr>";
+        } else {
+            echo "END"; 
+        }
     }
     exit;
 }
@@ -354,6 +362,33 @@ if (isset($_POST['ajax_search'])) {
             cursor: not-allowed; 
             text-decoration: none !important; 
         }
+        
+        /* CSS LOAD MORE MINIMALIS */
+        .show-more-wrapper {
+            text-align: center;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            margin-top: 15px;
+        }
+        .btn-show-more {
+            background: #444;
+            border: 1px solid #666;
+            color: #ccc;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: normal;
+            font-size: 11px;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        .btn-show-more:hover {
+            background: #555;
+            color: #fff;
+            border-color: #888;
+        }
+
         .welcome-modal {
             display: flex; 
             position: fixed; 
@@ -405,21 +440,57 @@ if (isset($_POST['ajax_search'])) {
         .btn-close-welcome {
             width: 100%;
             padding: 12px;
-            background: #28a745;
-            color: white;
+            background-image: linear-gradient(90deg, #28a745, #28a745);
+            background-color: #28a745;
+            color: white;   
             border: none;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             margin-top: 15px;
-        }
-
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            background-size: 100% 100%;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+}
+        .btn-close-welcome:hover {
+            transform: translateY(-2px);
+            background-image: linear-gradient(90deg, #28a745, #00ff88, #2ecc71, #28a745) !important;
+            background-size: 200% 100% !important;
+            animation: auroraMove 2s linear infinite;
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4), 0 0 30px rgba(0, 255, 136, 0.2);
+}   
+        @keyframes auroraMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+}
         @media (min-width: 768px) { 
-            .header-section { 
+                .header-section { 
                 flex-direction: row; 
                 justify-content: space-between; 
                 text-align: left; 
             } 
+            /* Perbaikan CSS untuk Foto agar berjajar ke samping */
+        .img-container {
+            display: flex;          /* Membuat isi di dalamnya berjajar horizontal */
+            justify-content: center; /* Mengetengahkan foto di dalam kolom */
+            align-items: center;     /* Menyejajarkan foto secara vertikal */
+            gap: 5px;               /* Memberikan jarak antar foto */
+            flex-wrap: nowrap;      /* Memaksa foto tetap satu baris (tidak turun) */
+        }
+
+        .zoom-img {
+            cursor: zoom-in;
+            transition: transform 0.2s;
+            display: block;         /* Menghilangkan whitespace di bawah image */
+            object-fit: cover;      /* Memastikan foto tetap rapi dalam kotak 35x35 */
+        }
+
+        .zoom-img:hover {
+            transform: scale(1.1);
+        }
         }
     </style>
 </head>
@@ -435,12 +506,10 @@ if (isset($_POST['ajax_search'])) {
         
         <strong><i class="fa-solid fa-circle-info"></i> CARA PEMAKAIAN:</strong>
         <ul class="rules-list">
-            <li>Isi form <strong>Section</strong>, <strong>Lokasi</strong>, dan <strong>Detail Kerusakan</strong> 
-            dengan jelas.</li>
+            <li>Isi form <strong>Section</strong>, <strong>Lokasi</strong>, dan <strong>Detail Kerusakan</strong> dengan jelas.</li>
             <li>Wajib melampirkan <strong>Foto Before</strong> (Kondisi saat ini).</li>
             <li>Klik tombol <strong>Kirim</strong> untuk melaporkan keluhan.</li>
-            <li>Pastikan Anda <strong>Menandatangani (TTD)</strong> laporan pada menu <strong>LIHAT</strong> 
-            agar keluhan segera ditangani oleh Teknisi.</li>
+            <li>Pastikan Anda <strong>Menandatangani (TTD)</strong> laporan pada menu <strong>LIHAT</strong> agar keluhan segera ditangani oleh Teknisi.</li>
             <li>Anda dapat memantau status pengerjaan (PROSES/SELESAI) pada tabel di bawah.</li>
             <li>Tombol <strong>PDF</strong> akan aktif jika laporan sudah diverifikasi oleh PGA.</li>
         </ul>
@@ -536,10 +605,11 @@ if (isset($_POST['ajax_search'])) {
             <tbody id="tabel-data">
                 <?php
                 $no = 1;
+                // Query Awal Dibatasi 5 Data
                 $sql_init = "SELECT c.*, r.foto_after, r.ttd_user, r.ttd_pga
                     FROM complaints c
                     LEFT JOIN repair_actions r ON c.complain_id = r.complaint_id
-                    ORDER BY c.complain_id DESC"; 
+                    ORDER BY c.complain_id DESC LIMIT 5"; 
                 $q_init = mysqli_query($conn, $sql_init);
                 
                 while($row = mysqli_fetch_array($q_init)){
@@ -590,6 +660,10 @@ if (isset($_POST['ajax_search'])) {
             </tbody>
         </table>
     </div>
+
+    <div class="show-more-wrapper">
+        <button type="button" id="btn-load-more" class="btn-show-more">TAMPILKAN LEBIH BANYAK</button>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -608,6 +682,8 @@ if (isset($_POST['ajax_search'])) {
     function closeZoom() { $('#imageModal').removeClass('show'); }
 
     $(document).ready(function(){
+        let offset = 5; 
+        const limit = 5;
         let idleTime = 0;
         const keepAliveInterval = 30000; 
         let lastKeepAlive = Date.now();
@@ -639,15 +715,51 @@ if (isset($_POST['ajax_search'])) {
 
         $(document).on('click', '.zoom-img', function(){ openZoom($(this).attr('src')); });
 
-        $('#keyword').on('keyup', function(){
-            idleTime = 0; 
-            sendKeepAlive();
+        // LOGIKA LOAD MORE
+        $('#btn-load-more').on('click', function(){
+            const keyword = $('#keyword').val();
+            const btn = $(this);
+            btn.text('MEMUAT...');
+
             $.ajax({
                 url: 'index.php',
                 type: 'POST',
-                data: { ajax_search: true, keyword: $(this).val() },
+                data: { 
+                    ajax_search: true, 
+                    keyword: keyword,
+                    offset: offset 
+                },
+                success: function(response){
+                    if(response.trim() === "END") {
+                        btn.fadeOut();
+                    } else {
+                        $('#tabel-data').append(response);
+                        offset += limit;
+                        btn.text('TAMPILKAN LEBIH BANYAK');
+                    }
+                }
+            });
+        });
+
+        // LOGIKA SEARCH (RESET OFFSET)
+        $('#keyword').on('keyup', function(){
+            idleTime = 0; 
+            sendKeepAlive();
+            const keyword = $(this).val();
+            offset = 0;
+
+            $.ajax({
+                url: 'index.php',
+                type: 'POST',
+                data: { 
+                    ajax_search: true, 
+                    keyword: keyword,
+                    offset: 0 
+                },
                 success: function(response){
                     $('#tabel-data').html(response);
+                    offset = limit;
+                    $('#btn-load-more').fadeIn().text('TAMPILKAN LEBIH BANYAK');
                 }
             });
         });
