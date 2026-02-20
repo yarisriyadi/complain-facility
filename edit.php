@@ -49,6 +49,13 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SHINSEI - EDIT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<script>
+        (function() {
+            const savedTheme = localStorage.getItem('selected-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
     <link rel="stylesheet" href="style_theme.css">
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
     
@@ -253,6 +260,12 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
         .btn-update, .btn-back { width: 220px; }
         .btn-update { order: 2; } 
         .btn-back { order: 1; }
+    }
+    .theme-switcher {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
     }
 </style>
 </head>

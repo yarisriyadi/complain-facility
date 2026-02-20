@@ -100,6 +100,13 @@ if (isset($_POST['ajax_search'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SHINSEI - COMPLAIN FACILITY</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('selected-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
     <link rel="stylesheet" href="style_theme.css">
     
     <style>
@@ -472,26 +479,30 @@ if (isset($_POST['ajax_search'])) {
                 justify-content: space-between; 
                 text-align: left; 
             } 
-            /* Perbaikan CSS untuk Foto agar berjajar ke samping */
         .img-container {
-            display: flex;          /* Membuat isi di dalamnya berjajar horizontal */
-            justify-content: center; /* Mengetengahkan foto di dalam kolom */
-            align-items: center;     /* Menyejajarkan foto secara vertikal */
-            gap: 5px;               /* Memberikan jarak antar foto */
-            flex-wrap: nowrap;      /* Memaksa foto tetap satu baris (tidak turun) */
+            display: flex;          
+            justify-content: center; 
+            align-items: center;     
+            gap: 5px;              
+            flex-wrap: nowrap;      
         }
 
         .zoom-img {
             cursor: zoom-in;
             transition: transform 0.2s;
-            display: block;         /* Menghilangkan whitespace di bawah image */
-            object-fit: cover;      /* Memastikan foto tetap rapi dalam kotak 35x35 */
+            display: block;         
+            object-fit: cover;      
         }
-
         .zoom-img:hover {
             transform: scale(1.1);
         }
+        .theme-switcher {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
         }
+    }
     </style>
 </head>
 <body data-theme="dark"> 
@@ -514,7 +525,7 @@ if (isset($_POST['ajax_search'])) {
             <li>Tombol <strong>PDF</strong> akan aktif jika laporan sudah diverifikasi oleh PGA.</li>
         </ul>
 
-        <button class="btn-close-welcome" onclick="closeWelcome()">SAYA MENGERTI</button>
+        <button id="btn-understand" class="btn-close-welcome" onclick="closeWelcome()">SAYA MENGERTI</button>
     </div>
 </div>
 <?php $_SESSION['welcome_shown'] = true; endif; ?>
@@ -764,6 +775,16 @@ if (isset($_POST['ajax_search'])) {
             });
         });
     });
+    document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        const btn = document.getElementById('btn-understand');
+        
+        if (btn && btn.offsetParent !== null) {
+            event.preventDefault(); 
+            btn.click(); 
+        }
+    }
+ });
 </script>
 </body>
 </html>

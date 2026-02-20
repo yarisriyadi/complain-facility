@@ -46,6 +46,13 @@ if (isset($_POST['update_password'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Reset Password - SHINSEI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('selected-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
     <link rel="stylesheet" href="style_theme.css">
     <style>
         body { 
@@ -189,14 +196,15 @@ if (isset($_POST['update_password'])) {
             padding-top: 15px; 
             opacity: 0.6;
         }
+        .theme-switcher {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
-
-    <script>
-        const savedTheme = localStorage.getItem('selected-theme') || 'dark';
-        document.body.setAttribute('data-theme', savedTheme);
-    </script>
 
     <div class="theme-switcher">
         <button class="theme-btn" onclick="toggleTheme()" title="Ganti Tema">

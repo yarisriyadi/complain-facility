@@ -35,11 +35,13 @@ if (isset($_POST['ajax_search'])) {
                         ".($row['device_id'] ? substr($row['device_id'], 0, 15).'...' : '-')."
                     </td>
                     <td>
-                        <div><button type='button' class='btn-link' style='border:none; background:none; cursor:pointer; padding:0;' onclick=\"resetPassword('".$row['id']."', '".htmlspecialchars($row['username'])."')\">RESET PW</button></div>
+                        <div><button type='button' class='btn-link' style='border:none; background:none; cursor:pointer; padding:0;' 
+                        onclick=\"resetPassword('".$row['id']."', '".htmlspecialchars($row['username'])."')\">RESET PW</button></div>
                         <div style='margin-top: 8px;'>";
                         
                         if (!$isAdmin) {
-                            echo "<a href='proses_hapus_user.php?id=".$row['id']."' class='btn-link btn-delete' onclick='return confirm(\"HAPUS AKUN ".htmlspecialchars(strtoupper($row['username']))."?\")'>HAPUS AKUN</a>";
+                            echo "<a href='proses_hapus_user.php?id=".$row['id']."' 
+                            class='btn-link btn-delete' onclick='return confirm(\"HAPUS AKUN ".htmlspecialchars(strtoupper($row['username']))."?\")'>HAPUS AKUN</a>";
                         } else {
                             echo "<span style='color: #888; font-size: 10px; font-weight: bold; border: 1px solid #444; padding: 2px 5px; border-radius: 3px;'>PROTECTED</span>";
                         }
@@ -48,7 +50,6 @@ if (isset($_POST['ajax_search'])) {
                     </td>
                   </tr>";
         }
-        // Kirim penanda jika data mencapai limit untuk kontrol tombol di JS
         if (mysqli_num_rows($q) >= $limit) {
             echo "";
         }
@@ -65,6 +66,13 @@ if (isset($_POST['ajax_search'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADMIN - KELOLA USER</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('selected-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
     <link rel="stylesheet" href="style_theme.css">
     <style>
         body { 
@@ -234,8 +242,6 @@ if (isset($_POST['ajax_search'])) {
         .btn-delete:hover { 
             color: #a71d2a !important; 
         }
-
-        /* STYLE TAMPILKAN LEBIH BANYAK */
         .show-more-wrapper {
             text-align: center;
             padding: 10px;
@@ -254,14 +260,13 @@ if (isset($_POST['ajax_search'])) {
             font-size: 11px;
             transition: 0.3s;
             text-transform: uppercase;
-            display: none; /* Sembunyi secara default */
+            display: none; 
         }
         .btn-show-more:hover {
             background: #555;
             color: #fff;
             border-color: #888;
         }
-
         @media (min-width: 768px) {
             .header-section { 
                 flex-direction: row; 
@@ -281,7 +286,13 @@ if (isset($_POST['ajax_search'])) {
                 padding: 10px 25px; 
                 font-size: 13px; 
             }
+            .theme-switcher {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
         }
+    }
     </style>
 </head>
 <body data-theme="dark">

@@ -20,14 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (password_verify($password, $d_user['password']) || $password === $d_user['password']) {
         
-        // Cek Maintenance Mode
         if ($maintenance_mode && $d_user['role'] !== 'admin') {
             $_SESSION['error_msg'] = "Mohon Maaf, Sistem sedang dalam Maintenance.";
             header("location:login.php");
             exit;
         }
 
-        // Reset session error jika berhasil login
         unset($_SESSION['attempt']);
         unset($_SESSION['last_username']);
         unset($_SESSION['error_msg']);
@@ -47,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    //ika password salah
     $_SESSION['attempt'] = (isset($_SESSION['attempt'])) ? $_SESSION['attempt'] + 1 : 1;
     $_SESSION['error_msg'] = "Password Salah! (" . $_SESSION['attempt'] . "/5)";
     

@@ -6,6 +6,14 @@
     <title>REGISTRASI - CF</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('selected-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
     <link rel="stylesheet" href="style_theme.css">
     
     <style>
@@ -89,7 +97,6 @@
         }
         .btn-reg:hover { 
             transform: translateY(-3px);
-            /* Efek Aurora Hijau-Biru */
             background-image: linear-gradient(90deg, #28a745, #00ff88, #2ecc71, #28a745);
             background-size: 200% 100%;
             animation: auroraMove 2s linear infinite;
@@ -148,14 +155,15 @@
             font-weight: bold; 
             color: #2ecc71; 
         }
+        .theme-switcher {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
-
-    <script>
-        const savedTheme = localStorage.getItem('selected-theme') || 'dark';
-        document.body.setAttribute('data-theme', savedTheme);
-    </script>
 
     <div class="theme-switcher">
         <button class="theme-btn" onclick="toggleTheme()" title="Ganti Tema">

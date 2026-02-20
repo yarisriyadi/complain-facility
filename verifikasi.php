@@ -49,8 +49,14 @@ if (isset($_POST['verifikasi'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VERIFIKASI OTP - CF</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="style_theme.css">
-    <style>
+<script>
+        (function() {
+            const savedTheme = localStorage.getItem('selected-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <link rel="stylesheet" href="style_theme.css">    <style>
         body { 
             font-family: 'Segoe UI', Arial, sans-serif; 
             margin: 0; 
@@ -196,15 +202,18 @@ if (isset($_POST['verifikasi'])) {
             border-top: 1px solid var(--border-color); 
             padding-top: 15px; 
         }
-        @media screen and (max-width: 380px) { .otp-box { height: 45px; font-size: 20px; } }
+        @media screen and (max-width: 380px) { .otp-box { height: 45px; font-size: 20px; 
+    }
+    .theme-switcher {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
+    } 
+}
     </style>
 </head>
 <body>
-
-    <script>
-        const savedTheme = localStorage.getItem('selected-theme') || 'dark';
-        document.body.setAttribute('data-theme', savedTheme);
-    </script>
 
     <div class="theme-switcher">
         <button class="theme-btn" onclick="toggleTheme()" title="Ganti Tema">

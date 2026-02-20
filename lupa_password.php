@@ -20,8 +20,14 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
     <title>LUPA PASSWORD - CF</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="style_theme.css">
-    
+<script>
+        (function() {
+            const savedTheme = localStorage.getItem('selected-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <link rel="stylesheet" href="style_theme.css">    
     <style>
         body { 
             font-family: 'Segoe UI', Arial, sans-serif; 
@@ -171,14 +177,15 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
             font-size: 13px; 
             border: 1px solid #ffeeba;
         }
+        .theme-switcher {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
-
-    <script>
-        const savedTheme = localStorage.getItem('selected-theme') || 'dark';
-        document.body.setAttribute('data-theme', savedTheme);
-    </script>
 
     <div class="theme-switcher">
         <button class="theme-btn" onclick="toggleTheme()" title="Ganti Tema">

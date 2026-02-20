@@ -8,18 +8,26 @@ include 'koneksi.php';
 if (isset($_POST['update_email'])) {
     $email_lama = mysqli_real_escape_string($conn, $_POST['email_lama']);
     $email_baru = mysqli_real_escape_string($conn, $_POST['email_baru']);
-    $cek_email = mysqli_query($conn, "SELECT * FROM users WHERE email='$email_lama'");
+
+    $cek_email_lama = mysqli_query($conn, "SELECT * FROM users WHERE email='$email_lama'");
     
-    if (mysqli_num_rows($cek_email) > 0) {
-        $update = mysqli_query($conn, "UPDATE users SET email='$email_baru' WHERE email='$email_lama'");
+    if (mysqli_num_rows($cek_email_lama) > 0) {
         
-        if ($update) {
-            $success = "Email berhasil diperbarui! Silakan gunakan email baru untuk reset password.";
+        $cek_email_baru = mysqli_query($conn, "SELECT * FROM users WHERE email='$email_baru'");
+        
+        if (mysqli_num_rows($cek_email_baru) > 0) {
+            $error = "Email baru sudah terdaftar! Gunakan email lain.";
         } else {
-            $error = "Gagal memperbarui email di database.";
+            $update = mysqli_query($conn, "UPDATE users SET email='$email_baru' WHERE email='$email_lama'");
+            
+            if ($update) {
+                $success = "Email berhasil diperbarui! Silakan gunakan email baru.";
+            } else {
+                $error = "Gagal memperbarui database. Silakan hubungi admin.";
+            }
         }
     } else {
-        $error = "Email lama tidak terdaftar dalam sistem kami!";
+        $error = "Email lama tidak terdaftar dalam sistem!";
     }
 }
 ?>
@@ -31,8 +39,14 @@ if (isset($_POST['update_email'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UPDATE EMAIL - CF</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="style_theme.css">
-    
+<script>
+        (function() {
+            const savedTheme = localStorage.getItem('selected-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <link rel="stylesheet" href="style_theme.css">    
     <style>
         body { 
             font-family: 'Segoe UI', Arial, sans-serif; 
@@ -171,14 +185,15 @@ if (isset($_POST['update_email'])) {
         border-top: 1px solid var(--border-color); 
         padding-top: 15px; 
     }
+    .theme-switcher {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
-
-    <script>
-        const savedTheme = localStorage.getItem('selected-theme') || 'dark';
-        document.body.setAttribute('data-theme', savedTheme);
-    </script>
 
     <div class="theme-switcher">
         <button class="theme-btn" onclick="toggleTheme()" title="Ganti Tema">

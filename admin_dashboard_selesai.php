@@ -10,7 +10,6 @@ if(!isset($_SESSION['status']) || $_SESSION['role'] != "admin"){
 $role_login = $_SESSION['role'];
 $nama_login = $_SESSION['nama'];
 
-// LOGIKA AJAX SEARCH & LOAD MORE
 if (isset($_POST['ajax_search'])) {
     $search = mysqli_real_escape_string($conn, $_POST['keyword']);
     $offset = isset($_POST['offset']) ? (int)$_POST['offset'] : 0;
@@ -73,6 +72,13 @@ if (isset($_POST['ajax_search'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADMIN MONITORING - SELESAI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('selected-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
     <link rel="stylesheet" href="style_theme.css">
     <style>
         body { 
@@ -366,26 +372,29 @@ if (isset($_POST['ajax_search'])) {
                 padding: 10px 25px; 
                 font-size: 13px; 
             }
-            /* Perbaikan CSS untuk Foto agar berjajar ke samping */
-        .img-container {
-            display: flex;          /* Membuat isi di dalamnya berjajar horizontal */
-            justify-content: center; /* Mengetengahkan foto di dalam kolom */
-            align-items: center;     /* Menyejajarkan foto secara vertikal */
-            gap: 5px;               /* Memberikan jarak antar foto */
-            flex-wrap: nowrap;      /* Memaksa foto tetap satu baris (tidak turun) */
+            .img-container {
+                display: flex;       
+                justify-content: center; 
+                align-items: center;     
+                gap: 5px;               
+                flex-wrap: nowrap;     
+            }
+            .zoom-img {
+                cursor: zoom-in;
+                transition: transform 0.2s;
+                display: block;        
+                object-fit: cover;      
         }
-
-        .zoom-img {
-            cursor: zoom-in;
-            transition: transform 0.2s;
-            display: block;         /* Menghilangkan whitespace di bawah image */
-            object-fit: cover;      /* Memastikan foto tetap rapi dalam kotak 35x35 */
+            .zoom-img:hover {
+                transform: scale(1.1);
+            }
+            .theme-switcher {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
         }
-
-        .zoom-img:hover {
-            transform: scale(1.1);
-        }
-        }
+    }
     </style>
 </head>
 <body data-theme="dark">
@@ -556,7 +565,6 @@ if (isset($_POST['ajax_search'])) {
             });
         });
 
-        // LOGIKA SEARCH
         $('#keyword').on('keyup', function(){
             const keyword = $(this).val();
             offset = 0;
