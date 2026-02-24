@@ -14,10 +14,7 @@ include 'koneksi.php';
 $role_login = $_SESSION['role'];
 $nama_login = $_SESSION['nama_lengkap'] ?? $_SESSION['nama'];
 
-if ($role_login == 'admin' || $role_login == 'teknisi') {
-    header("location:admin_dashboard_proses.php");
-    exit;
-}
+
 
 // LOGIKA AJAX SEARCH & LOAD MORE
 if (isset($_POST['ajax_search'])) {
@@ -503,6 +500,11 @@ if (isset($_POST['ajax_search'])) {
             z-index: 1000;
         }
     }
+    .btn-logout[style*="#007bff"]:hover {
+     background: #007bff !important;
+    color: #fff !important;
+    box-shadow: 0 3px 8px rgba(38, 0, 255, 0.63) !important;
+}
     </style>
 </head>
 <body data-theme="dark"> 
@@ -547,8 +549,12 @@ if (isset($_POST['ajax_search'])) {
         <div>
             <h2>COMPLAIN FACILITY</h2>
             <div class="user-info">
-                HALO, <strong><?php echo strtoupper(htmlspecialchars($nama_login)); ?></strong>
+    HALO, <strong><?php echo strtoupper(htmlspecialchars($nama_login)); ?></strong>
+    
                 <a href="logout.php" class="btn-logout" onclick="return confirm('YAKIN INGIN KELUAR?')">KELUAR</a>
+                <?php if($role_login === 'admin'): ?>
+                    <a href="admin_dashboard_proses.php" class="btn-logout" style="color: #007bff; border-color: #007bff; margin-right: 5px;">ADMIN</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>

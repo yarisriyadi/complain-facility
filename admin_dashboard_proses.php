@@ -11,7 +11,6 @@ $role_login = $_SESSION['role'];
 $nama_login = $_SESSION['nama'];
 $dashboard_title = ($role_login === 'admin') ? "ADMIN MONITORING" : "TEKNISI MONITORING";
 
-// LOGIKA AJAX SEARCH & LOAD MORE
 if (isset($_POST['ajax_search'])) {
     $search = mysqli_real_escape_string($conn, $_POST['keyword']);
     $offset = isset($_POST['offset']) ? (int)$_POST['offset'] : 0;
@@ -362,6 +361,11 @@ if (isset($_POST['ajax_search'])) {
             z-index: 1000;
         }
     }
+    .btn-logout[style*="#007bff"]:hover {
+     background: #007bff !important;
+    color: #fff !important;
+    box-shadow: 0 3px 8px rgba(38, 0, 255, 0.63) !important;
+}
     </style>
 </head>
 <body data-theme="dark">
@@ -384,6 +388,9 @@ if (isset($_POST['ajax_search'])) {
             <div class="user-info">
                 HALO, <strong><?php echo htmlspecialchars(strtoupper($nama_login)); ?></strong>
                 <a href="logout.php" class="btn-logout" onclick="return confirm('YAKIN INGIN KELUAR?')">KELUAR</a>
+                <?php if($role_login === 'admin'): ?>
+                    <a href="index.php" class="btn-logout" style="color: #007bff; border-color: #007bff; margin-right: 5px;">USER</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>

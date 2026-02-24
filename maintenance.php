@@ -185,7 +185,7 @@ session_destroy();
 
         <p class="maintenance-msg">
             Mohon maaf atas ketidaknyamanannya. <br>
-            Sistem sedang dalam perbaikan rutin. Demi keamanan, data input Anda tidak disimpan.
+            Sistem sedang dalam perbaikan rutin. Demi keamanan, data input anda tidak disimpan.
         </p>
 
         <div class="btn-countdown">
