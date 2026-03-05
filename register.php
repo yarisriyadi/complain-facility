@@ -161,6 +161,38 @@
             left: 25px;
             z-index: 1000;
         }
+        body.swal2-shown {
+        overflow-y: scroll !important;
+        padding-right: 0 !important;
+}
+        .swal2-popup {
+            background: var(--container-bg) !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--border-color);
+    }   
+        .swal2-title, .swal2-html-container {
+            color: var(--text-color) !important;
+    }
+        body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
+            overflow: initial !important;
+            padding-right: 0 !important;  
+    }
+        html.swal2-shown {
+            overflow: initial !important;
+    } 
+        ::-webkit-scrollbar {
+            width: 10px;
+    }
+        ::-webkit-scrollbar-track {
+            background: #222; 
+    }
+        ::-webkit-scrollbar-thumb {
+            background: #555; 
+            border-radius: 10px;
+    }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #888; 
+    }
     </style>
 </head>
 <body>
@@ -233,6 +265,7 @@
         <div class="copyright">&copy; 2026 PT. Shinsei Denshi Indonesia.</div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://openfpcdn.io/fingerprintjs/v4/i.js"></script>
     <script src="theme_script.js"></script>
 
@@ -337,15 +370,61 @@
     }
 
     function handleRegistration(e) {
-        validateForm();
-        if (!isUserValid || !isNameValid || !isEmailValid || !isPassValid || !isConfirmValid) {
-            e.preventDefault();
-            alert("Periksa kembali inputan Anda!");
-            return false;
-        }
-        return true;
+    e.preventDefault(); 
+    validateForm(); 
+
+    if (!isUserValid || !isNameValid || !isEmailValid || !isPassValid || !isConfirmValid) {
+        Swal.fire({
+            title: 'DATA BELUM VALID',
+            text: 'Harap periksa kembali semua kolom inputan Anda yang bertanda merah.',
+            icon: 'error',
+            confirmButtonColor: '#28a745'
+        });
+        return false;
     }
 
+    Swal.fire({
+        title: 'KONFIRMASI',
+        text: "Apakah data yang Anda masukkan sudah benar?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'YA, DAFTAR',
+        cancelButtonText: 'BATAL'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Tampilkan Loading
+            Swal.fire({
+                title: 'PROSES...',
+                text: 'Sedang mendaftarkan akun Anda.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            const formData = new FormData(document.getElementById('regForm'));
+            
+            fetch('proses_register.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                Swal.close();
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = data;
+                const scripts = tempDiv.getElementsByTagName('script');
+                for (let n = 0; n < scripts.length; n++) {
+                    eval(scripts[n].innerHTML);
+                }
+            })
+            .catch(error => {
+                Swal.fire('Error', 'Terjadi kesalahan koneksi ke server.', 'error');
+            });
+        }
+    });
+}
     [usernameInput, nameInput, emailInput, passwordInput, confirmInput].forEach(el => {
         el.addEventListener('keyup', validateForm);
         el.addEventListener('blur', validateForm);

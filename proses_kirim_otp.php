@@ -45,7 +45,7 @@ if (isset($_POST['email'])) {
                 $mail->Host       = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
                 $mail->Username   = 'pthtmi123@gmail.com'; 
-                $mail->Password   = 'qcknezwknlrwvpeb'; 
+                $mail->Password   = 'xuvalxykuepbpblc'; 
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
                 $mail->Port       = 465; 
 
@@ -91,7 +91,7 @@ if (isset($_POST['email'])) {
                                 Halo <strong>" . htmlspecialchars($nama_lengkap) . "</strong>,
                             </p>
                             <p style='margin: 0 0 20px 0; font-size: 14px; color: #4a5568; line-height: 1.5;'>
-                                Berikut adalah kode OTP Anda untuk melanjutkan proses perubahan password di sistem :
+                                Berikut adalah kode OTP Anda untuk melanjutkan proses perubahan password di sistem Complain Facility:
                             </p>
                             
                             <table width='100%' border='0' cellspacing='0' cellpadding='0' style='margin: 25px 0;'>

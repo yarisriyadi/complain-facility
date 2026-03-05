@@ -483,50 +483,65 @@ if (isset($_POST['ajax_search'])) {
             loadData(currentLimit);
         });
     });
-    $(document).on('click', '.alert-logout', function(e){
-        e.preventDefault(); 
-        const url = $(this).attr('href');
-        
-        Swal.fire({
-            title: 'YAKIN INGIN KELUAR?',
-            text: "Sesi Anda akan diakhiri.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#dc3545',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'YA, KELUAR',
-            cancelButtonText: 'BATAL',
-            scrollbarPadding: false, 
-            heightAuto: false        
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = url;
-            }
-        });
-    });
+    const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+});
 
-    $(document).on('click', '.alert-delete', function(e){
-        e.preventDefault();
-        const id = $(this).data('id');
-        const username = $(this).data('username').toUpperCase();
-        
-        Swal.fire({
-            title: 'HAPUS AKUN?',
-            text: "Apakah Anda yakin ingin menghapus akun " + username + " ?",
-            icon: 'error',
-            showCancelButton: true,
-            confirmButtonColor: '#dc3545',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'YA, HAPUS',
-            cancelButtonText: 'BATAL',
-            scrollbarPadding: false,
-            heightAuto: false
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = "proses_hapus_user.php?id=" + id;
-            }
-        });
+// 2. Event Listener untuk Hapus Akun
+$(document).on('click', '.alert-delete', function(e) {
+    e.preventDefault();
+    
+    const btn = $(this);
+    const id = btn.data('id');
+    const username = btn.data('username').toUpperCase();
+    const row = btn.closest('tr'); // Mengambil baris tabel terkait
+
+    Swal.fire({
+        title: 'HAPUS AKUN?',
+        text: "Apakah Anda yakin ingin menghapus akun " + username + "?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'YA, HAPUS',
+        cancelButtonText: 'BATAL',
+        scrollbarPadding: false,
+        heightAuto: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: 'proses_hapus_user.php',
+                type: 'GET',
+                data: { id: id },
+                success: function(response) {
+                    row.fadeOut(400, function() { 
+                        $(this).remove(); 
+                    });
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'AKUN ' + username + ' BERHASIL DIHAPUS'
+                    });
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'GAGAL',
+                        text: 'Terjadi kesalahan sistem.',
+                        heightAuto: false
+                    });
+                }
+            });
+        }
     });
+});
 
     function resetPassword(id, username) {
         Swal.fire({
