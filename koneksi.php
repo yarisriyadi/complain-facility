@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $user = "root";
-$pass = "c3zg5-m/o7n7XmV2";
+$pass = "";
 $db   = "complain-facility";
 
 $conn = mysqli_connect($host, $user, $pass, $db);
