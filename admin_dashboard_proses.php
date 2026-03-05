@@ -60,7 +60,8 @@ if (isset($_POST['ajax_search'])) {
                     <td>
                         <div><a href='edit.php?id=".$row['complain_id']."' class='btn-link'>LIHAT</a></div>";
             if($role_login === 'admin'){
-                echo "<div style='margin-top: 8px;'><a href='proses.php?hapus=".$row['complain_id']."&asal=proses' class='btn-link btn-delete' onclick='return confirm(\"HAPUS DATA INI?\")'>HAPUS</a></div>";
+                // Cari bagian ini di atas dan di dalam PHP loop
+                echo "<div style='margin-top: 8px;'><a href='proses.php?hapus=".$row['complain_id']."&asal=proses' class='btn-link btn-delete'>HAPUS</a></div>";
             }
             echo "</td></tr>";
         }
@@ -361,11 +362,30 @@ if (isset($_POST['ajax_search'])) {
             z-index: 1000;
         }
     }
-    .btn-logout[style*="#007bff"]:hover {
-     background: #007bff !important;
-    color: #fff !important;
-    box-shadow: 0 3px 8px rgba(38, 0, 255, 0.63) !important;
-}
+        .btn-logout[style*="#007bff"]:hover {
+            background: #007bff !important;
+            color: #fff !important;
+            box-shadow: 0 3px 8px rgba(38, 0, 255, 0.63) !important;
+        }
+        body.swal2-shown {
+            overflow-y: scroll !important;
+            padding-right: 0 !important;
+        }
+        .swal2-popup {
+            background: var(--container-bg) !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--border-color);
+        }
+        .swal2-title, .swal2-html-container {
+            color: var(--text-color) !important;
+        }
+        body.swal2-shown {
+            overflow: hidden !important;
+            padding-right: 0 !important;
+        }
+        html.swal2-shown {
+            overflow: hidden !important;
+    }
     </style>
 </head>
 <body data-theme="dark">
@@ -387,7 +407,7 @@ if (isset($_POST['ajax_search'])) {
             <h2><?php echo $dashboard_title; ?></h2>
             <div class="user-info">
                 HALO, <strong><?php echo htmlspecialchars(strtoupper($nama_login)); ?></strong>
-                <a href="logout.php" class="btn-logout" onclick="return confirm('YAKIN INGIN KELUAR?')">KELUAR</a>
+                <a href="logout.php" class="btn-logout alert-logout">KELUAR</a>
                 <?php if($role_login === 'admin'): ?>
                     <a href="index.php" class="btn-logout" style="color: #007bff; border-color: #007bff; margin-right: 5px;">USER</a>
                 <?php endif; ?>
@@ -428,7 +448,6 @@ if (isset($_POST['ajax_search'])) {
             <tbody id="tabel-data">
                 <?php
                 $no = 1;
-                // Query Awal dibatasi 5 data sesuai index.php
                 $q = mysqli_query($conn, "SELECT c.*, r.foto_after, r.ttd_user, r.ttd_pga FROM complaints c LEFT JOIN repair_actions r ON c.complain_id = r.complaint_id WHERE (r.ttd_user IS NULL OR r.ttd_user = '' OR r.ttd_pga IS NULL OR r.ttd_pga = '') ORDER BY c.complain_id DESC LIMIT 5");
                 while($row = mysqli_fetch_array($q)){
                     $has_user = !empty($row['ttd_user']); $has_pga = !empty($row['ttd_pga']);
@@ -460,7 +479,7 @@ if (isset($_POST['ajax_search'])) {
                     <td>
                         <div><a href="edit.php?id=<?php echo $row['complain_id']; ?>" class="btn-link">LIHAT</a></div>
                         <?php if($role_login === 'admin'): ?>
-                        <div style="margin-top: 8px;"><a href="proses.php?hapus=<?php echo $row['complain_id']; ?>&asal=proses" class="btn-link btn-delete" onclick="return confirm('HAPUS DATA INI?')">HAPUS</a></div>
+                        <div style="margin-top: 8px;"><a href="proses.php?hapus=<?php echo $row['complain_id']; ?>&asal=proses" class="btn-link btn-delete" ('HAPUS DATA INI?')">HAPUS</a></div>
                         <?php endif; ?>
                     </td>
                 </tr>
@@ -474,6 +493,7 @@ if (isset($_POST['ajax_search'])) {
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="theme_script.js"></script> 
 <script>
@@ -482,6 +502,19 @@ if (isset($_POST['ajax_search'])) {
     let lastKeepAlive = Date.now();
     const limit = 5;
     let offset = 5;
+
+    // Konfigurasi Toast SweetAlert2
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
 
     $(document).ready(function () {
         let idleInterval = setInterval(timerIncrement, 1000); 
@@ -503,7 +536,6 @@ if (isset($_POST['ajax_search'])) {
             sendKeepAlive(); 
         });
 
-        // LOGIKA LOAD MORE
         $('#btn-load-more').on('click', function(){
             const keyword = $('#keyword').val();
             const btn = $(this);
@@ -529,7 +561,6 @@ if (isset($_POST['ajax_search'])) {
             });
         });
 
-        // LOGIKA SEARCH (RESET OFFSET)
         $('#keyword').on('keyup', function(){
             const keyword = $(this).val();
             offset = 0;
@@ -549,7 +580,70 @@ if (isset($_POST['ajax_search'])) {
                 }
             });
         });
+
+        $(document).on('click', '.alert-logout', function(e){
+        e.preventDefault(); // Menghentikan link langsung terbuka
+        const url = $(this).attr('href');
+        
+        Swal.fire({
+            title: 'YAKIN INGIN KELUAR?',
+            text: "Sesi Anda akan diakhiri.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'YA, KELUAR',
+            cancelButtonText: 'BATAL',
+            scrollbarPadding: false,
+            heightAuto: false 
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
     });
+
+    $(document).on('click', '.btn-delete', function(e){
+        e.preventDefault();
+        const url = $(this).attr('href');
+        const row = $(this).closest('tr');
+
+        Swal.fire({
+            title: 'HAPUS DATA?',
+            text: "Data yang dihapus tidak dapat dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'YA, HAPUS',
+            cancelButtonText: 'BATAL',
+            scrollbarPadding: false,
+            heightAuto: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(response){
+                        row.fadeOut(400, function(){ $(this).remove(); });
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Data berhasil dihapus'
+                        });
+                    },
+                    error: function(){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Terjadi kesalahan saat menghapus data.',
+                            heightAuto: false
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
 
     function timerIncrement() {
         idleTime++;

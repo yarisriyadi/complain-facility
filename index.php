@@ -210,26 +210,38 @@ if (isset($_POST['ajax_search'])) {
         button[name="simpan"] { 
             width: 100%; 
             padding: 12px; 
-            background: #007bff; 
+            background-color: #007bff; 
+            background-image: linear-gradient(90deg, #007bff, #007bff);
+            background-size: 100% 100%;
             color: white; 
             border: none; 
             cursor: pointer; 
-            border-radius: 4px; 
+            border-radius: 8px; 
             margin-top: 15px; 
             font-weight: bold; 
             font-size: 16px; 
             text-transform: uppercase; 
-            transition: all 0.3s ease; 
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
         }
         button[name="simpan"]:hover:not(:disabled) { 
-            background: #0056b3; 
-            transform: translateY(-2px); 
-            box-shadow: 0 4px 10px rgba(0,123,255,0.3); 
+            transform: translateY(-3px);
+            background-image: linear-gradient(90deg, #007bff, #00d4ff, #0056b3, #007bff);
+            background-size: 200% 100%;
+            animation: auroraMove 2s linear infinite;
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5), 0 0 40px rgba(0, 123, 255, 0.3);
         }
-        button[name="simpan"]:disabled { 
-            background: #999; 
-            cursor: not-allowed; 
+        button[name="simpan"]:active:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
         }
+        @keyframes auroraMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+}
         .maintenance-warning { 
             background: #fff3cd; 
             color: #856404; 
@@ -365,9 +377,7 @@ if (isset($_POST['ajax_search'])) {
             text-transform: uppercase; 
             cursor: not-allowed; 
             text-decoration: none !important; 
-        }
-        
-        /* CSS LOAD MORE MINIMALIS */
+        }        
         .show-more-wrapper {
             text-align: center;
             padding: 10px;
@@ -500,11 +510,43 @@ if (isset($_POST['ajax_search'])) {
             z-index: 1000;
         }
     }
-    .btn-logout[style*="#007bff"]:hover {
-     background: #007bff !important;
-    color: #fff !important;
-    box-shadow: 0 3px 8px rgba(38, 0, 255, 0.63) !important;
+        .btn-logout[style*="#007bff"]:hover {
+            background: #007bff !important;
+            color: #fff !important;
+            box-shadow: 0 3px 8px rgba(38, 0, 255, 0.63) !important;
 }
+        body.swal2-shown {
+        overflow-y: scroll !important;
+        padding-right: 0 !important;
+}
+        .swal2-popup {
+            background: var(--container-bg) !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--border-color);
+    }   
+        .swal2-title, .swal2-html-container {
+            color: var(--text-color) !important;
+    }
+        body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
+            overflow: initial !important;
+            padding-right: 0 !important;  
+    }
+        html.swal2-shown {
+            overflow: initial !important;
+    } 
+        ::-webkit-scrollbar {
+            width: 10px;
+    }
+        ::-webkit-scrollbar-track {
+            background: #222; 
+    }
+        ::-webkit-scrollbar-thumb {
+            background: #555; 
+            border-radius: 10px;
+    }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #888; 
+    }
     </style>
 </head>
 <body data-theme="dark"> 
@@ -522,7 +564,8 @@ if (isset($_POST['ajax_search'])) {
             <li>Isi form <strong>Section</strong>, <strong>Lokasi</strong>, dan <strong>Detail Kerusakan</strong> dengan jelas.</li>
             <li>Wajib melampirkan <strong>Foto Before</strong> (Kondisi saat ini).</li>
             <li>Klik tombol <strong>Kirim</strong> untuk melaporkan keluhan.</li>
-            <li>Pastikan Anda <strong>Menandatangani (TTD)</strong> laporan pada menu <strong>LIHAT</strong> agar keluhan segera ditangani oleh Teknisi.</li>
+            <li>Pastikan Anda <strong>Menandatangani (TTD)</strong> laporan pada menu <strong>LIHAT</strong> (Pada Table),
+              agar keluhan segera ditangani oleh Teknisi.</li>
             <li>Anda dapat memantau status pengerjaan (PROSES/SELESAI) pada tabel di bawah.</li>
             <li>Tombol <strong>PDF</strong> akan aktif jika laporan sudah diverifikasi oleh PGA.</li>
         </ul>
@@ -549,9 +592,8 @@ if (isset($_POST['ajax_search'])) {
         <div>
             <h2>COMPLAIN FACILITY</h2>
             <div class="user-info">
-    HALO, <strong><?php echo strtoupper(htmlspecialchars($nama_login)); ?></strong>
-    
-                <a href="logout.php" class="btn-logout" onclick="return confirm('YAKIN INGIN KELUAR?')">KELUAR</a>
+                HALO, <strong><?php echo strtoupper(htmlspecialchars($nama_login)); ?></strong>
+                <a href="logout.php" class="btn-logout alert-logout">KELUAR</a>
                 <?php if($role_login === 'admin'): ?>
                     <a href="admin_dashboard_proses.php" class="btn-logout" style="color: #007bff; border-color: #007bff; margin-right: 5px;">ADMIN</a>
                 <?php endif; ?>
@@ -683,6 +725,7 @@ if (isset($_POST['ajax_search'])) {
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="theme_script.js"></script>
 <script>
@@ -732,7 +775,6 @@ if (isset($_POST['ajax_search'])) {
 
         $(document).on('click', '.zoom-img', function(){ openZoom($(this).attr('src')); });
 
-        // LOGIKA LOAD MORE
         $('#btn-load-more').on('click', function(){
             const keyword = $('#keyword').val();
             const btn = $(this);
@@ -758,7 +800,6 @@ if (isset($_POST['ajax_search'])) {
             });
         });
 
-        // LOGIKA SEARCH (RESET OFFSET)
         $('#keyword').on('keyup', function(){
             idleTime = 0; 
             sendKeepAlive();
@@ -781,6 +822,29 @@ if (isset($_POST['ajax_search'])) {
             });
         });
     });
+
+    $(document).on('click', '.alert-logout', function(e){
+        e.preventDefault(); 
+        const url = $(this).attr('href');
+        
+        Swal.fire({
+            title: 'YAKIN INGIN KELUAR?',
+            text: "Sesi Anda akan diakhiri.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'YA, KELUAR',
+            cancelButtonText: 'BATAL',
+            scrollbarPadding: false, 
+            heightAuto: false        
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
+
     document.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         const btn = document.getElementById('btn-understand');

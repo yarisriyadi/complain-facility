@@ -267,6 +267,24 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
             left: 25px;
             z-index: 1000;
     }
+        body.swal2-shown {
+        padding-right: 0 !important;
+    }
+        html.swal2-shown, body.swal2-shown {
+        height: auto !important;
+        overflow: auto !important; 
+    }
+        html {
+        scrollbar-gutter: stable;
+    }
+    .swal2-popup {
+        background: var(--container-bg) !important;
+        color: var(--text-color) !important;
+        border: 1px solid var(--border-color);
+    }
+    .swal2-title, .swal2-html-container {
+        color: var(--text-color) !important;
+}
 </style>
 </head>
 <body data-theme="dark">
@@ -358,6 +376,7 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
     </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="theme_script.js"></script>
 <script>
@@ -469,17 +488,45 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
     canvasPga.addEventListener('touchstart', resetTimer);
 
     const setupClear = (btnId, pad, inputId) => {
-        const btn = document.getElementById(btnId);
-        if(btn) {
-            btn.onclick = () => {
-                resetTimer(); 
-                if(confirm("Hapus tanda tangan ini?")) {
+    const btn = document.getElementById(btnId);
+    if(btn) {
+        btn.onclick = () => {
+            resetTimer(); 
+            Swal.fire({
+                title: 'Hapus Tanda Tangan?',
+                text: "Tanda tangan yang sudah dibuat akan dikosongkan.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true, 
+                heightAuto: false 
+            }).then((result) => {
+                if (result.isConfirmed) {
                     pad.clear();
-                    document.getElementById(inputId).value = "";
+                    const inputElement = document.getElementById(inputId);
+                    if (inputElement) {
+                        inputElement.value = "";
+                    }
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Tanda tangan dihapus'
+                    });
                 }
-            };
-        }
-    };
+            });
+        };
+    }
+};
 
     setupClear('clear-user', pUser, 'in-user');
     setupClear('clear-pga', pPga, 'in-pga');
@@ -496,29 +543,57 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
         const isPgaEmpty = (pPga.isEmpty() && inputPga.value === "");
 
         if (role === 'teknisi') {
-            return true; 
-        }
+    return true; 
+}
 
-        if (role === 'admin' || role === 'superadmin') {
-            if (isUserEmpty && isPgaEmpty) {
-                alert("Kedua tanda tangan tidak boleh kosong!");
-                e.preventDefault(); return false;
-            }
-            else if (isPgaEmpty) {
-                alert("Anda wajib tanda tangan PGA untuk verifikasi!");
-                e.preventDefault(); return false;
-            }
-            else if (isUserEmpty) {
-                alert("Tanda tangan USER tidak boleh dihapus/kosong!");
-                e.preventDefault(); return false;
-            }
-        } 
-        
-        else if (role === 'user') {
-            if (isUserEmpty) {
-                alert("Anda wajib tanda tangan USER sebagai konfirmasi!");
-                e.preventDefault(); return false;
-            }
+if (role === 'admin' || role === 'superadmin') {
+    if (isUserEmpty && isPgaEmpty) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Tanda Tangan Kosong',
+            text: 'Kedua tanda tangan tidak boleh kosong!',
+            confirmButtonColor: '#3085d6',
+            heightAuto: false 
+        });
+        e.preventDefault(); 
+        return false;
+    }
+    else if (isPgaEmpty) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Verifikasi Diperlukan',
+            text: 'Anda wajib tanda tangan PGA untuk verifikasi!',
+            confirmButtonColor: '#3085d6',
+            heightAuto: false 
+        });
+        e.preventDefault(); 
+        return false;
+    }
+    else if (isUserEmpty) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Data Tidak Valid',
+            text: 'Tanda tangan USER tidak boleh dihapus atau kosong!',
+            confirmButtonColor: '#d33',
+            heightAuto: false 
+        });
+        e.preventDefault(); 
+        return false;
+    }
+} 
+
+else if (role === 'user') {
+    if (isUserEmpty) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Konfirmasi Diperlukan',
+            text: 'Anda wajib tanda tangan USER sebagai konfirmasi!',
+            confirmButtonColor: '#3085d6',
+            heightAuto: false 
+        });
+        e.preventDefault(); 
+        return false;
+    }
 
             const ttdDbUser = `<?php echo $d['ttd_user']; ?>`;
             const waChecked = document.getElementById('wa_teknisi').value;

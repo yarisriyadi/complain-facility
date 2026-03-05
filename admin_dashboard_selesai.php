@@ -204,12 +204,14 @@ if (isset($_POST['ajax_search'])) {
         .input-search:focus { 
             border: 1px solid #28a745; 
             box-shadow: 0 0 5px rgba(40,167,69,0.2); 
-    }    
+        }    
         .btn-excel { 
             background-color: #28a745; 
+            background-image: linear-gradient(90deg, #28a745, #28a745);
+            background-size: 100% 100%;
             color: white; 
             padding: 10px 18px; 
-            border-radius: 4px; 
+            border-radius: 8px; 
             text-decoration: none; 
             font-size: 13px; 
             font-weight: bold; 
@@ -217,17 +219,28 @@ if (isset($_POST['ajax_search'])) {
             align-items: center; 
             gap: 8px; 
             white-space: nowrap; 
-            transition: 0.3s; 
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
             border: none; 
-            cursor: pointer; 
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
         }
         .btn-excel:hover { 
-            background-color: #145532 !important; 
-            transform: translateY(-2px); 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+            transform: translateY(-3px);
+            background-image: linear-gradient(90deg, #28a745, #00ff88, #2ecc71, #28a745);
+            background-size: 200% 100%;
+            animation: auroraMove 2s linear infinite;
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5), 0 0 40px rgba(40, 167, 69, 0.3);
+            color: white; 
         }
-
-        /* CSS LOAD MORE */
+        @keyframes auroraMove {
+            0% { background-position: 0% 50%; 
+        }
+            100% { background-position: 200% 50%; 
+        }
+        }
         .show-more-wrapper {
             text-align: center;
             padding: 10px;
@@ -389,17 +402,35 @@ if (isset($_POST['ajax_search'])) {
                 transform: scale(1.1);
             }
             .theme-switcher {
-            position: fixed;
-            bottom: 25px;
-            left: 25px;
-            z-index: 1000;
+                position: fixed;
+                bottom: 25px;
+                left: 25px;
+                z-index: 1000;
+            }
         }
-    }
-    .btn-logout[style*="#007bff"]:hover {
-     background: #007bff !important;
-    color: #fff !important;
-    box-shadow: 0 3px 8px rgba(38, 0, 255, 0.63) !important;
-}
+            .btn-logout[style*="#007bff"]:hover {
+                background: #007bff !important;
+                color: #fff !important;
+                box-shadow: 0 3px 8px rgba(38, 0, 255, 0.63) !important;    }
+            body.swal2-shown {
+                overflow-y: scroll !important;
+                padding-right: 0 !important;
+        }
+            .swal2-popup {
+                background: var(--container-bg) !important;
+                color: var(--text-color) !important;
+                border: 1px solid var(--border-color);
+        }
+            .swal2-title, .swal2-html-container {
+                color: var(--text-color) !important;
+        }
+            body.swal2-shown {
+                overflow: hidden !important;
+                padding-right: 0 !important;
+        }
+            html.swal2-shown {
+                overflow: hidden !important;
+        }
     </style>
 </head>
 <body data-theme="dark">
@@ -422,7 +453,8 @@ if (isset($_POST['ajax_search'])) {
             <h2>ADMIN MONITORING</h2>
             <div class="user-info">
                 HALO, <strong><?php echo htmlspecialchars(strtoupper($nama_login)); ?></strong>
-                <a href="logout.php" class="btn-logout" onclick="return confirm('YAKIN INGIN KELUAR?')">KELUAR</a>
+                <a href="logout.php" class="btn-logout alert-logout">KELUAR</a>
+                
                 <?php if($role_login === 'admin'): ?>
                     <a href="index.php" class="btn-logout" style="color: #007bff; border-color: #007bff; margin-right: 5px;">USER</a>
                 <?php endif; ?>
@@ -495,8 +527,10 @@ if (isset($_POST['ajax_search'])) {
                     </td>
                     <td>
                         <div><a href="edit.php?id=<?php echo $row['complain_id']; ?>" class="btn-link">LIHAT</a></div>
-                        <div style="margin-top: 8px;"><a href="cetak.php?id=<?php echo $row['complain_id']; ?>" target="_blank" class="btn-pdf-enabled">PDF</a></div>
-                        <div style="margin-top: 8px;"><a href="proses.php?hapus=<?php echo $row['complain_id']; ?>&asal=selesai" class="btn-link btn-delete" onclick="return confirm('HAPUS DATA INI?')">HAPUS</a></div>
+                        <div style="margin-top: 8px;">
+                            <a href="cetak.php?id=<?php echo $row['complain_id']; ?>" target="_blank" class="btn-pdf-enabled">PDF</a></div>
+                        <div style="margin-top: 8px;">
+                            <a href="proses.php?hapus=<?php echo $row['complain_id']; ?>&asal=proses" class="btn-link btn-delete">HAPUS</a>
                     </td>
                 </tr>
                 <?php } ?>
@@ -509,6 +543,7 @@ if (isset($_POST['ajax_search'])) {
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="theme_script.js"></script>
 
@@ -547,7 +582,6 @@ if (isset($_POST['ajax_search'])) {
             sendKeepAlive();
         });
 
-        // LOGIKA LOAD MORE
         $('#btn-load-more').on('click', function(){
             const keyword = $('#keyword').val();
             const btn = $(this);
@@ -572,6 +606,85 @@ if (isset($_POST['ajax_search'])) {
                 }
             });
         });
+$(document).ready(function () {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    $(document).on('click', '.alert-logout', function(e){
+        e.preventDefault(); 
+        const url = $(this).attr('href');
+        
+        Swal.fire({
+            title: 'YAKIN INGIN KELUAR?',
+            text: "Sesi Anda akan diakhiri.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'YA, KELUAR',
+            cancelButtonText: 'BATAL',
+            scrollbarPadding: false, 
+            heightAuto: false        
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
+
+    $(document).on('click', '.btn-delete', function(e){
+        e.preventDefault();
+        const url = $(this).attr('href');
+        const row = $(this).closest('tr');
+
+        Swal.fire({
+            title: 'HAPUS DATA?',
+            text: "Data yang dihapus tidak dapat dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'YA, HAPUS',
+            cancelButtonText: 'BATAL',
+            scrollbarPadding: false,
+            heightAuto: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(response){
+                        // Efek baris menghilang
+                        row.fadeOut(400, function(){ $(this).remove(); });
+                        
+                        // SEKARANG TOAST AKAN MUNCUL
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Data berhasil dihapus'
+                        });
+                    },
+                    error: function(){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Terjadi kesalahan sistem.',
+                            heightAuto: false
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
 
         $('#keyword').on('keyup', function(){
             const keyword = $(this).val();

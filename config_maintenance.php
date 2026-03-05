@@ -1,5 +1,5 @@
 <?php
-$maintenance_mode = true; //true or false
+$maintenance_mode = false; //true or false
 ///shueee
 
 function cek_akses_maintenance($status) {

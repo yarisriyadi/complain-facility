@@ -41,8 +41,9 @@ if (isset($_POST['ajax_search'])) {
                         
                         if (!$isAdmin) {
                             echo "<a href='proses_hapus_user.php?id=".$row['id']."' 
-                            class='btn-link btn-delete' onclick='return confirm(\"HAPUS AKUN ".htmlspecialchars(strtoupper($row['username']))."?\")'>HAPUS AKUN</a>";
-                        } else {
+                            class='btn-link btn-delete alert-delete' 
+                            data-id='".$row['id']."'data-username='".htmlspecialchars($row['username'])."'>HAPUS AKUN</a>";
+} else {
                             echo "<span style='color: #888; font-size: 10px; font-weight: bold; border: 1px solid #444; padding: 2px 5px; border-radius: 3px;'>PROTECTED</span>";
                         }
                         
@@ -287,16 +288,36 @@ if (isset($_POST['ajax_search'])) {
                 font-size: 13px; 
             }
             .theme-switcher {
-            position: fixed;
-            bottom: 25px;
-            left: 25px;
-            z-index: 1000;
+                position: fixed;
+                bottom: 25px;
+                left: 25px;
+                z-index: 1000;
+            }
         }
-    }
-    .btn-logout[style*="#007bff"]:hover {
-     background: #007bff !important;
-    color: #fff !important;
-    box-shadow: 0 3px 8px rgba(38, 0, 255, 0.63) !important;
+            .btn-logout[style*="#007bff"]:hover {
+                background: #007bff !important;
+                color: #fff !important;
+                box-shadow: 0 3px 8px rgba(38, 0, 255, 0.63) !important;
+        }
+            body.swal2-shown {
+            overflow-y: scroll !important;
+            padding-right: 0 !important;
+        }
+            .swal2-popup {
+                background: var(--container-bg) !important;
+                color: var(--text-color) !important;
+                border: 1px solid var(--border-color);
+        }
+            .swal2-title, .swal2-html-container {
+                color: var(--text-color) !important;
+        }
+            body.swal2-shown {
+            overflow: hidden !important;
+            padding-right: 0 !important;
+        }
+
+            html.swal2-shown {
+            overflow: hidden !important;
 }
     </style>
 </head>
@@ -316,7 +337,8 @@ if (isset($_POST['ajax_search'])) {
             <h2>ADMIN MONITORING</h2>
             <div class="user-info">
                 HALO, <strong><?php echo htmlspecialchars(strtoupper($nama_login)); ?></strong>
-                <a href="logout.php" class="btn-logout" onclick="return confirm('YAKIN INGIN KELUAR?')">KELUAR</a>
+                <a href="logout.php" class="btn-logout alert-logout">KELUAR</a>
+
                 <?php if($role_login === 'admin'): ?>
                     <a href="index.php" class="btn-logout" style="color: #007bff; border-color: #007bff; margin-right: 5px;">USER</a>
                 <?php endif; ?>
@@ -371,7 +393,9 @@ if (isset($_POST['ajax_search'])) {
                         </div>
                         <div style="margin-top: 8px;">
                             <?php if (!$isAdmin): ?>
-                                <a href="proses_hapus_user.php?id=<?php echo $row['id']; ?>" class="btn-link btn-delete" onclick="return confirm('HAPUS AKUN <?php echo htmlspecialchars(strtoupper($row['username'])); ?>?')">HAPUS AKUN</a>
+                                <a href="proses_hapus_user.php?id=<?php echo $row['id']; ?>" 
+                                class="btn-link btn-delete alert-delete" data-id="<?php echo $row['id']; ?>" 
+                                data-username="<?php echo htmlspecialchars($row['username']); ?>">HAPUS AKUN</a>
                             <?php else: ?>
                                 <span style="color: #888; font-size: 10px; font-weight: bold; border: 1px solid #444; padding: 2px 5px; border-radius: 3px;">PROTECTED</span>
                             <?php endif; ?>
@@ -391,6 +415,7 @@ if (isset($_POST['ajax_search'])) {
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="theme_script.js"></script>
 <script>
@@ -437,7 +462,6 @@ if (isset($_POST['ajax_search'])) {
                 },
                 success: function(response){
                     $('#tabel-user').html(response);
-                    // Cek penanda dari PHP
                     if (response.indexOf("") !== -1) {
                         $('#btn-show-more').show();
                     } else {
@@ -459,14 +483,86 @@ if (isset($_POST['ajax_search'])) {
             loadData(currentLimit);
         });
     });
+    $(document).on('click', '.alert-logout', function(e){
+        e.preventDefault(); 
+        const url = $(this).attr('href');
+        
+        Swal.fire({
+            title: 'YAKIN INGIN KELUAR?',
+            text: "Sesi Anda akan diakhiri.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'YA, KELUAR',
+            cancelButtonText: 'BATAL',
+            scrollbarPadding: false, 
+            heightAuto: false        
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
+
+    $(document).on('click', '.alert-delete', function(e){
+        e.preventDefault();
+        const id = $(this).data('id');
+        const username = $(this).data('username').toUpperCase();
+        
+        Swal.fire({
+            title: 'HAPUS AKUN?',
+            text: "Apakah Anda yakin ingin menghapus akun " + username + " ?",
+            icon: 'error',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'YA, HAPUS',
+            cancelButtonText: 'BATAL',
+            scrollbarPadding: false,
+            heightAuto: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "proses_hapus_user.php?id=" + id;
+            }
+        });
+    });
 
     function resetPassword(id, username) {
-        let newPass = prompt("MASUKKAN PASSWORD BARU UNTUK " + username.toUpperCase() + ":", "Admin123");
-        if (newPass !== null && newPass.trim() !== "") {
-            if (confirm("RUBAH PASSWORD " + username.toUpperCase() + " MENJADI: " + newPass + "?")) {
-                window.location.href = "proses_reset_user.php?id=" + id + "&pass=" + encodeURIComponent(newPass);
+        Swal.fire({
+            title: 'RESET PASSWORD',
+            text: "Masukkan password baru untuk " + username.toUpperCase(),
+            input: 'text',
+            inputValue: 'Admin123',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'SIMPAN',
+            cancelButtonText: 'BATAL',
+            confirmButtonColor: '#6c757d', // Abu-abu
+            cancelButtonColor: '#444',
+            scrollbarPadding: false,
+            heightAuto: false
+        }).then((result) => {
+            if (result.isConfirmed && result.value) {
+                const newPass = result.value;
+                Swal.fire({
+                    title: 'KONFIRMASI',
+                    text: "Ubah password " + username.toUpperCase() + " menjadi: " + newPass + "?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'YA, UBAH',
+                    cancelButtonText: 'BATAL',
+                    confirmButtonColor: '#6c757d',
+                    cancelButtonColor: '#444'
+                }).then((confirmResult) => {
+                    if (confirmResult.isConfirmed) {
+                        window.location.href = "proses_reset_user.php?id=" + id + "&pass=" + encodeURIComponent(newPass);
+                    }
+                });
             }
-        }
+        });
     }
 </script>
 </body>
