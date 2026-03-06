@@ -13,10 +13,8 @@ include 'koneksi.php';
 
 $role_login = $_SESSION['role'];
 $nama_login = $_SESSION['nama_lengkap'] ?? $_SESSION['nama'];
+$where_clause = ($role_login === 'admin') ? " 1=1 " : " c.nama_user = '$nama_login' ";
 
-
-
-// LOGIKA AJAX SEARCH & LOAD MORE
 if (isset($_POST['ajax_search'])) {
     if ($maintenance_mode && $role_login != 'admin') {
         echo "<tr><td colspan='9' style='color:red; font-weight:bold;'>SISTEM SEDANG MAINTENANCE.</td></tr>";
@@ -29,15 +27,15 @@ if (isset($_POST['ajax_search'])) {
 
     $sql = "SELECT c.*, r.foto_after, r.ttd_user, r.ttd_pga
             FROM complaints c
-            LEFT JOIN repair_actions r ON c.complain_id = r.complaint_id "; 
+            LEFT JOIN repair_actions r ON c.complain_id = r.complaint_id 
+            WHERE $where_clause ";
 
     if ($search != "") {
-        $sql .= " WHERE (c.section_dept LIKE '%$search%'
+        $sql .= " AND (c.section_dept LIKE '%$search%'
                   OR c.lokasi_kerusakan LIKE '%$search%'
                   OR c.nama_user LIKE '%$search%'
                   OR c.kondisi_current LIKE '%$search%') ";
     }
-
     $sql .= " ORDER BY c.complain_id DESC LIMIT $offset, $limit"; 
     $q = mysqli_query($conn, $sql);
 
@@ -664,10 +662,10 @@ if (isset($_POST['ajax_search'])) {
             <tbody id="tabel-data">
                 <?php
                 $no = 1;
-                // Query Awal Dibatasi 5 Data
                 $sql_init = "SELECT c.*, r.foto_after, r.ttd_user, r.ttd_pga
                     FROM complaints c
                     LEFT JOIN repair_actions r ON c.complain_id = r.complaint_id
+                    WHERE $where_clause 
                     ORDER BY c.complain_id DESC LIMIT 5"; 
                 $q_init = mysqli_query($conn, $sql_init);
                 

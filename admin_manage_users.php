@@ -43,7 +43,7 @@ if (isset($_POST['ajax_search'])) {
                             echo "<a href='proses_hapus_user.php?id=".$row['id']."' 
                             class='btn-link btn-delete alert-delete' 
                             data-id='".$row['id']."'data-username='".htmlspecialchars($row['username'])."'>HAPUS AKUN</a>";
-} else {
+                        } else {
                             echo "<span style='color: #888; font-size: 10px; font-weight: bold; border: 1px solid #444; padding: 2px 5px; border-radius: 3px;'>PROTECTED</span>";
                         }
                         
@@ -483,26 +483,34 @@ if (isset($_POST['ajax_search'])) {
             loadData(currentLimit);
         });
     });
-    const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-    }
-});
-
-// 2. Event Listener untuk Hapus Akun
+    $(document).on('click', '.alert-logout', function(e){
+        e.preventDefault(); 
+        const url = $(this).attr('href');
+        
+        Swal.fire({
+            title: 'YAKIN INGIN KELUAR?',
+            text: "Sesi Anda akan diakhiri.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'YA, KELUAR',
+            cancelButtonText: 'BATAL',
+            scrollbarPadding: false, 
+            heightAuto: false        
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
 $(document).on('click', '.alert-delete', function(e) {
     e.preventDefault();
     
     const btn = $(this);
     const id = btn.data('id');
     const username = btn.data('username').toUpperCase();
-    const row = btn.closest('tr'); // Mengambil baris tabel terkait
+    const row = btn.closest('tr'); 
 
     Swal.fire({
         title: 'HAPUS AKUN?',
@@ -555,7 +563,7 @@ $(document).on('click', '.alert-delete', function(e) {
             showCancelButton: true,
             confirmButtonText: 'SIMPAN',
             cancelButtonText: 'BATAL',
-            confirmButtonColor: '#6c757d', // Abu-abu
+            confirmButtonColor: '#6c757d', 
             cancelButtonColor: '#444',
             scrollbarPadding: false,
             heightAuto: false
