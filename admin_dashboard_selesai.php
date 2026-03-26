@@ -628,6 +628,7 @@ $(document).ready(function () {
             text: "Sesi Anda akan diakhiri.",
             icon: 'warning',
             showCancelButton: true,
+            reverseButtons: true,
             confirmButtonColor: '#dc3545',
             cancelButtonColor: '#6c757d',
             confirmButtonText: 'YA, KELUAR',
@@ -651,6 +652,7 @@ $(document).ready(function () {
             text: "Data yang dihapus tidak dapat dikembalikan!",
             icon: 'warning',
             showCancelButton: true,
+            reverseButtons: true,
             confirmButtonColor: '#dc3545',
             cancelButtonColor: '#6c757d',
             confirmButtonText: 'YA, HAPUS',
@@ -663,10 +665,8 @@ $(document).ready(function () {
                     url: url,
                     type: 'GET',
                     success: function(response){
-                        // Efek baris menghilang
                         row.fadeOut(400, function(){ $(this).remove(); });
                         
-                        // SEKARANG TOAST AKAN MUNCUL
                         Toast.fire({
                             icon: 'success',
                             title: 'Data berhasil dihapus'

@@ -292,7 +292,7 @@ $can_sign_pga  = ($role_login == 'pga' || $role_login == 'admin' || $role_login 
 <div id="modalTeknisi" class="modal-tek" onclick="closeModal()">
     <div class="modal-tek-content" onclick="event.stopPropagation()">
         <div style="margin-bottom: 20px;">
-            <i class="fa-solid fa-paper-plane" style="font-size: 40px; color: #25d366;"></i>
+            <i class="fa-brands fa-whatsapp" style="font-size: 40px; color: #25d366;"></i>
         </div>
         <h3 style="margin-bottom: 10px; letter-spacing: 0.5px;">Kirim Laporan</h3>
         <p style="font-size: 13px; margin-bottom: 25px; opacity: 0.8; line-height: 1.5;">

@@ -830,6 +830,7 @@ if (isset($_POST['ajax_search'])) {
             text: "Sesi Anda akan diakhiri.",
             icon: 'warning',
             showCancelButton: true,
+            reverseButtons: true,
             confirmButtonColor: '#dc3545',
             cancelButtonColor: '#6c757d',
             confirmButtonText: 'YA, KELUAR',

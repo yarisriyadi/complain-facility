@@ -64,8 +64,9 @@ if (isset($_POST['email'])) {
 
                 $timestamp = date("H:i:s");
 
+
                 $mail->Body = "
-                <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
@@ -78,26 +79,29 @@ if (isset($_POST['email'])) {
     <table width='100%' border='0' cellspacing='0' cellpadding='0' style='background-color: #f4f7f9;'>
         <tr>
             <td align='center' style='padding: 50px 10px;'>
-                <table width='100%' border='0' cellspacing='0' cellpadding='0' style='max-width: 480px; background-color: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05);'>
+                <table width='100%' border='0' cellspacing='0' cellpadding='0' style='max-width: 480px; background-color: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.08); overflow: hidden;'>
                     
                     <tr>
-                        <td style='background-color: #0056b3; height: 6px; border-radius: 8px 8px 0 0;'></td>
+                        <td align='center' style='background-color: #0056b3; padding: 25px 20px; border-radius: 8px 8px 0 0;'>
+                            <span style='color: #ffffff; font-size: 26px; font-weight: 800; letter-spacing: 1px; display: block;'>
+                                COMPLAIN FACILITY
+                            </span>
+                        </td>
                     </tr>
 
                     <tr>
                         <td style='padding: 40px;'>
-
-                            <p style='margin: 0 0 10px 0; font-size: 15px; color: #333;'>
+                            <p style='margin: 0 0 10px 0; font-size: 16px; color: #333;'>
                                 Halo <strong>" . htmlspecialchars($nama_lengkap) . "</strong>,
                             </p>
-                            <p style='margin: 0 0 20px 0; font-size: 14px; color: #4a5568; line-height: 1.5;'>
-                                Berikut adalah kode OTP Anda untuk melanjutkan proses perubahan password di sistem Complain Facility:
+                            <p style='margin: 0 0 20px 0; font-size: 14px; color: #4a5568; line-height: 1.6;'>
+                                Berikut adalah kode OTP Anda untuk melanjutkan proses perubahan password di sistem <strong>Complain Facility</strong>:
                             </p>
                             
                             <table width='100%' border='0' cellspacing='0' cellpadding='0' style='margin: 25px 0;'>
                                 <tr>
-                                    <td align='center' style='background-color: #ebf4ff; border: 1px solid #bee3f8; padding: 20px; border-radius: 6px;'>
-                                        <span style='font-size: 42px; font-weight: 700; letter-spacing: 10px; color: #000000; display: block;'>$otp</span>
+                                    <td align='center' style='background-color: #ebf4ff; border: 2px dashed #bee3f8; padding: 20px; border-radius: 8px;'>
+                                        <span style='font-size: 42px; font-weight: 800; letter-spacing: 10px; color: #0056b3; display: block;'>$otp</span>
                                     </td>
                                 </tr>
                             </table>
@@ -106,7 +110,7 @@ if (isset($_POST['email'])) {
                                 Berlaku selama <span style='color: #000000; font-weight: 600;'>2 menit</span>.
                             </p>
 
-                            <div style='background-color: #fff5f5;'>
+                            <div style='background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; border-radius: 4px;'>
                                 <p style='margin: 0; font-size: 12px; color: #c53030; line-height: 1.6;'>
                                     <strong>PENTING:</strong> Jika Anda tidak merasa meminta perubahan password, abaikan email ini dan <strong>segera hubungi tim IT</strong>. Jangan berikan kode ini kepada siapapun.
                                 </p>
@@ -118,8 +122,9 @@ if (isset($_POST['email'])) {
                         <td style='padding: 0 40px 30px 40px;'>
                             <table width='100%' border='0' cellspacing='0' cellpadding='0' style='border-top: 1px solid #edf2f7; padding-top: 20px;'>
                                 <tr>
-                                    <td style='font-size: 11px; color: #a0aec0; text-align: center; line-height: 1.5;'>
+                                    <td style='font-size: 11px; color: #a0aec0; text-align: center; line-height: 1.6;'>
                                         IT Department - PT. Shinsei Denshi Indonesia.<br>
+                                        Sent by System Auto-Mailer
                                     </td>
                                 </tr>
                             </table>

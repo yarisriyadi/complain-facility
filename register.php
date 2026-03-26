@@ -388,13 +388,13 @@
         text: "Apakah data yang Anda masukkan sudah benar?",
         icon: 'question',
         showCancelButton: true,
+        reverseButtons: true,
         confirmButtonColor: '#28a745',
         cancelButtonColor: '#6c757d',
         confirmButtonText: 'YA, DAFTAR',
         cancelButtonText: 'BATAL'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Tampilkan Loading
             Swal.fire({
                 title: 'PROSES...',
                 text: 'Sedang mendaftarkan akun Anda.',

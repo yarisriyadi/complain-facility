@@ -419,6 +419,7 @@ if (isset($_POST['ajax_search'])) {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="theme_script.js"></script>
 <script>
+    
     $(document).ready(function(){
         let currentLimit = 5;
         let idleTime = 0;
@@ -470,6 +471,7 @@ if (isset($_POST['ajax_search'])) {
                 }
             });
         }
+        
 
         $('#keyword').on('keyup', function(){
             currentLimit = 5;
@@ -483,6 +485,7 @@ if (isset($_POST['ajax_search'])) {
             loadData(currentLimit);
         });
     });
+    
     $(document).on('click', '.alert-logout', function(e){
         e.preventDefault(); 
         const url = $(this).attr('href');
@@ -492,6 +495,7 @@ if (isset($_POST['ajax_search'])) {
             text: "Sesi Anda akan diakhiri.",
             icon: 'warning',
             showCancelButton: true,
+            reverseButtons: true,
             confirmButtonColor: '#dc3545',
             cancelButtonColor: '#6c757d',
             confirmButtonText: 'YA, KELUAR',
@@ -504,12 +508,24 @@ if (isset($_POST['ajax_search'])) {
             }
         });
     });
+    const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+});
 $(document).on('click', '.alert-delete', function(e) {
     e.preventDefault();
     
+    // Ambil data dari tombol
     const btn = $(this);
     const id = btn.data('id');
-    const username = btn.data('username').toUpperCase();
+    const username = btn.data('username') ? btn.data('username').toUpperCase() : 'USER';
     const row = btn.closest('tr'); 
 
     Swal.fire({
@@ -517,6 +533,7 @@ $(document).on('click', '.alert-delete', function(e) {
         text: "Apakah Anda yakin ingin menghapus akun " + username + "?",
         icon: 'warning',
         showCancelButton: true,
+        reverseButtons: true,
         confirmButtonColor: '#dc3545',
         cancelButtonColor: '#6c757d',
         confirmButtonText: 'YA, HAPUS',
@@ -530,15 +547,19 @@ $(document).on('click', '.alert-delete', function(e) {
                 type: 'GET',
                 data: { id: id },
                 success: function(response) {
+                    // Efek baris tabel menghilang
                     row.fadeOut(400, function() { 
                         $(this).remove(); 
                     });
+
+                    // Munculkan TOAST sukses
                     Toast.fire({
                         icon: 'success',
                         title: 'AKUN ' + username + ' BERHASIL DIHAPUS'
                     });
                 },
                 error: function() {
+                    // Alert besar hanya untuk error sistem
                     Swal.fire({
                         icon: 'error',
                         title: 'GAGAL',
@@ -561,9 +582,10 @@ $(document).on('click', '.alert-delete', function(e) {
                 autocapitalize: 'off'
             },
             showCancelButton: true,
+            reverseButtons: true,
             confirmButtonText: 'SIMPAN',
             cancelButtonText: 'BATAL',
-            confirmButtonColor: '#6c757d', 
+            confirmButtonColor: '#6c7d6c', 
             cancelButtonColor: '#444',
             scrollbarPadding: false,
             heightAuto: false
