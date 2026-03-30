@@ -4,10 +4,21 @@ include 'config_maintenance.php';
 cek_akses_maintenance($maintenance_mode);
 include 'koneksi.php';
 
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
     header("Location: lupa_password.php");
     exit();
 }
+date_default_timezone_set('Asia/Jakarta');
+
+$update_success = false;
+$error_message = "";
 
 if (isset($_POST['update_password'])) {
     $email = $_SESSION['email_reset'];
@@ -19,21 +30,52 @@ if (isset($_POST['update_password'])) {
     $hasUpper = preg_match('/^[A-Z]/', $pw_baru);
 
     if ($pw_baru !== $confirm_pw) {
-        $error = "Konfirmasi password tidak cocok!";
+        $error_message = "Konfirmasi password tidak cocok!";
     } 
     elseif (strlen($pw_baru) < 6 || !$hasUpper || !$hasNumber || !$hasSymbol) {
-        $error = "Password tidak memenuhi kriteria keamanan!";
+        $error_message = "Password tidak memenuhi kriteria keamanan!";
     } 
     else {
         $password_hashed = password_hash($pw_baru, PASSWORD_DEFAULT);
         $update = mysqli_query($conn, "UPDATE users SET password = '$password_hashed', otp_code = NULL, otp_expiry = NULL WHERE email = '$email'");
 
         if ($update) {
-            session_destroy();
-            echo "<script>alert('Password berhasil diperbarui! Silakan login kembali.'); window.location='login.php';</script>";
-            exit();
+            $email_user = $_SESSION['email_reset'];
+            $ambil_user = mysqli_query($conn, "SELECT nama_lengkap FROM users WHERE email = '$email_user'");
+            $data_user = mysqli_fetch_assoc($ambil_user);
+            $nama_lengkap = $data_user['nama_lengkap']; 
+        if (!$nama_lengkap) { $nama_lengkap = $email_user; }
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com'; 
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'pthtmi123@gmail.com'; 
+                $mail->Password   = 'xuvalxykuepbpblc'; // App Password Gmail
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                $mail->Port       = 465;
+
+                $mail->setFrom('pthtmi123@gmail.com', 'SHINSEI SYSTEM');
+                $mail->addAddress($email); 
+
+                $mail->isHTML(true);
+                $mail->Subject = 'Notifikasi Keamanan: Perubahan Password Berhasil';
+                $mail->Body    = "
+                    <div style='font-family: Arial, sans-serif; max-width: 600px; border: 1px solid #eee; padding: 20px;'>
+                        <h2 style='color: #28a745;'>Password Berhasil Diperbarui</h2>
+                        <p>Halo, <b>" . $nama_lengkap . "</b></p>
+                        <p>Kami memberitahukan bahwa password akun Anda telah berhasil diubah pada <b>" . date('d-m-Y H:i:s') . "</b>.</p>
+                        <p>Jika Anda tidak merasa melakukan perubahan ini, segera hubungi tim kami..</p>
+                        <br>
+                        <p>Terima Kasih,<br>IT Department - PT. Shinsei Denshi Indonesia.</p>
+                    </div>";
+
+                $mail->send();
+            } catch (Exception $e) {
+        }
+            $update_success = true;
         } else {
-            $error = "Gagal memperbarui database!";
+            $error_message = "Gagal memperbarui database!";
         }
     }
 }
@@ -46,6 +88,8 @@ if (isset($_POST['update_password'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Reset Password - SHINSEI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
         (function() {
             const savedTheme = localStorage.getItem('selected-theme') || 'dark';
@@ -55,21 +99,23 @@ if (isset($_POST['update_password'])) {
 
     <link rel="stylesheet" href="style_theme.css">
     <style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         body { 
             font-family: 'Segoe UI', Arial, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
+            margin: 0; padding: 0; 
+            display: flex; justify-content: center; align-items: center; 
             min-height: 100vh;
             background-color: var(--bg-color);
             transition: background-color 0.4s ease;
         }
+
         .login-container { 
             background: var(--container-bg); 
             backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px);
             padding: 35px; 
             border-radius: 16px; 
             border: 1px solid var(--border-color);
@@ -77,131 +123,70 @@ if (isset($_POST['update_password'])) {
             width: 90%; max-width: 400px; 
             box-sizing: border-box;
             transition: all 0.4s ease;
+            animation: fadeInUp 0.6s ease-out; /* Trigger animasi */
         }
-        .login-container h2, .login-container p, .login-container label, .copyright {
+
+        .login-container h2 { 
+            text-align: center; margin: 0 0 10px 0; font-size: 24px; 
+            font-weight: bold; text-transform: uppercase; letter-spacing: 2px;
             color: var(--text-color);
         }
-        .login-container h2 { 
-            text-align: center; 
-            margin: 0 0 10px 0; 
-            font-size: 24px; 
-            font-weight: bold; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-        }
+
         .login-container p { 
-        text-align: center; 
-        font-size: 13px; 
-        margin-bottom: 25px; 
-        opacity: 0.8; 
-        line-height: 1.5; 
-    }
-        .form-group { 
-        margin-bottom: 20px; 
-    }
-        .form-group label { 
-        display: block; 
-        margin-bottom: 8px; 
-        font-size: 14px; 
-        font-weight: 600; 
-    }
-        .password-container { 
-        position: relative; 
-        width: 100%; 
-    }
+            text-align: center; font-size: 13px; margin-bottom: 25px; 
+            opacity: 0.8; line-height: 1.5; color: var(--text-color);
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: var(--text-color); }
+        
+        .password-container { position: relative; width: 100%; }
+        
         .form-group input { 
-            width: 100%; 
-            padding: 12px; 
-            border: 1px solid var(--border-color); 
-            border-radius: 8px; 
-            box-sizing: border-box; 
-            font-size: 15px; 
-            background: var(--input-bg); 
-            color: var(--text-color); 
+            width: 100%; padding: 12px; border: 1px solid var(--border-color); 
+            border-radius: 8px; box-sizing: border-box; font-size: 15px; 
+            background: var(--input-bg); color: var(--text-color); 
             transition: all 0.3s ease; 
         }
-        [data-theme="light"] .form-group input { 
-        color: #333; 
-    }
-        [data-theme="dark"] .form-group input { 
-        color: #fff; 
-        background: rgba(255,255,255,0.05); 
-    }
+
         .form-group input:focus { 
-        border-color: #28a745; 
-        outline: none; 
-        box-shadow: 0 0 10px rgba(40, 167, 69, 0.3); 
+            border-color: #28a745; outline: none; 
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.3); 
+            transform: scale(1.01); 
         }
+
         .toggle-password { 
-            position: absolute; 
-            right: 15px; 
-            top: 50%; 
-            transform: translateY(-50%); 
-            cursor: pointer; 
-            color: var(--text-color); 
-            opacity: 0.6; 
-            font-size: 16px; 
-            z-index: 10; 
+            position: absolute; right: 15px; top: 50%; 
+            transform: translateY(-50%); cursor: pointer; 
+            color: var(--text-color); opacity: 0.6; 
         }
-        .msg-error { 
-        font-size: 11px; 
-        margin-top: 5px; 
-        font-weight: bold; 
-        color: #ff4d4d; 
-    }
-        .msg-success { 
-        font-size: 11px; 
-        margin-top: 5px; 
-        font-weight: bold; 
-        color: #2ecc71; 
-    }
+
         .btn-submit { 
-            width: 100%; 
-            padding: 14px; 
-            background-color: #28a745; 
-            border: none; 
-            color: white; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 16px; 
-            font-weight: bold; 
-            margin-top: 10px; 
-            text-transform: uppercase;
-            transition: 0.4s; 
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            width: 100%; padding: 14px; background-color: #28a745; 
+            border: none; color: white; border-radius: 8px; 
+            cursor: pointer; font-size: 16px; font-weight: bold; 
+            margin-top: 10px; text-transform: uppercase;
+            transition: 0.3s; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
         }
+
         .btn-submit:hover:not(:disabled) { 
-        background-color: #218838; 
-        transform: translateY(-2px); 
-    }
-        .btn-submit:disabled { 
-        opacity: 0.5; cursor: not-allowed; 
-        filter: grayscale(1); 
-    }
-        .alert { 
-            padding: 12px; 
-            border-radius: 8px; 
-            font-size: 13px; 
-            text-align: center; 
-            margin-bottom: 20px; 
-            background: rgba(255, 82, 82, 0.15); 
-            color: #ff4d4d; 
-            border: 1px solid #ff4d4d; 
+            background-color: #218838; transform: translateY(-2px); 
         }
+
+        .btn-submit:active { transform: translateY(0); }
+
+        .btn-submit:disabled { opacity: 0.5; filter: grayscale(1); cursor: not-allowed; }
+
         .copyright { 
-            text-align: center; 
-            margin-top: 30px; 
-            font-size: 10px; 
-            border-top: 1px solid var(--border-color); 
-            padding-top: 15px; 
-            opacity: 0.6;
+            text-align: center; margin-top: 30px; font-size: 10px; 
+            border-top: 1px solid var(--border-color); padding-top: 15px; 
+            opacity: 0.6; color: var(--text-color);
         }
-        .theme-switcher {
-            position: fixed;
-            bottom: 25px;
-            left: 25px;
-            z-index: 1000;
-        }
+
+        .theme-switcher { position: fixed; bottom: 25px; left: 25px; z-index: 1000; }
+        
+        .msg-error { font-size: 11px; margin-top: 5px; font-weight: bold; color: #ff4d4d; }
+        .msg-success { font-size: 11px; margin-top: 5px; font-weight: bold; color: #2ecc71; }
     </style>
 </head>
 <body>
@@ -216,8 +201,6 @@ if (isset($_POST['update_password'])) {
     <div class="login-container">
         <h2>PASSWORD BARU</h2>
         <p>Silakan buat password baru Anda.<br>Gunakan kombinasi Huruf Besar, Angka, dan Simbol.</p>
-
-        <?php if(isset($error)) echo "<div class='alert'>$error</div>"; ?>
 
         <form action="" method="POST" id="resetForm">
             <div class="form-group">
@@ -246,6 +229,34 @@ if (isset($_POST['update_password'])) {
 
     <script src="theme_script.js"></script>
     <script>
+        <?php if ($update_success): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: 'Password berhasil diperbarui.',
+            showConfirmButton: false,
+            timer: 2500,
+            background: getComputedStyle(document.documentElement).getPropertyValue('--container-bg'),
+            color: getComputedStyle(document.documentElement).getPropertyValue('--text-color')
+        }).then(() => {
+            window.location = 'login.php?pesan=update_berhasil'; 
+        });
+    <?php elseif ($error_message !== ""): ?>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '<?php echo $error_message; ?>',
+                confirmButtonColor: '#28a745'
+            });
+        <?php endif; ?>
+
+        const resetForm = document.getElementById('resetForm');
+        resetForm.addEventListener('submit', function() {
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Memproses...';
+            btn.style.opacity = '0.7';
+        });
+
         function toggle(id, el) {
             const x = document.getElementById(id);
             if (x.type === "password") {
@@ -274,36 +285,27 @@ if (isset($_POST['update_password'])) {
             let isPassValid = false;
             let isConfirmValid = false;
 
-            if (pass === "") {
-                passMsg.innerHTML = "";
-            } else if (!hasUpper) {
-                passMsg.className = "msg-error";
-                passMsg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Diawali Huruf Besar!';
-            } else if (pass.length < 6) {
-                passMsg.className = "msg-error";
-                passMsg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Minimal 6 karakter!';
-            } else if (!hasNumber) {
-                passMsg.className = "msg-error";
-                passMsg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Wajib ada Angka!';
-            } else if (!hasSymbol) {
-                passMsg.className = "msg-error";
-                passMsg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Wajib ada Simbol!';
-            } else {
-                passMsg.className = "msg-success";
-                passMsg.innerHTML = '<i class="fa-solid fa-circle-check"></i> Password Kuat';
-                isPassValid = true;
-            }
+            if (pass !== "") {
+                if (pass.length >= 6 && hasUpper && hasNumber && hasSymbol) {
+                    passMsg.className = "msg-success";
+                    passMsg.innerHTML = '<i class="fa-solid fa-circle-check"></i> Password Kuat';
+                    isPassValid = true;
+                } else {
+                    passMsg.className = "msg-error";
+                    passMsg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Belum sesuai kriteria';
+                }
+            } else { passMsg.innerHTML = ""; }
 
-            if (confirm === "") {
-                confirmMsg.innerHTML = "";
-            } else if (confirm !== pass) {
-                confirmMsg.className = "msg-error";
-                confirmMsg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Password tidak cocok!';
-            } else {
-                confirmMsg.className = "msg-success";
-                confirmMsg.innerHTML = '<i class="fa-solid fa-circle-check"></i> Password Cocok';
-                isConfirmValid = true;
-            }
+            if (confirm !== "") {
+                if (confirm === pass && pass !== "") {
+                    confirmMsg.className = "msg-success";
+                    confirmMsg.innerHTML = '<i class="fa-solid fa-circle-check"></i> Password Cocok';
+                    isConfirmValid = true;
+                } else {
+                    confirmMsg.className = "msg-error";
+                    confirmMsg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Tidak cocok!';
+                }
+            } else { confirmMsg.innerHTML = ""; }
 
             submitBtn.disabled = !(isPassValid && isConfirmValid);
         }

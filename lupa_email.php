@@ -39,7 +39,8 @@ if (isset($_POST['update_email'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UPDATE EMAIL - CF</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-<script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
         (function() {
             const savedTheme = localStorage.getItem('selected-theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
@@ -161,23 +162,6 @@ if (isset($_POST['update_email'])) {
             background-color: var(--container-bg);
             border-color: var(--text-color); 
     }
-        .alert { 
-        padding: 12px; 
-        border-radius: 8px; 
-        font-size: 13px; 
-        text-align: center; 
-        margin-bottom: 15px; 
-    }
-        .alert-success { 
-        background: #d4edda; 
-        color: #155724; 
-        border: 1px solid #c3e6cb; 
-    }
-        .alert-error { 
-        background: #f8d7da; 
-        color: #721c24; 
-        border: 1px solid #f5c6cb; 
-    }
         .copyright { 
         text-align: center; 
         margin-top: 30px; 
@@ -205,9 +189,6 @@ if (isset($_POST['update_email'])) {
     <div class="login-container">
         <h2>PERBARUI EMAIL</h2>
         <div class="desc">Ganti email lama dengan email baru</div>
-
-        <?php if(isset($success)) echo "<div class='alert alert-success'>$success</div>"; ?>
-        <?php if(isset($error)) echo "<div class='alert alert-error'>$error</div>"; ?>
 
         <form method="POST" id="emailForm">
             <div class="form-group">
@@ -237,6 +218,33 @@ if (isset($_POST['update_email'])) {
     <script src="theme_script.js"></script>
 
     <script>
+        // Ambil warna CSS variable untuk styling SweetAlert agar menyatu dengan tema
+        const getStyle = (varName) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+
+        // Tampilkan SweetAlert jika ada pesan sukses dari PHP
+        <?php if(isset($success)): ?>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '<?php echo $success; ?>',
+                background: getStyle('--container-bg'),
+                color: getStyle('--text-color'),
+                confirmButtonColor: '#28a745'
+            });
+        <?php endif; ?>
+
+        // Tampilkan SweetAlert jika ada pesan error dari PHP
+        <?php if(isset($error)): ?>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '<?php echo $error; ?>',
+                background: getStyle('--container-bg'),
+                color: getStyle('--text-color'),
+                confirmButtonColor: '#28a745'
+            });
+        <?php endif; ?>
+
         const emailLama = document.getElementById('emailLama');
         const emailBaru = document.getElementById('emailBaru');
         const hintLama = document.getElementById('hintLama');

@@ -56,7 +56,8 @@ if (isset($_POST['verifikasi'])) {
         })();
     </script>
 
-    <link rel="stylesheet" href="style_theme.css">    <style>
+    <link rel="stylesheet" href="style_theme.css">    
+    <style>
         body { 
             font-family: 'Segoe UI', Arial, sans-serif; 
             margin: 0; 
@@ -202,15 +203,11 @@ if (isset($_POST['verifikasi'])) {
             border-top: 1px solid var(--border-color); 
             padding-top: 15px; 
         }
+        .theme-switcher { position: fixed; bottom: 25px; left: 25px; z-index: 1000; }
         @media screen and (max-width: 380px) { .otp-box { height: 45px; font-size: 20px; 
     }
-    .theme-switcher {
-            position: fixed;
-            bottom: 25px;
-            left: 25px;
-            z-index: 1000;
-    } 
 }
+
     </style>
 </head>
 <body>

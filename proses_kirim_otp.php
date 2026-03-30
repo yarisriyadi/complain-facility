@@ -22,6 +22,29 @@ require 'PHPMailer/src/Exception.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+echo "
+<!DOCTYPE html>
+<html>
+<head>
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: transparent; }
+        /* Style Dark Mode untuk Swal */
+        .dark-popup { background: #2c2c2c !important; color: #fff !important; }
+        .dark-title { color: #fff !important; }
+    </style>
+    <script>
+        function getSwalConfig() {
+            const theme = localStorage.getItem('selected-theme') || 'dark';
+            return {
+                background: theme === 'dark' ? '#1e1e1e' : '#ffffff',
+                color: theme === 'dark' ? '#ffffff' : '#333333'
+            };
+        }
+    </script>
+</head>
+<body>";
+
 if (isset($_POST['email'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $cek_user = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email'");
@@ -57,14 +80,10 @@ if (isset($_POST['email'])) {
                     )
                 );
 
-                $mail->setFrom('pthtmi123@gmail.com', 'Complain Facility');
+                $mail->setFrom('pthtmi123@gmail.com', 'SHINSEI SYSTEM');
                 $mail->addAddress($email);
                 $mail->isHTML(true);
                 $mail->Subject = 'Kode OTP Verifikasi - SHINSEI';
-
-                $timestamp = date("H:i:s");
-
-
                 $mail->Body = "
 <!DOCTYPE html>
 <html>
@@ -140,19 +159,55 @@ if (isset($_POST['email'])) {
                 $mail->AltBody = "Halo, $nama_lengkap Kode OTP Anda adalah: $otp. Kode berlaku selama 2 menit.";
 
                 if($mail->send()){
-                    echo "<script>alert('OTP Berhasil Dikirim!'); window.location='verifikasi.php?pesan=terkirim';</script>";
+                    echo "<script>
+                        const cfg = getSwalConfig();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'OTP Terkirim!',
+                            text: 'Silakan periksa email Anda.',
+                            background: cfg.background,
+                            color: cfg.color,
+                            confirmButtonColor: '#28a745'
+                        }).then(() => {
+                            window.location='verifikasi.php?pesan=terkirim';
+                        });
+                    </script>";
                     exit();
                 }
 
             } catch (Exception $e) {
-                echo "Gagal mengirim email: {$mail->ErrorInfo}";
-                echo "<br><br><a href='lupa_password.php'>Kembali</a>";
+                echo "<script>
+                    const cfg = getSwalConfig();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal Kirim!',
+                        text: 'Error: {$mail->ErrorInfo}',
+                        background: cfg.background,
+                        color: cfg.color,
+                        confirmButtonColor: '#d33'
+                    }).then(() => {
+                        window.location='lupa_password.php';
+                    });
+                </script>";
             }
         }
     } else {
-        echo "<script>alert('Email tidak terdaftar!'); window.location='lupa_password.php';</script>";
+        echo "<script>
+            const cfg = getSwalConfig();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Email Tidak Ada!',
+                text: 'Email tidak terdaftar di sistem.',
+                background: cfg.background,
+                color: cfg.color,
+                confirmButtonColor: '#ffc107'
+            }).then(() => {
+                window.location='lupa_password.php';
+            });
+        </script>";
     }
 } else {
     header("Location: lupa_password.php");
 }
+echo "</body></html>";
 ?>

@@ -1,23 +1,26 @@
 <?php
 session_start();
+
+$pesan_url = isset($_GET['pesan']) ? $_GET['pesan'] : '';
+
+if ($pesan_url == 'update_berhasil') {
+    unset($_SESSION['attempt']);    // Menghapus hitungan salah password
+    unset($_SESSION['error_msg']);  // WAJIB: Menghapus pesan error "Password Salah (5/5)" yang tertinggal
+}
+
 include 'config_maintenance.php';
 
-
+$is_locked = (isset($_SESSION['attempt']) && $_SESSION['attempt'] >= 5);
 
 if (isset($_SESSION['status']) && $_SESSION['status'] == "login") {
-
     if ($_SESSION['role'] == 'admin') {
         header("location:admin_dashboard_proses.php");
-
     } else {
-
         if ($maintenance_mode) {
             header("location:maintenance.php");
-
         } else {
             header("location:index.php");
         }
-
     }
     exit;
 }
@@ -249,6 +252,9 @@ if (isset($_SESSION['status']) && $_SESSION['status'] == "login") {
                 }
                 else if ($pesan == "berhasil_regis") {
                     echo "<div class='alert success'>Registrasi Berhasil! Silakan Login.</div>";
+                }
+                else if ($pesan == "update_berhasil") {
+                    echo "<div class='alert success'>Password berhasil diperbarui! Silakan login dengan password baru.</div>";
                 }
             }
         }

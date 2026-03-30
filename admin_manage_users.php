@@ -547,19 +547,15 @@ $(document).on('click', '.alert-delete', function(e) {
                 type: 'GET',
                 data: { id: id },
                 success: function(response) {
-                    // Efek baris tabel menghilang
                     row.fadeOut(400, function() { 
                         $(this).remove(); 
                     });
-
-                    // Munculkan TOAST sukses
                     Toast.fire({
                         icon: 'success',
                         title: 'AKUN ' + username + ' BERHASIL DIHAPUS'
                     });
                 },
                 error: function() {
-                    // Alert besar hanya untuk error sistem
                     Swal.fire({
                         icon: 'error',
                         title: 'GAGAL',
@@ -597,6 +593,7 @@ $(document).on('click', '.alert-delete', function(e) {
                     text: "Ubah password " + username.toUpperCase() + " menjadi: " + newPass + "?",
                     icon: 'question',
                     showCancelButton: true,
+                    reverseButtons: true,
                     confirmButtonText: 'YA, UBAH',
                     cancelButtonText: 'BATAL',
                     confirmButtonColor: '#6c757d',

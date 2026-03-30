@@ -20,7 +20,8 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
     <title>LUPA PASSWORD - CF</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-<script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
         (function() {
             const savedTheme = localStorage.getItem('selected-theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
@@ -117,6 +118,7 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
             font-weight: bold;
             line-height: 1.4;
         }
+        /* Style Loading Button */
         .btn-submit { 
             width: 100%; 
             padding: 14px; 
@@ -131,6 +133,10 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
             text-transform: uppercase;
             transition: all 0.4s ease; 
             box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
         .btn-submit:hover:not(:disabled) { 
             background-color: #218838; 
@@ -141,6 +147,19 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
             cursor: not-allowed;
             opacity: 0.7;
         }
+        .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         .btn-back {
             width: 100%; 
             padding: 12px; 
@@ -183,6 +202,13 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
             left: 25px;
             z-index: 1000;
         }
+
+        /* Custom SweetAlert sesuai Tema */
+        [data-theme="dark"] .swal2-popup {
+            background: #1e1e1e !important;
+            color: #ffffff !important;
+            border: 1px solid #333;
+        }
     </style>
 </head>
 <body>
@@ -217,7 +243,8 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
             </div>
             
             <button type="submit" name="submit_lupa" id="submitBtn" class="btn-submit">
-                KIRIM KODE OTP
+                <div class="spinner" id="btnSpinner"></div>
+                <span id="btnText">KIRIM KODE OTP</span>
             </button>
             
             <a href="login.php" class="btn-back">
@@ -234,6 +261,16 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
         const emailInput = document.getElementById('emailInput');
         const emailHint = document.getElementById('emailHint');
         const submitBtn = document.getElementById('submitBtn');
+        const resetForm = document.getElementById('resetForm');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const btnText = document.getElementById('btnText');
+
+        // Loading Handler saat form submit
+        resetForm.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            btnSpinner.style.display = 'block';
+            btnText.innerText = 'MEMPROSES...';
+        });
 
         emailInput.addEventListener('input', function() {
             const emailOriginal = this.value.trim();
