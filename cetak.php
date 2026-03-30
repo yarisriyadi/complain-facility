@@ -8,13 +8,13 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 $id = mysqli_real_escape_string($conn, $_GET['id']);
-
 $sql = "SELECT c.*, r.repair_action, r.foto_after, r.ttd_user, r.ttd_pga 
         FROM complaints c 
         LEFT JOIN repair_actions r ON c.complain_id = r.complaint_id 
         WHERE c.complain_id='$id'";
 $query = mysqli_query($conn, $sql);
 $d = mysqli_fetch_array($query);
+$form_no_display = str_pad($d['complain_id'], 2, '0', STR_PAD_LEFT);
 
 $options = new Options();
 $options->set('isRemoteEnabled', true);
@@ -37,7 +37,6 @@ function imageToBase64($path) {
 }
 
 $logo_base64 = imageToBase64($logo_path);
-
 $img_before_base64 = imageToBase64($upload_dir . "before" . DIRECTORY_SEPARATOR . $d['foto_before']);
 $img_after_base64  = imageToBase64($upload_dir . "after" . DIRECTORY_SEPARATOR . $d['foto_after']);
 
@@ -72,6 +71,16 @@ $html = '
     .sig-img { max-height: 80px; max-width: 100%; display: block; margin: 0 auto; }
     .sig-footer { font-weight: bold; padding: 5px; font-size: 10px; text-transform: uppercase; background: #f5f5f5; }
     .caps { text-transform: uppercase; }
+
+    .footer-container { width: 100%; margin-top: 5px; }
+    .form-number { 
+        float: right; 
+        width: 50%; 
+        text-align: right; 
+        font-size: 9px; 
+        color: #555; 
+        font-style: italic;
+    }
 </style>
 </head>
 <body>
@@ -135,6 +144,13 @@ $html = '
         <td class="sig-footer">PGA</td>
     </tr>
 </table>
+
+<div class="footer-container">
+    <div class="form-number">
+        Form No. FM/PGA/'.$form_no_display.' Rev.01
+    </div>
+    <div style="clear: both;"></div>
+</div>
 
 </body>
 </html>';
