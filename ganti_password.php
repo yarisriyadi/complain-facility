@@ -100,10 +100,13 @@ if (isset($_POST['update_password'])) {
     <link rel="stylesheet" href="style_theme.css">
     <style>
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {  opacity: 0; 
+                    transform: translateY(20px); 
+                }
+            to { opacity: 1; 
+                 transform: translateY(0); 
+                }
         }
-
         body { 
             font-family: 'Segoe UI', Arial, sans-serif; 
             margin: 0; padding: 0; 
@@ -112,7 +115,6 @@ if (isset($_POST['update_password'])) {
             background-color: var(--bg-color);
             transition: background-color 0.4s ease;
         }
-
         .login-container { 
             background: var(--container-bg); 
             backdrop-filter: blur(10px); 
@@ -123,25 +125,37 @@ if (isset($_POST['update_password'])) {
             width: 90%; max-width: 400px; 
             box-sizing: border-box;
             transition: all 0.4s ease;
-            animation: fadeInUp 0.6s ease-out; /* Trigger animasi */
+            animation: fadeInUp 0.6s ease-out; 
         }
-
         .login-container h2 { 
-            text-align: center; margin: 0 0 10px 0; font-size: 24px; 
-            font-weight: bold; text-transform: uppercase; letter-spacing: 2px;
+            text-align: center; 
+            margin: 0 0 10px 0; 
+            font-size: 24px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
             color: var(--text-color);
         }
-
         .login-container p { 
-            text-align: center; font-size: 13px; margin-bottom: 25px; 
-            opacity: 0.8; line-height: 1.5; color: var(--text-color);
+            text-align: center; 
+            font-size: 13px; 
+            margin-bottom: 25px; 
+            opacity: 0.8; 
+            line-height: 1.5; 
+            color: var(--text-color);
         }
-
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: var(--text-color); }
-        
-        .password-container { position: relative; width: 100%; }
-        
+        .form-group label { 
+                    display: block; 
+                    margin-bottom: 8px; 
+                    font-size: 14px; 
+                    font-weight: 600; 
+                    color: var(--text-color); 
+    }
+        .password-container { 
+        position: relative; 
+        width: 100%; 
+    }
         .form-group input { 
             width: 100%; padding: 12px; border: 1px solid var(--border-color); 
             border-radius: 8px; box-sizing: border-box; font-size: 15px; 
@@ -154,13 +168,11 @@ if (isset($_POST['update_password'])) {
             box-shadow: 0 0 10px rgba(40, 167, 69, 0.3); 
             transform: scale(1.01); 
         }
-
         .toggle-password { 
             position: absolute; right: 15px; top: 50%; 
             transform: translateY(-50%); cursor: pointer; 
             color: var(--text-color); opacity: 0.6; 
         }
-
         .btn-submit { 
             width: 100%; padding: 14px; background-color: #28a745; 
             border: none; color: white; border-radius: 8px; 
@@ -168,25 +180,43 @@ if (isset($_POST['update_password'])) {
             margin-top: 10px; text-transform: uppercase;
             transition: 0.3s; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
         }
-
         .btn-submit:hover:not(:disabled) { 
             background-color: #218838; transform: translateY(-2px); 
         }
-
-        .btn-submit:active { transform: translateY(0); }
-
-        .btn-submit:disabled { opacity: 0.5; filter: grayscale(1); cursor: not-allowed; }
-
-        .copyright { 
-            text-align: center; margin-top: 30px; font-size: 10px; 
-            border-top: 1px solid var(--border-color); padding-top: 15px; 
-            opacity: 0.6; color: var(--text-color);
+        .btn-submit:active { 
+            transform: translateY(0); 
         }
-
-        .theme-switcher { position: fixed; bottom: 25px; left: 25px; z-index: 1000; }
-        
-        .msg-error { font-size: 11px; margin-top: 5px; font-weight: bold; color: #ff4d4d; }
-        .msg-success { font-size: 11px; margin-top: 5px; font-weight: bold; color: #2ecc71; }
+        .btn-submit:disabled { 
+            opacity: 0.5; filter: 
+            grayscale(1); 
+            cursor: not-allowed; 
+        }
+        .copyright { 
+            text-align: center; 
+            margin-top: 30px; 
+            font-size: 10px; 
+            border-top: 1px solid var(--border-color); 
+            padding-top: 15px; 
+            opacity: 0.6; 
+            color: var(--text-color);
+        }
+        .theme-switcher { 
+            position: fixed; 
+            bottom: 25px; 
+            left: 25px; z-index: 1000; 
+        }
+        .msg-error { 
+            font-size: 11px; 
+            margin-top: 5px; 
+            font-weight: bold; 
+            color: #ff4d4d; 
+        }
+        .msg-success { 
+            font-size: 11px; 
+            margin-top: 5px; 
+            font-weight: bold; 
+            color: #2ecc71; 
+        }
     </style>
 </head>
 <body>

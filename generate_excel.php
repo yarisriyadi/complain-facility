@@ -9,7 +9,6 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
-// Fungsi untuk memasukkan gambar ke sel
 function addImageToCell($path, $coordinate, $sheet) {
     if (!empty($path) && file_exists($path)) {
         $drawing = new Drawing();
@@ -137,7 +136,6 @@ header('Cache-Control: max-age=0');
 $writer = new Xlsx($spreadsheet);
 $writer->save('php://output');
 
-// 5. Hapus file temp ttd
 foreach($tempFiles as $f) { 
     if(file_exists($f)) unlink($f); 
 }

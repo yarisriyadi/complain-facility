@@ -4,8 +4,8 @@ session_start();
 $pesan_url = isset($_GET['pesan']) ? $_GET['pesan'] : '';
 
 if ($pesan_url == 'update_berhasil') {
-    unset($_SESSION['attempt']);    // Menghapus hitungan salah password
-    unset($_SESSION['error_msg']);  // WAJIB: Menghapus pesan error "Password Salah (5/5)" yang tertinggal
+    unset($_SESSION['attempt']);   
+    unset($_SESSION['error_msg']);  
 }
 
 include 'config_maintenance.php';
