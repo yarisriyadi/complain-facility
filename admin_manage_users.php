@@ -421,6 +421,20 @@ if (isset($_POST['ajax_search'])) {
 <script>
     
     $(document).ready(function(){
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('status') === 'update_success') {
+        window.history.replaceState({}, document.title, window.location.pathname);
+        Swal.fire({
+            title: 'BERHASIL!',
+            text: 'Password telah diperbarui.',
+            icon: 'success',
+            confirmButtonColor: '#28a745',
+            confirmButtonText: 'OKE',
+            scrollbarPadding: false,
+            heightAuto: false
+        });
+    }
+
         let currentLimit = 5;
         let idleTime = 0;
         const keepAliveInterval = 30000; 
@@ -522,7 +536,6 @@ if (isset($_POST['ajax_search'])) {
 $(document).on('click', '.alert-delete', function(e) {
     e.preventDefault();
     
-    // Ambil data dari tombol
     const btn = $(this);
     const id = btn.data('id');
     const username = btn.data('username') ? btn.data('username').toUpperCase() : 'USER';
@@ -584,7 +597,7 @@ $(document).on('click', '.alert-delete', function(e) {
             confirmButtonColor: '#6c7d6c', 
             cancelButtonColor: '#444',
             scrollbarPadding: false,
-            heightAuto: false
+            heightAuto: false,
         }).then((result) => {
             if (result.isConfirmed && result.value) {
                 const newPass = result.value;
@@ -605,7 +618,10 @@ $(document).on('click', '.alert-delete', function(e) {
                 });
             }
         });
+        
     }
+    
+
 </script>
 </body>
 </html>

@@ -15,14 +15,13 @@ if(isset($_GET['id']) && isset($_GET['pass'])){
     $query = "UPDATE users SET password = '$password_hashed' WHERE id = '$id'";
 
     if(mysqli_query($conn, $query)){
-        echo "<script>
-                alert('Berhasil! Password telah dirubah menjadi: " . htmlspecialchars($password_baru) . "');
-                window.location='admin_manage_users.php';
-              </script>";
+        header("Location: admin_manage_users.php?status=update_success");
+        exit;
     } else {
         echo "Gagal memperbarui data: " . mysqli_error($conn);
     }
 } else {
     header("location:admin_manage_users.php");
+    exit;
 }
 ?>
