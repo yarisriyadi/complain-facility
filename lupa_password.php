@@ -238,7 +238,7 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
         <form action="proses_kirim_otp.php" method="POST" id="resetForm">
             <div class="form-group">
                 <label>Alamat Email</label>
-                <input type="email" name="email" id="emailInput" required placeholder="user@gmail.com" autocomplete="off">
+                <input type="email" name="email" id="emailInput" required placeholder="user@shinsei-denshi.id" autocomplete="off">
                 <div id="emailHint" class="email-warning"></div>
             </div>
             
@@ -284,8 +284,8 @@ if (isset($maintenance_mode) && $maintenance_mode === true) {
                     errorMessage = "<i class='fas fa-exclamation-circle'></i> Gunakan huruf kecil semua.";
                     isError = true;
                 } 
-                else if (!emailValue.endsWith('@gmail.com')) {
-                    errorMessage = "<i class='fas fa-exclamation-circle'></i> Wajib menggunakan @gmail.com";
+                else if (!emailValue.endsWith('@shinsei-denshi.id')) {
+                    errorMessage = "<i class='fas fa-exclamation-circle'></i> Wajib menggunakan @shinsei-denshi.id";
                     isError = true;
                 }
 

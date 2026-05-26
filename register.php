@@ -323,9 +323,9 @@
         }
 
         if (email === "") { emailMsg.innerHTML = ""; isEmailValid = false; }
-        else if (!email.endsWith("@gmail.com")) {
+        else if (!email.endsWith("@shinsei-denshi.id")) {
             emailMsg.className = "msg-error";
-            emailMsg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Wajib gunakan @gmail.com!';
+            emailMsg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Wajib gunakan @shinsei-denshi.id!';
             isEmailValid = false;
         } else {
             emailMsg.className = "msg-success";

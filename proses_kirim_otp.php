@@ -67,8 +67,8 @@ if (isset($_POST['email'])) {
                 $mail->isSMTP();
                 $mail->Host       = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
-                $mail->Username   = 'pthtmi123@gmail.com'; 
-                $mail->Password   = 'xuvalxykuepbpblc'; 
+                $mail->Username   = 'shinseidenshi1@gmail.com'; 
+                $mail->Password   = 'pagmibejobiwgqls'; 
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
                 $mail->Port       = 465; 
 
@@ -80,7 +80,7 @@ if (isset($_POST['email'])) {
                     )
                 );
 
-                $mail->setFrom('pthtmi123@gmail.com', 'SHINSEI SYSTEM');
+                $mail->setFrom('shinseidenshi1@gmail.com', 'SDI SYSTEM');
                 $mail->addAddress($email);
                 $mail->isHTML(true);
                 $mail->Subject = 'Kode OTP Verifikasi - SHINSEI';

@@ -50,12 +50,12 @@ if (isset($_POST['update_password'])) {
                 $mail->isSMTP();
                 $mail->Host       = 'smtp.gmail.com'; 
                 $mail->SMTPAuth   = true;
-                $mail->Username   = 'pthtmi123@gmail.com'; 
-                $mail->Password   = 'xuvalxykuepbpblc'; // App Password Gmail
+                $mail->Username   = 'shinseidenshi1@gmail.com'; 
+                $mail->Password   = 'pagmibejobiwgqls'; // App Password Gmail
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                 $mail->Port       = 465;
 
-                $mail->setFrom('pthtmi123@gmail.com', 'SHINSEI SYSTEM');
+                $mail->setFrom('shinseidenshi1@gmail.com', 'SDI SYSTEM');
                 $mail->addAddress($email); 
 
                 $mail->isHTML(true);
