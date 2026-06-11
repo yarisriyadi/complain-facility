@@ -193,13 +193,13 @@ if (isset($_POST['update_email'])) {
         <form method="POST" id="emailForm">
             <div class="form-group">
                 <label>Email Lama</label>
-                <input type="email" name="email_lama" id="emailLama" required placeholder="user@gmail.com" autocomplete="off">
+                <input type="email" name="email_lama" id="emailLama" required placeholder="user@shinsei-denshi.id" autocomplete="off">
                 <div id="hintLama" class="email-warning"></div>
             </div>
 
             <div class="form-group">
                 <label>Email Baru</label>
-                <input type="email" name="email_baru" id="emailBaru" required placeholder="baru@gmail.com" autocomplete="off">
+                <input type="email" name="email_baru" id="emailBaru" required placeholder="user@shinsei-denshi.id" autocomplete="off">
                 <div id="hintBaru" class="email-warning"></div>
             </div>
             
@@ -218,10 +218,8 @@ if (isset($_POST['update_email'])) {
     <script src="theme_script.js"></script>
 
     <script>
-        // Ambil warna CSS variable untuk styling SweetAlert agar menyatu dengan tema
         const getStyle = (varName) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
 
-        // Tampilkan SweetAlert jika ada pesan sukses dari PHP
         <?php if(isset($success)): ?>
             Swal.fire({
                 icon: 'success',
@@ -261,8 +259,8 @@ if (isset($_POST['update_email'])) {
                 if (/[A-Z]/.test(originalValue)) {
                     message = "<i class='fas fa-exclamation-circle'></i> Gunakan huruf kecil semua.";
                     isError = true;
-                } else if (!lowerValue.endsWith('@gmail.com')) {
-                    message = "<i class='fas fa-exclamation-circle'></i> Wajib menggunakan @gmail.com";
+                } else if (!lowerValue.endsWith('@shinsei-denshi.id')) {
+                    message = "<i class='fas fa-exclamation-circle'></i> Wajib menggunakan @shinsei-denshi.id";
                     isError = true;
                 }
             }

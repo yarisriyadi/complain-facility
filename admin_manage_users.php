@@ -169,6 +169,50 @@ if (isset($_POST['ajax_search'])) {
             gap: 10px; 
             margin-bottom: 15px; 
         }
+        .search-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+        .btn-add-account {
+            background-color: #28a745; 
+            background-image: linear-gradient(90deg, #28a745, #28a745);
+            background-size: 100% 100%;
+            color: white; 
+            padding: 10px 18px; 
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 8px; 
+            cursor: pointer;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            white-space: nowrap; 
+            text-transform: uppercase;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+            border: none; 
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            box-shadow: 0 4px 15 rgba(40, 167, 69, 0.3);
+            width: 100%; 
+            box-sizing: border-box;
+        }
+
+        .btn-add-account:hover { 
+            transform: translateY(-3px);
+            background-image: linear-gradient(90deg, #28a745, #00ff88, #2ecc71, #28a745);
+            background-size: 200% 100%;
+            animation: auroraMove 2s linear infinite;
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5), 0 0 40px rgba(40, 167, 69, 0.3);
+            color: white; 
+        }
+        @keyframes auroraMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
         .input-search { 
             padding: 12px; 
             border: 1px solid var(--border-color); 
@@ -268,6 +312,88 @@ if (isset($_POST['ajax_search'])) {
             color: #fff;
             border-color: #888;
         }
+        .swal2-input-custom {
+            width: 80% !important;
+            padding: 10px !important;
+            margin: 10px auto !important;
+            box-sizing: border-box;
+            background: var(--input-bg) !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 4px !important;
+        }
+        .swal-modern-popup {
+            border-radius: 12px !important;
+            padding: 20px !important;
+            width: 450px !important; 
+        }
+
+        .swal-form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px; 
+            margin-top: 15px;
+            text-align: left; 
+        }
+
+        .swal-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .swal-input-group label {
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        .swal-input-group label i {
+            margin-right: 5px;
+            width: 15px;
+            text-align: center;
+        }
+
+        .swal-custom-field {
+            width: 100% !important;
+            box-sizing: border-box;
+            padding: 10px 12px !important;
+            font-size: 14px !important;
+            background: var(--input-bg) !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 6px !important;
+            margin: 0 !important; 
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .swal-custom-field:focus {
+            border-color: #28a745 !important; 
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.3) !important;
+        }
+
+        select.swal-custom-field {
+            cursor: pointer;
+            height: 38px;
+        }
+        
+        .swal2-confirm.swal2-styled {
+            background-color: #28a745 !important;
+            background-image: linear-gradient(90deg, #28a745, #28a745) !important;
+            background-size: 100% 100% !important;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3) !important;
+        }
+        .swal2-confirm.swal2-styled:hover {
+            background-image: linear-gradient(90deg, #28a745, #00ff88, #2ecc71, #28a745) !important;
+            background-size: 200% 100% !important;
+            animation: auroraMove 2s linear infinite !important;
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5), 0 0 40px rgba(40, 167, 69, 0.3) !important;
+        }
+
         @media (min-width: 768px) {
             .header-section { 
                 flex-direction: row; 
@@ -278,6 +404,15 @@ if (isset($_POST['ajax_search'])) {
                 flex-direction: row; 
                 justify-content: space-between; 
                 align-items: center; 
+            }
+            .search-controls { 
+                width: auto; 
+                flex-wrap: nowrap; 
+                display: flex;
+                gap: 10px;
+            }
+            .btn-add-account {
+                width: auto; 
             }
             .input-search { 
                 width: 350px; 
@@ -294,31 +429,30 @@ if (isset($_POST['ajax_search'])) {
                 z-index: 1000;
             }
         }
-            .btn-logout[style*="#007bff"]:hover {
-                background: #007bff !important;
-                color: #fff !important;
-                box-shadow: 0 3px 8px rgba(38, 0, 255, 0.63) !important;
+        .btn-logout[style*="#007bff"]:hover {
+            background: #007bff !important;
+            color: #fff !important;
+            box-shadow: 0 3px 8px rgba(38, 0, 255, 0.63) !important;
         }
-            body.swal2-shown {
+        body.swal2-shown {
             overflow-y: scroll !important;
             padding-right: 0 !important;
         }
-            .swal2-popup {
-                background: var(--container-bg) !important;
-                color: var(--text-color) !important;
-                border: 1px solid var(--border-color);
+        .swal2-popup {
+            background: var(--container-bg) !important;
+            color: var(--text-color) !important;
+            border: 1px solid var(--border-color);
         }
-            .swal2-title, .swal2-html-container {
-                color: var(--text-color) !important;
+        .swal2-title, .swal2-html-container {
+            color: var(--text-color) !important;
         }
-            body.swal2-shown {
+        body.swal2-shown {
             overflow: hidden !important;
             padding-right: 0 !important;
         }
-
-            html.swal2-shown {
+        html.swal2-shown {
             overflow: hidden !important;
-}
+        }
     </style>
 </head>
 <body data-theme="dark">
@@ -354,7 +488,12 @@ if (isset($_POST['ajax_search'])) {
 
     <div class="search-wrapper">
         <p style="font-size: 12px; margin: 0; font-weight: bold; text-transform: uppercase; color: var(--text-color);">MENU: <strong style="color:#6c757d;">KELOLA DAFTAR USER</strong></p>
-        <input type="text" id="keyword" class="input-search" placeholder="Cari nama, username, atau email..." autocomplete="off">
+        <div class="search-controls">
+            <button type="button" class="btn-add-account" onclick="addAccountPopUp()">
+                <i class="fa-solid fa-user-plus"></i> ADD ACCOUNT
+            </button>
+            <input type="text" id="keyword" class="input-search" placeholder="Cari nama, username, atau email..." autocomplete="off">
+        </div>
     </div>
 
     <div class="table-responsive">
@@ -427,6 +566,19 @@ if (isset($_POST['ajax_search'])) {
         Swal.fire({
             title: 'BERHASIL!',
             text: 'Password telah diperbarui.',
+            icon: 'success',
+            confirmButtonColor: '#28a745',
+            confirmButtonText: 'OKE',
+            scrollbarPadding: false,
+            heightAuto: false
+        });
+    }
+
+    if (urlParams.get('status') === 'add_success') {
+        window.history.replaceState({}, document.title, window.location.pathname);
+        Swal.fire({
+            title: 'BERHASIL!',
+            text: 'Akun baru telah ditambahkan.',
             icon: 'success',
             confirmButtonColor: '#28a745',
             confirmButtonText: 'OKE',
@@ -618,10 +770,82 @@ $(document).on('click', '.alert-delete', function(e) {
                 });
             }
         });
-        
     }
-    
 
+    function addAccountPopUp() {
+    Swal.fire({
+        title: '<i class="fa-solid fa-user-plus" style="color: #28a745; margin-right: 10px;"></i>TAMBAH AKUN BARU',
+        html: `
+            <div class="swal-form-container">
+                <div class="swal-input-group">
+                    <label><i class="fa-solid fa-user"></i> Username</label>
+                    <input type="text" id="new_username" class="swal-custom-field" placeholder="Masukkan username" autocomplete="off" required>
+                </div>
+                <div class="swal-input-group">
+                    <label><i class="fa-solid fa-id-card"></i> Nama Lengkap</label>
+                    <input type="text" id="new_nama_lengkap" class="swal-custom-field" placeholder="Masukkan nama lengkap" autocomplete="off" required>
+                </div>
+                <div class="swal-input-group">
+                    <label><i class="fa-solid fa-envelope"></i> Email (Opsional)</label>
+                    <input type="email" id="new_email" class="swal-custom-field" placeholder="user@shinsei-denshi.id" autocomplete="off">
+                </div>
+                <div class="swal-input-group">
+                    <label><i class="fa-solid fa-lock"></i> Password</label>
+                    <input type="password" id="new_password" class="swal-custom-field" placeholder="••••••••" autocomplete="off" required>
+                </div>
+                <div class="swal-input-group">
+                    <label><i class="fa-solid fa-user-shield"></i> Role / Hak Akses</label>
+                    <select id="new_role" class="swal-custom-field">
+                        <option value="teknisi">TEKNISI</option>
+                    </select>
+                </div>
+            </div>
+        `,
+        showCancelButton: true,
+        reverseButtons: true,
+        confirmButtonText: 'SIMPAN',
+        cancelButtonText: 'BATAL',
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        scrollbarPadding: false,
+        heightAuto: false,
+        customClass: {
+            popup: 'swal-modern-popup'
+        },
+        preConfirm: () => {
+            const username = Swal.getPopup().querySelector('#new_username').value.trim();
+            const nama_lengkap = Swal.getPopup().querySelector('#new_nama_lengkap').value.trim();
+            const email = Swal.getPopup().querySelector('#new_email').value.trim();
+            const password = Swal.getPopup().querySelector('#new_password').value.trim();
+            const role = Swal.getPopup().querySelector('#new_role').value;
+
+            if (!username || !nama_lengkap || !password) {
+                Swal.showValidationMessage(`Harap lengkapi seluruh form data wajib (Username, Nama Lengkap, & Password)!`);
+            }
+            return { username: username, nama_lengkap: nama_lengkap, email: email, password: password, role: role }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const data = result.value;                
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'proses_tambah_user.php';
+
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    const hiddenField = document.createElement('input');
+                    hiddenField.type = 'hidden';
+                    hiddenField.name = key;
+                    hiddenField.value = data[key];
+                    form.appendChild(hiddenField);
+                }
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
 </script>
 </body>
 </html>

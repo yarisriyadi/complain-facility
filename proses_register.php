@@ -50,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         kirimRespon('Tidak Cocok', 'Konfirmasi password tidak cocok!', 'error');
     }
 
-    // CEK USERNAME
     $stmt_cek = $conn->prepare("SELECT id FROM users WHERE username = ?");
     $stmt_cek->bind_param("s", $username);
     $stmt_cek->execute();
@@ -58,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         kirimRespon('Gagal!', 'Username sudah terdaftar!', 'error');
     }
 
-    // CEK EMAIL
     $stmt_email = $conn->prepare("SELECT id FROM users WHERE email = ?");
     $stmt_email->bind_param("s", $email);
     $stmt_email->execute();
@@ -66,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         kirimRespon('Gagal!', 'Email sudah terdaftar! Gunakan email lain.', 'error');
     }
 
-    // CEK DEVICE ID
     $stmt_dev = $conn->prepare("SELECT id FROM users WHERE device_id = ?");
     $stmt_dev->bind_param("s", $device_id);
     $stmt_dev->execute();
@@ -74,19 +71,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         kirimRespon('Perangkat Terdeteksi', 'Perangkat Anda sudah terdaftar.', 'info', 'login.php');
     }
 
-    // PROSES INSERT
     $password_hashed = password_hash($password_mentah, PASSWORD_DEFAULT);
     $stmt_insert = $conn->prepare("INSERT INTO users (username, password, nama_lengkap, email, role, device_id) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt_insert->bind_param("ssssss", $username, $password_hashed, $nama, $email, $role, $device_id);
 
     if ($stmt_insert->execute()) {
-        // Berhasil Registrasi
         kirimRespon('BERHASIL!', 'Akun Anda telah terdaftar. Silakan Login.', 'success', 'login.php');
     } else {
         kirimRespon('ERROR', 'Terjadi kesalahan sistem. Silakan coba lagi nanti.', 'error');
     }
 
-    // Tutup koneksi
     $stmt_cek->close();
     $stmt_email->close();
     $stmt_dev->close();
