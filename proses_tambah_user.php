@@ -6,7 +6,6 @@ if (!isset($_SESSION['status']) || $_SESSION['role'] != "admin") {
     header("location:admin_dashboard_proses.php");
     exit;
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -38,11 +37,11 @@ if (!isset($_SESSION['status']) || $_SESSION['role'] != "admin") {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    $username     = mysqli_real_escape_string($conn, $_POST['username']);
-    $nama_lengkap = mysqli_real_escape_string($conn, $_POST['nama_lengkap']);
-    $email        = mysqli_real_escape_string($conn, $_POST['email']);
+    $username     = trim($_POST['username']);
+    $nama_lengkap = trim($_POST['nama_lengkap']);
+    $email        = trim($_POST['email']);
     $password     = $_POST['password']; 
-    $role         = mysqli_real_escape_string($conn, $_POST['role']);
+    $role         = trim($_POST['role']);
 
     if (empty($username) || empty($nama_lengkap) || empty($password) || empty($role)) {
         echo "<script>
@@ -59,14 +58,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    $query_cek = "SELECT id FROM users WHERE username = '$username'";
+    $query_cek = "SELECT id FROM users WHERE username = ?";
     if (!empty($email)) {
-        $query_cek .= " OR email = '$email'";
+        $query_cek .= " OR email = ?";
     }
     
-    $cek_user = mysqli_query($conn, $query_cek);
+    $stmt_cek = mysqli_prepare($conn, $query_cek);
     
-    if (mysqli_num_rows($cek_user) > 0) {
+    if (!empty($email)) {
+        mysqli_stmt_bind_param($stmt_cek, "ss", $username, $email);
+    } else {
+        mysqli_stmt_bind_param($stmt_cek, "s", $username);
+    }
+    
+    mysqli_stmt_execute($stmt_cek);
+    mysqli_stmt_store_result($stmt_cek);
+    
+    if (mysqli_stmt_num_rows($stmt_cek) > 0) {
         echo "<script>
                 Swal.fire({
                     title: 'GAGAL!',
@@ -80,22 +88,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </script>";
         exit;
     }
+    mysqli_stmt_close($stmt_cek);
 
     $password_hashed = password_hash($password, PASSWORD_BCRYPT);
-    $device_id = NULL;
+    $email_val = empty($email) ? null : $email;
 
-    $sql = "INSERT INTO users (username, nama_lengkap, email, password, role, device_id) 
-            VALUES ('$username', '$nama_lengkap', '$email', '$password_hashed', '$role', NULL)";
+    $sql = "INSERT INTO users (username, nama_lengkap, email, password, role, device_id, otp_code, otp_expiry) 
+            VALUES (?, ?, ?, ?, ?, NULL, NULL, NULL)";
+            
+    $stmt_insert = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt_insert, "sssss", $username, $nama_lengkap, $email_val, $password_hashed, $role);
 
-    if (mysqli_query($conn, $sql)) {
+    if (mysqli_stmt_execute($stmt_insert)) {
         header("location:admin_manage_users.php?status=add_success");
         exit;
     } else {
-        $error_db = mysqli_real_escape_string($conn, mysqli_error($conn));
+        $error_db = mysqli_stmt_error($stmt_insert);
         echo "<script>
                 Swal.fire({
                     title: 'ERROR SISTEM!',
-                    text: 'Gagal menyimpan data ke database: " . $error_db . "',
+                    text: 'Gagal menyimpan data ke database: " . addslashes($error_db) . "',
                     icon: 'error',
                     confirmButtonColor: '#dc3545',
                     confirmButtonText: 'OKE'
@@ -105,6 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </script>";
         exit;
     }
+    mysqli_stmt_close($stmt_insert);
 
 } else {
     header("location:admin_manage_users.php");
