@@ -14,6 +14,22 @@ Enggak ada lagi laporan yang hilang, terselip, atau terlupakan. Melalui sistem i
 
 ---
 
+# 🏢 Complain Facility System
+> **Cara cerdas kelola laporan kerusakan dan bikin dokumen maintenance otomatis.**
+
+![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge)
+![License](https://img.shields.io/badge/License-Copyrighted-red?style=for-the-badge)
+
+---
+
+## 📝 Tentang Proyek
+**Complain Facility** hadir untuk membuang cara lama yang ribet dalam menangani kerusakan fasilitas di lingkungan kerja maupun operasional. Platform berbasis web ini mengintegrasikan seluruh alur pelaporan keluhan secara *end-to-end*, menghubungkan **User** (pelapor), **Teknisi** (eksekutor), hingga **Manajemen / PGA (Property & General Affairs)** secara digital dan transparan.
+
+Enggak ada lagi laporan yang hilang, terselip, atau terlupakan. Melalui sistem ini, status setiap tiket perbaikan dapat dipantau secara *real-time*, didukung bukti dokumentasi visual yang valid, serta dilengkapi dengan fitur tanda tangan digital untuk memastikan akuntabilitas kerja sebelum sistem menghasilkan dokumen formal berbasis PDF secara otomatis.
+
+---
+
 ## ✨ Fitur Jagoan
 * **🛠️ Simple Ticketing System** – Alur pelaporan yang runut dan terstruktur, mulai dari pembuatan tiket, peninjauan, proses pengerjaan, hingga status selesai.
 * **📸 Bukti Visual (Before & After)** – Teknisi dan pelapor wajib mengunggah foto kondisi fasilitas sebelum diperbaiki dan setelah penanganan untuk transparansi penuh.
@@ -49,14 +65,26 @@ Setelah berhasil melakukan login, sistem akan menampilkan jendela *pop-up modal*
 
 ---
 
-### 2. Pengajuan Keluhan Baru oleh User (Tahap "Lapor")
-User yang menemukan fasilitas rusak dapat membuat laporan secara mandiri dalam hitungan detik melalui antarmuka formulir yang dinamis.
+### 2. Pengajuan Keluhan Baru oleh User (Tahap "Lapor" & Verifikasi Awal)
+User yang menemukan fasilitas rusak dapat membuat laporan secara mandiri dan langsung melengkapinya dengan otorisasi awal agar tiket masuk ke dalam antrean pengerjaan.
 
-* **Alur:** User membuka menu *Add Complaint*, mengisi formulir penjelas (seperti nama fasilitas, lokasi detail, dan deskripsi kerusakan), serta mengunggah foto bukti awal (*Before*). Setelah disubmit, sistem otomatis menerbitkan nomor tiket unik dan mengirimkan notifikasi ke panel admin/teknisi.
+* **Alur:** User membuka menu pengisian keluhan, memasukkan detail lokasi serta deskripsi kerusakan, dan memberikan tanda tangan digital sebagai pelapor. Setelah disimpan, laporan akan terdaftar pada tabel utama dengan status **PROSES**, dan sistem secara otomatis memunculkan pilihan kontak teknisi agar user bisa segera mengirimkan notifikasi via WhatsApp.
+![halamanawal](bahan/welcome1.png)
 
-![Formulir Pengisian Keluhan](bahan/welcome1.png)
+#### A. Pengisian Formulir & Tanda Tangan Digital (TTD) User
+Saat mengisi formulir, user memberikan deskripsi kerusakan pada fasilitas di kolom yang disediakan. Sebelum menekan tombol simpan, user diwajibkan membubuhkan Tanda Tangan Digital pada kolom **TTD USER (PELAPOR)** sebagai bukti sah pelaporan keluhan.
 
-* **Detail Form:** Form ini menangkap informasi penting perusahaan seperti pilihan *Section / Dept* pelapor, *Lokasi Kerusakan* spesifik (misal: Lantai 1), identitas otomatis pelapor, kolom deskripsi kondisi kerusakan, serta tombol unggah berkas untuk dokumentasi visual sebelum penanganan dimulai.
+![Formulir Keluhan dan TTD User](bahan/ttd_user.png)
+
+#### B. Monitoring Tabel Utama dengan Status "PROSES"
+Setelah formulir berhasil disimpan, data keluhan tersebut langsung masuk ke dalam tabel monitoring dengan tanda status berwarna kuning bertuliskan **PROSES**. Pada kolom status ini juga terlihat indikator centang hijau (`✓ USER`) yang menandakan bahwa pihak pelapor telah berhasil memberikan tanda tangannya.
+
+![Tabel Status Keluhan PROSES](image_fdf64c.png)
+
+#### C. Pengiriman Notifikasi Laporan ke WhatsApp Teknisi
+Sesaat setelah pengisian form dan pembubuhan tanda tangan selesai dilakukan, sistem akan menampilkan jendela *pop-up modal* interaktif **"Kirim Laporan"**. Pada tahap ini, user diarahkan untuk memilih teknisi yang bertugas (seperti *Pak Martani* atau *Mas Dodik*) untuk mengirimkan rincian notifikasi perbaikan secara langsung melalui aplikasi WhatsApp agar kerusakan segera ditangani.
+
+![Pop-up Kirim Laporan via WhatsApp](image_fdf2c6.png)
 
 ---
 
