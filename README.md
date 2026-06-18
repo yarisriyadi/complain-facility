@@ -45,6 +45,7 @@ User yang menemukan fasilitas rusak dapat membuat laporan secara mandiri dan lan
 
 * **Alur:** User membuka menu pengisian keluhan, memasukkan detail lokasi serta deskripsi kerusakan, dan memberikan tanda tangan digital sebagai pelapor. Setelah disimpan, laporan akan terdaftar pada tabel utama dengan status **PROSES**, dan sistem secara otomatis memunculkan pilihan kontak teknisi agar user bisa segera mengirimkan notifikasi via WhatsApp.
 ![halamanawal](bahan/welcome1.png)
+![halamanwauserteknisi](bahan/wa_user_teknisi.png)
 
 #### A. Pengisian Formulir & Tanda Tangan Digital (TTD) User
 Saat mengisi formulir, user memberikan deskripsi kerusakan pada fasilitas di kolom yang disediakan. Sebelum menekan tombol simpan, user diwajibkan membubuhkan Tanda Tangan Digital pada kolom **TTD USER (PELAPOR)** sebagai bukti sah pelaporan keluhan.
@@ -54,14 +55,7 @@ Saat mengisi formulir, user memberikan deskripsi kerusakan pada fasilitas di kol
 #### B. Monitoring Tabel Utama dengan Status "PROSES"
 Setelah formulir berhasil disimpan, data keluhan tersebut langsung masuk ke dalam tabel monitoring dengan tanda status berwarna kuning bertuliskan **PROSES**. Pada kolom status ini juga terlihat indikator centang hijau (`✓ USER`) yang menandakan bahwa pihak pelapor telah berhasil memberikan tanda tangannya.
 
-![Tabel Status Keluhan PROSES](image_fdf64c.png)
-
-#### C. Pengiriman Notifikasi Laporan ke WhatsApp Teknisi
-Sesaat setelah pengisian form dan pembubuhan tanda tangan selesai dilakukan, sistem akan menampilkan jendela *pop-up modal* interaktif **"Kirim Laporan"**. Pada tahap ini, user diarahkan untuk memilih teknisi yang bertugas (seperti *Pak Martani* atau *Mas Dodik*) untuk mengirimkan rincian notifikasi perbaikan secara langsung melalui aplikasi WhatsApp agar kerusakan segera ditangani.
-
-![Pop-up Kirim Laporan via WhatsApp](image_fdf2c6.png)
-
----
+![Tabel Status Keluhan PROSES](bahan/table_progres.png)
 
 ### 3. Manajemen Tiket & Penanganan oleh Teknisi (Tahap "Eksekusi")
 Tim teknis menerima laporan dan melakukan tindakan korektif di lapangan berdasarkan skala prioritas.
