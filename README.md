@@ -8,37 +8,25 @@
 ---
 
 ## 📝 Tentang Proyek
-**Complain Facility** hadir untuk membuang cara lama yang ribet dalam menangani kerusakan fasilitas. Platform ini menghubungkan **User** (pelapor) langsung dengan tim teknis secara digital. 
+**Complain Facility** hadir untuk membuang cara lama yang ribet dalam menangani kerusakan fasilitas di lingkungan kerja maupun operasional. Platform berbasis web ini mengintegrasikan seluruh alur pelaporan keluhan secara *end-to-end*, menghubungkan **User** (pelapor), **Teknisi** (eksekutor), hingga **Manajemen / PGA (Property & General Affairs)** secara digital dan transparan.
 
-Enggak ada lagi laporan yang hilang atau terselip. Di sini, Anda bisa pantau proses perbaikan secara *real-time*, upload bukti foto sebelum dan sesudah dikerjakan, sampai cetak laporan PDF resmi yang rapi cuma dengan sekali klik.
+Enggak ada lagi laporan yang hilang, terselip, atau terlupakan. Melalui sistem ini, status setiap tiket perbaikan dapat dipantau secara *real-time*, didukung bukti dokumentasi visual yang valid, serta dilengkapi dengan fitur tanda tangan digital untuk memastikan akuntabilitas kerja sebelum sistem menghasilkan dokumen formal berbasis PDF secara otomatis.
 
 ---
 
 ## ✨ Fitur Jagoan
-* **🛠️ Simple Ticketing** – Alur laporan yang jelas, dari mulai diadukan sampai tuntas diperbaiki.
-* **📸 Foto Bukti** – Bisa upload foto *Before* dan *After* supaya hasil kerja teknisi lebih transparan.
-* **📄 PDF Otomatis** – Gak perlu bikin laporan manual. Pakai engine Dompdf, laporan formal langsung jadi!
-* **✍️ Tanda Tangan Digital** – Verifikasi hasil kerja praktis buat User, Teknisi, dan tim PGA.
-* **📊 Dashboard Pantau** – Lihat semua progres perbaikan dalam satu halaman yang intuitif.
+* **🛠️ Simple Ticketing System** – Alur pelaporan yang runut dan terstruktur, mulai dari pembuatan tiket, peninjauan, proses pengerjaan, hingga status selesai.
+* **📸 Bukti Visual (Before & After)** – Teknisi dan pelapor wajib mengunggah foto kondisi fasilitas sebelum diperbaiki dan setelah penanganan untuk transparansi penuh.
+* **✍️ Tanda Tangan Digital Terintegrasi** – Fitur verifikasi langsung di layar aplikasi untuk User, Teknisi, dan Tim PGA sebagai bukti serah terima pekerjaan yang sah.
+* **📄 Cetak Laporan PDF Otomatis** – Menggunakan engine *Dompdf* untuk menghasilkan lembar dokumen maintenance formal, siap cetak atau diarsipkan tanpa perlu rekap manual.
+* **📊 Dashboard Monitoring Intuitif** – Visualisasi data statistik mengenai jumlah laporan masuk, laporan dalam proses, dan laporan selesai dalam satu halaman utama.
 
 ---
 
-## 🚀 Gimana Cara Kerjanya?
-1. **Lapor:** User isi formulir keluhan dan upload foto kondisi yang rusak.
-2. **Eksekusi:** Tim Teknisi terima notif, cek lokasi, dan mulai perbaikan.
-3. **Verifikasi:** Kalau sudah oke, User dan pihak terkait tinggal tanda tangan digital.
-4. **Selesai:** Sistem bakal kunci data dan laporan PDF siap di-download buat arsip.
+## 🚀 Alur Kerja Sistem & Screenshot Aplikasi
 
+Berikut adalah penjelasan detail mengenai alur operasional sistem **Complain Facility**, lengkap dengan tempat peletakan representasi visual dari setiap tahapan proses:
 
-
----
-
-## 🛡️ Hak Cipta
-Project ini, termasuk kode, desain, dan aset di dalamnya, adalah milik pribadi. Tolong jangan disebar, diubah, atau dipakai buat kepentingan komersial tanpa izin ya.
-
-**Copyright © 2026 [yarisriyadi]. All rights reserved.**
-
----
-<p align="center">
-  <i>"Complain Facility: Solusi simpel buat fasilitas yang tetap prima."</i>
-</p>
+### 1. Sistem Autentikasi & Hak Akses (Login & Registrasi)
+Sebelum masuk ke sistem, pengguna harus mengonfirmasi identitas mereka melalui halaman autentikasi. Sistem ini mendukung multi-role dengan batasan hak akses yang ketat (User Biasa, Teknisi, dan PGA).
+* **Alur:** Pengguna memasukkan username dan password. Sistem memvalidasi akun dan mengarahkan pengguna ke dashboard yang sesuai dengan role mereka. Bagi pengguna baru (karyawan), registrasi dibatasi secara khusus hanya untuk role *Standard User*.
