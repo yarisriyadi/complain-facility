@@ -35,7 +35,7 @@ Sebelum masuk ke sistem, pengguna harus mengonfirmasi identitas mereka melalui h
 #### A. Halaman Login
 Pengguna yang sudah terdaftar dapat langsung memasukkan *Username / Email* beserta *Password*. Terdapat juga opsi tombol "Registrasi" di bagian bawah jika belum memiliki akun, serta ikon mode gelap/terang di pojok kiri bawah untuk kenyamanan visual antarmuka.
 
-![Halaman Login](image_fe6762.png)
+![Halaman Login](bahan/login.png)
 
 #### B. Halaman Registrasi (Pendaftaran Akun Baru)
 Untuk pengguna baru, formulir registrasi dirancang bersih dan aman. Pengguna diwajibkan mengisi *Username*, *Nama Lengkap* (sesuai dengan ID Card perusahaan), *Email Aktif*, serta *Password* dan *Konfirmasi Password* untuk menghindari kekeliruan pengetikan. Pada sistem ini, pendaftaran mandiri dikunci secara otomatis agar pengguna baru langsung mendapatkan hak akses sebagai **User Biasa (Standard User)** tanpa bisa memilih role administrasi secara bebas demi menjaga keamanan sistem.
