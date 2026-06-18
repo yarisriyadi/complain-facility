@@ -56,13 +56,14 @@ Setelah formulir berhasil disimpan, data keluhan tersebut langsung masuk ke dala
 
 ![Tabel Status Keluhan PROSES](bahan/table_progres2.png)
 
-#### C. Pengiriman Notifikasi Laporan ke WhatsApp Teknisi
-Sesaat setelah pengisian form dan pembubuhan tanda tangan selesai dilakukan, sistem akan menampilkan jendela *pop-up modal* interaktif **"Kirim Laporan"**. Pada tahap ini, user diarahkan untuk memilih teknisi yang bertugas (seperti *Pak Martani* atau *Mas Dodik*) untuk mengirimkan rincian notifikasi perbaikan secara langsung melalui aplikasi WhatsApp agar kerusakan segera ditangani.
-
-![halamanwauserteknisi](bahan/wa_user_teknisi.png)
-
 ---
 
-### 3. Manajemen Tiket & Penanganan oleh Teknisi (Tahap "Eksekusi")
-Tim teknis menerima laporan dan melakukan tindakan korektif di lapangan berdasarkan skala prioritas.
-* **Alur:** Teknisi melihat daftar tiket masuk di dashboard mereka, mengubah status menjadi *In Progress* saat mulai mengecek lokasi, dan melakukan perbaikan fisik. Setelah perbaikan selesai, teknisi wajib mengambil foto hasil kerja (*After*) dan mengunggahnya ke dalam sistem sebagai bukti penyelesaian tugas.
+## 🛡️ Hak Cipta
+Project ini, termasuk arsitektur kode, skema basis data, desain antarmuka, dan seluruh aset di dalamnya, adalah hak milik pribadi. Dilarang keras menyebarluaskan, mendistribusikan ulang, memodifikasi, atau mempergunakannya untuk kepentingan komersial tanpa izin tertulis dari pemilik sah.
+
+**Copyright © 2026 [yarisriyadi]. All rights reserved.**
+
+---
+<p align="center">
+  <i>"Complain Facility: Solusi simpel buat fasilitas yang tetap prima."</i>
+</p>
