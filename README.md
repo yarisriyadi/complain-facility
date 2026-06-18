@@ -40,12 +40,12 @@ Pengguna yang sudah terdaftar dapat langsung memasukkan *Username / Email* beser
 #### B. Halaman Registrasi (Pendaftaran Akun Baru)
 Untuk pengguna baru, formulir registrasi dirancang bersih dan aman. Pengguna diwajibkan mengisi *Username*, *Nama Lengkap* (sesuai dengan ID Card perusahaan), *Email Aktif*, serta *Password* dan *Konfirmasi Password* untuk menghindari kekeliruan pengetikan. Pada sistem ini, pendaftaran mandiri dikunci secara otomatis agar pengguna baru langsung mendapatkan hak akses sebagai **User Biasa (Standard User)** tanpa bisa memilih role administrasi secara bebas demi menjaga keamanan sistem.
 
-![Halaman Registrasi](image_fe6727.png)
+![Halaman Registrasi](bahan/registrasi.png)
 
 #### C. Pop-up Sambutan & Panduan Penggunaan (Selamat Datang)
 Setelah berhasil melakukan login, sistem akan menampilkan jendela *pop-up modal* interaktif sebagai sambutan selamat datang resmi yang dipersonalisasi dengan nama pengguna. Selain menyapa, *modal* ini berfungsi sebagai panduan cepat (*Quick Start Guide*) agar pengguna memahami langkah-langkah penting seperti pengisian form, kewajiban melampirkan foto *Before*, proses Tanda Tangan Digital (TTD), hingga cara mengunduh laporan PDF setelah diverifikasi oleh tim PGA. Pengguna cukup menekan tombol **"SAYA MENGERTI"** untuk menutup panduan dan mulai menggunakan aplikasi.
 
-![Pop-up Selamat Datang](image_fe66e2.png)
+![Pop-up Selamat Datang](bahan/welcome.png)
 
 ---
 
@@ -54,7 +54,7 @@ User yang menemukan fasilitas rusak dapat membuat laporan secara mandiri dalam h
 
 * **Alur:** User membuka menu *Add Complaint*, mengisi formulir penjelas (seperti nama fasilitas, lokasi detail, dan deskripsi kerusakan), serta mengunggah foto bukti awal (*Before*). Setelah disubmit, sistem otomatis menerbitkan nomor tiket unik dan mengirimkan notifikasi ke panel admin/teknisi.
 
-![Formulir Pengisian Keluhan](image_fe643a.png)
+![Formulir Pengisian Keluhan](bahan/welcome1.png)
 
 * **Detail Form:** Form ini menangkap informasi penting perusahaan seperti pilihan *Section / Dept* pelapor, *Lokasi Kerusakan* spesifik (misal: Lantai 1), identitas otomatis pelapor, kolom deskripsi kondisi kerusakan, serta tombol unggah berkas untuk dokumentasi visual sebelum penanganan dimulai.
 
