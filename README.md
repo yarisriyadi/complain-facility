@@ -1,5 +1,5 @@
 # 🏢 Complain Facility System
-> **Cara cerdas kelola laporan kerusakan dan bikin dokumen maintenance otomatis.**
+> **The smart way to manage facility damage reports and generate maintenance documents automatically.**
 
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
 ![Version](https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge)
@@ -7,63 +7,63 @@
 
 ---
 
-## 📝 Tentang Proyek
-**Complain Facility** hadir untuk membuang cara lama yang ribet dalam menangani kerusakan fasilitas di lingkungan kerja maupun operasional. Platform berbasis web ini mengintegrasikan seluruh alur pelaporan keluhan secara *end-to-end*, menghubungkan **User** (pelapor), **Teknisi** (eksekutor), hingga **Manajemen / PGA (Property & General Affairs)** secara digital dan transparan.
+## 📝 About the Project
+**Complain Facility** is built to eliminate traditional, complicated methods of handling facility damage in work and operational environments. This web-based platform integrates the entire end-to-end complaint reporting workflow, connecting **Users** (reporters), **Technicians** (executors), and **Management / PGA (Property & General Affairs)** digitally and transparently.
 
-Enggak ada lagi laporan yang hilang, terselip, atau terlupakan. Melalui sistem ini, status setiap tiket perbaikan dapat dipantau secara *real-time*, didukung bukti dokumentasi visual yang valid, serta dilengkapi dengan fitur tanda tangan digital untuk memastikan akuntabilitas kerja sebelum sistem menghasilkan dokumen formal berbasis PDF secara otomatis.
-
----
-
-## 🚀 Alur Kerja Sistem & Screenshot Aplikasi
-
-Berikut adalah penjelasan detail mengenai alur operasional sistem **Complain Facility**, lengkap dengan representasi visual dari setiap tahapan proses aplikasi:
-
-### 1. Sistem Autentikasi & Hak Akses (Login & Registrasi)
-Sebelum masuk ke sistem, pengguna harus mengonfirmasi identitas mereka melalui halaman autentikasi. Sistem ini mendukung multi-role dengan batasan hak akses yang ketat (User Biasa, Teknisi, dan PGA).
-
-* **Alur:** Pengguna memasukkan username dan password. Sistem memvalidasi akun dan mengarahkan pengguna ke dashboard yang sesuai dengan role mereka. Bagi pengguna baru (karyawan), registrasi dibatasi secara khusus hanya untuk role *Standard User*.
-
-#### A. Halaman Login
-Pengguna yang sudah terdaftar dapat langsung memasukkan *Username / Email* beserta *Password*. Terdapat juga opsi tombol "Registrasi" di bagian bawah jika belum memiliki akun, serta ikon mode gelap/terang di pojok kiri bawah untuk kenyamanan visual antarmuka.
-
-![Halaman Login](bahan/login.png)
-
-#### B. Halaman Registrasi (Pendaftaran Akun Baru)
-Untuk pengguna baru, formulir registrasi dirancang bersih dan aman. Pengguna diwajibkan mengisi *Username*, *Nama Lengkap* (sesuai dengan ID Card perusahaan), *Email Aktif*, serta *Password* dan *Konfirmasi Password* untuk menghindari kekeliruan pengetikan. Pada sistem ini, pendaftaran mandiri dikunci secara otomatis agar pengguna baru langsung mendapatkan hak akses sebagai **User Biasa (Standard User)** tanpa bisa memilih role administrasi secara bebas demi menjaga keamanan sistem.
-
-![Halaman Registrasi](bahan/registrasi.png)
-
-#### C. Pop-up Sambutan & Panduan Penggunaan (Selamat Datang)
-Setelah berhasil melakukan login, sistem akan menampilkan jendela *pop-up modal* interaktif sebagai sambutan selamat datang resmi yang dipersonalisasi dengan nama pengguna. Selain menyapa, *modal* ini berfungsi sebagai panduan cepat (*Quick Start Guide*) agar pengguna memahami langkah-langkah penting seperti pengisian form, kewajiban melampirkan foto *Before*, proses Tanda Tangan Digital (TTD), hingga cara mengunduh laporan PDF setelah diverifikasi oleh tim PGA. Pengguna cukup menekan tombol **"SAYA MENGERTI"** untuk menutup panduan dan mulai menggunakan aplikasi.
-
-![Pop-up Selamat Datang](bahan/welcome.png)
+No more lost, misplaced, or forgotten reports. Through this system, the status of each repair ticket can be monitored in *real-time*, backed by valid visual documentation, and equipped with a digital signature feature to ensure accountability before generating official PDF-based maintenance reports automatically.
 
 ---
 
-### 2. Pengajuan Keluhan Baru oleh User (Tahap "Lapor" & Verifikasi Awal)
-User yang menemukan fasilitas rusak dapat membuat laporan secara mandiri dan langsung melengkapinya dengan otorisasi awal agar tiket masuk ke dalam antrean pengerjaan.
+## 🚀 System Workflow & Application Screenshots
 
-* **Alur:** User membuka menu pengisian keluhan, memasukkan detail lokasi serta deskripsi kerusakan, dan memberikan tanda tangan digital sebagai pelapor. Setelah disimpan, laporan akan terdaftar pada tabel utama dengan status **PROSES**, dan sistem secara otomatis memunculkan pilihan kontak teknisi agar user bisa segera mengirimkan notifikasi via WhatsApp.
-![halamanawal](bahan/welcome1.png)
+The following is a detailed explanation of the **Complain Facility** system's operational workflow, accompanied by visual representations of each stage of the process:
 
-#### A. Pengisian Formulir & Tanda Tangan Digital (TTD) User
-Saat mengisi formulir, user memberikan deskripsi kerusakan pada fasilitas di kolom yang disediakan. Sebelum menekan tombol simpan, user diwajibkan membubuhkan Tanda Tangan Digital pada kolom **TTD USER (PELAPOR)** sebagai bukti sah pelaporan keluhan.
+### 1. Authentication System & Access Control (Login & Registration)
+Before accessing the system, users must verify their identity through the authentication page. This system supports multi-role access with strict privilege boundaries (Standard User, Technician, and PGA).
 
-![Formulir Keluhan dan TTD User](bahan/ttd_user.png)
+* **Workflow:** Users input their username and password. The system validates the account credentials and redirects them to the appropriate dashboard based on their role. For new users (employees), registration is explicitly restricted to the *Standard User* role.
 
-#### B. Monitoring Tabel Utama dengan Status "PROSES"
-Setelah formulir berhasil disimpan, data keluhan tersebut langsung masuk ke dalam tabel monitoring dengan tanda status berwarna kuning bertuliskan **PROSES**. Pada kolom status ini juga terlihat indikator centang hijau (`✓ USER`) yang menandakan bahwa pihak pelapor telah berhasil memberikan tanda tangannya.
+#### A. Login Page
+Registered users can directly input their *Username / Email* and *Password*. A "Registration" button option is available at the bottom for new users, along with a dark/light mode toggle icon in the bottom-left corner for visual interface comfort.
 
-![Tabel Status Keluhan PROSES](bahan/table_progres2.png)
+![Login Page](bahan/login.png)
+
+#### B. Registration Page (New Account Creation)
+The registration form for new users is designed to be clean and secure. Users are required to fill out their *Username*, *Full Name* (according to the company ID Card), *Active Email*, *Password*, and *Confirm Password* to prevent typos. In this system, self-registration is locked to assign the **Standard User** role by default, preventing unauthorized administrative role selection to maintain system security.
+
+![Registration Page](bahan/registrasi.png)
+
+#### C. Welcome Pop-up & Quick User Guide
+Upon successful login, an interactive *pop-up modal* appears as an official welcome message personalized with the user's name. In addition to greeting the user, this *modal* serves as a *Quick Start Guide* to ensure they understand crucial steps, such as form submission, mandatory *Before* photo attachments, the digital signature (TTD) process, and how to download the PDF report once verified by the PGA team. Users simply click the **"SAYA MENGERTI"** (I Understand) button to close the guide and begin using the application.
+
+![Welcome Pop-up](bahan/welcome.png)
 
 ---
 
-## 🛡️ Hak Cipta
-Project ini, termasuk arsitektur kode, skema basis data, desain antarmuka, dan seluruh aset di dalamnya, adalah hak milik pribadi. Dilarang keras menyebarluaskan, mendistribusikan ulang, memodifikasi, atau mempergunakannya untuk kepentingan komersial tanpa izin tertulis dari pemilik sah.
+### 2. Submitting a New Complaint by User (Reporting & Initial Verification Stage)
+Users who encounter damaged facilities can submit a report independently in seconds and immediately complete it with initial authorization to queue the ticket for repair.
+
+* **Workflow:** The user opens the complaint form menu, inputs the specific location details and damage description, and provides their digital signature as the reporter. Once saved, the report is registered on the main table with a **PROSES** (In Progress) status, and the system automatically prompts a technician contact selection to let the user send an instant notification via WhatsApp.
+![Landing Page](bahan/welcome1.png)
+
+#### A. Form Submission & User Digital Signature (TTD)
+While filling out the form, the user provides descriptions regarding the facility damage in the designated field. Before hitting the save button, the user must provide a Digital Signature in the **TTD USER (PELAPOR)** canvas box as official validation for the submitted complaint.
+
+![Complaint Form and User Signature](bahan/ttd_user.png)
+
+#### B. Main Table Monitoring with "PROSES" Status
+Once the form is successfully saved, the complaint entry immediately appears in the monitoring table marked with a yellow status badge labeled **PROSES**. The status column also displays a green check indicator (`✓ USER`), signifying that the reporter has successfully signed off on the ticket.
+
+![Complaint Status Table - PROSES](bahan/table_progres2.png)
+
+---
+
+## 🛡️ Copyright
+This project, including its code architecture, database schema, interface design, and all enclosed assets, is private property. It is strictly prohibited to redistribute, modify, or use this system for commercial purposes without explicit written permission from the rightful owner.
 
 **Copyright © 2026 [yarisriyadi]. All rights reserved.**
 
 ---
 <p align="center">
-  <i>"Complain Facility: Solusi simpel buat fasilitas yang tetap prima."</i>
+  <i>"Complain Facility: A simple solution for keeping facilities in prime condition."</i>
 </p>
